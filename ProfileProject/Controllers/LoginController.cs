@@ -4,12 +4,12 @@ using ProfileProject.Models;
 
 namespace ProfileProject.Controllers
 {
-    public class HomeController : Controller
+    public class LoginController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<LoginController> _logger;
         private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger,ApplicationDbContext context)
+        public LoginController(ILogger<LoginController> logger,ApplicationDbContext context)
         {
             _logger = logger;
             _context = context;
@@ -20,10 +20,6 @@ namespace ProfileProject.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
