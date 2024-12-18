@@ -1,8 +1,23 @@
-﻿@{
-    ViewData["Title"] = "Login Page";
+﻿@model ProfileProject.Models.User
+
+@{
+    ViewData["Title"] = "Giriş Yap";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h2>@ViewData["Title"]</h2>
+
+<form class="form-signin" asp-controller="Register" asp-action="Index" method="post">
+    <h1 class="h3 mb-3 font-weight-normal login">Kullanıcı Kaydı</h1>
+
+    <!-- Kullanıcı Adı -->
+    <label for="Username" class="sr-only login">Kullanıcı Adı</label>
+    <input type="text" id="Username" class="form-control" name="Username" required="" placeholder="Kullanıcı Adı" autofocus="">
+
+    <!-- Şifre -->
+    <label for="Password" class="sr-only login">Şifre</label>
+    <input type="password" id="Password" name="Password" class="form-control" placeholder="Şifre" required="">
+
+    <div style="text-align: center; margin-top:10px;">
+        <button class="buton" type="submit">Giriş Yap</button>
+    </div>
+</form>

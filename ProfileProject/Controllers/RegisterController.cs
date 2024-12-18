@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ProfileProject.Models;
+using ProfileProject.Services.LoginServices;
 
 namespace ProfileProject.Controllers
 {
@@ -8,11 +9,13 @@ namespace ProfileProject.Controllers
     {
         private readonly ILogger<RegisterController> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly ILoginService loginService;
 
-        public RegisterController(ILogger<RegisterController> logger,ApplicationDbContext context)
+        public RegisterController(ILogger<RegisterController> logger,ApplicationDbContext context,ILoginService loginService)
         {
             _logger = logger;
             _context = context;
+            this.loginService = loginService;
         }
 
         public IActionResult Index()
@@ -33,6 +36,9 @@ namespace ProfileProject.Controllers
                     ModelState.AddModelError("", "Bu kullanýcý adý zaten alýnmýþ.");
                     return View(model);
                 }
+
+                model.Password = loginService.SetHash(model.Password);
+                ConfirmPassword = loginService.SetHash(ConfirmPassword);
 
                 if(model.Password != ConfirmPassword)
                 {
