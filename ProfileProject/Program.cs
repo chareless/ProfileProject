@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using ProfileProject.Services.LoginServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Diðer servisleri ekleyin
 builder.Services.AddControllersWithViews();
+
+
+builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<AuthAdminFilter>();
+builder.Services.AddScoped<AuthRegisterFilter>();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(12);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -26,6 +40,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

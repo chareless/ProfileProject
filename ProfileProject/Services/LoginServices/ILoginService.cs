@@ -1,4 +1,5 @@
-﻿using static ProfileProject.Models.LoginModels;
+﻿using ProfileProject.Models;
+using static ProfileProject.Models.LoginModels;
 
 namespace ProfileProject.Services.LoginServices
 {
@@ -6,5 +7,6 @@ namespace ProfileProject.Services.LoginServices
     {
         bool LoginControl(LoginModel model);
         string SetHash(string password);
+        User GetUserData(LoginModel model);
     }
 }

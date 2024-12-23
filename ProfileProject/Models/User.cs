@@ -39,14 +39,16 @@ namespace ProfileProject.Models
 
         public bool IsDeleted { get; set; } = false;
         public bool IsActive { get; set; } = true;
+        public bool IsAdmin { get; set; } = false;
 
         public User()
         {
             IsDeleted = false;
             IsActive = true;
+            IsAdmin = false;
         }
 
-        public User(string name, string surname, string email,string mobilePhone, string username, string password, DateTime birthday, bool ısDeleted, bool ısActive)
+        public User(string name, string surname, string email,string mobilePhone, string username, string password, DateTime birthday, bool ısDeleted, bool ısActive, bool ısAdmin)
         {
             Name = name;
             Surname = surname;
@@ -57,6 +59,7 @@ namespace ProfileProject.Models
             Birthday = birthday;
             IsDeleted = ısDeleted;
             IsActive = ısActive;
+            IsAdmin = ısAdmin;
         }
     }
 }

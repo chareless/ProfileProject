@@ -1,17 +1,16 @@
-﻿using System.Security.Cryptography;
+﻿using ProfileProject.Models;
+using System.Security.Cryptography;
 using System.Text;
 using static ProfileProject.Models.LoginModels;
 
 namespace ProfileProject.Services.LoginServices
 {
-    public class LoginService
+    public class LoginService : ILoginService
     {
-        private readonly ILoginService loginService;
         private readonly ApplicationDbContext _context;
 
-        public LoginService(ILoginService loginService, ApplicationDbContext context)
+        public LoginService( ApplicationDbContext context)
         {
-            this.loginService = loginService;
             _context = context;
         }
 
@@ -22,6 +21,12 @@ namespace ProfileProject.Services.LoginServices
                 return SetHash(model.Password) == findUser.Password;
             else
                 return false;
+        }
+
+        public User GetUserData(LoginModel model)
+        {
+            var findUser = _context.Users.First(a => a.Username == model.Username);
+            return findUser;
         }
 
         public string SetHash(string password)

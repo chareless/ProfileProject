@@ -46,7 +46,7 @@ namespace ProfileProject.Controllers
                     return View(model);
                 }
 
-                var user = new User(model.Name, model.Surname, model.Email,model.MobilePhone,model.Username,model.Password,model.Birthday,false,true);
+                var user = new User(model.Name, model.Surname, model.Email,model.MobilePhone,model.Username,model.Password,model.Birthday,false,true,false);
 
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
