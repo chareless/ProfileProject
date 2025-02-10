@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using ProfileProject.Services.GeneralServices;
 using ProfileProject.Services.LoginServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +18,10 @@ builder.Services.AddControllersWithViews();
 
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IGeneralService, GeneralService>();
+
 builder.Services.AddScoped<AuthAdminFilter>();
 builder.Services.AddScoped<AuthRegisterFilter>();
 builder.Services.AddSession(options =>

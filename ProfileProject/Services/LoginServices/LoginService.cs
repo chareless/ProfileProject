@@ -1,42 +1,56 @@
 ﻿using ProfileProject.Models;
+using ProfileProject.Services.GeneralServices;
 using System.Security.Cryptography;
 using System.Text;
-using static ProfileProject.Models.LoginModels;
+using static ProfileProject.Models.DataModels;
 
 namespace ProfileProject.Services.LoginServices
 {
     public class LoginService : ILoginService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IGeneralService generalService;
 
-        public LoginService( ApplicationDbContext context)
+        public LoginService( ApplicationDbContext context, IGeneralService generalService)
         {
             _context = context;
+            this.generalService = generalService;
         }
 
         public bool LoginControl(LoginModel model)
         {
-            var findUser = _context.Users.FirstOrDefault(a=>a.Username ==model.Username);
+            var findUser = _context.Users.FirstOrDefault(a =>
+                (a.Username == model.Username || a.Email == model.Username) &&
+                !a.IsDeleted &&
+                a.IsActive);
+
             if (findUser != null)
-                return SetHash(model.Password) == findUser.Password;
+            {
+                string hashedPassword = generalService.SetHash(model.Password);
+                return hashedPassword == findUser.Password;
+            }
             else
+            {
                 return false;
+            }
         }
 
         public User GetUserData(LoginModel model)
         {
-            var findUser = _context.Users.First(a => a.Username == model.Username);
+            var findUser = _context.Users.First(a => (a.Username == model.Username || a.Email == model.Username) && !a.IsDeleted && a.IsActive);
             return findUser;
         }
 
-        public string SetHash(string password)
+        public bool ChangePassword(ChangePasswordModel model)
         {
-            using (var sha256 = SHA256.Create())
+            var findUser = _context.Users.FirstOrDefault(a => (a.Username == model.Username) && !a.IsDeleted && a.IsActive && a.Password == generalService.SetHash(model.OldPassword));
+            if (findUser != null)
             {
-                byte[] bytes = Encoding.UTF8.GetBytes(password);
-                byte[] hashBytes = sha256.ComputeHash(bytes);
-                return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+                findUser.Password = generalService.SetHash(model.Password);
+                _context.SaveChanges();
+                return true;
             }
+            return false;
         }
 
     }

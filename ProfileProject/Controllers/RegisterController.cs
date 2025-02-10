@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ProfileProject.Models;
-using ProfileProject.Services.LoginServices;
+using ProfileProject.Services.GeneralServices;
 
 namespace ProfileProject.Controllers
 {
@@ -9,13 +9,13 @@ namespace ProfileProject.Controllers
     {
         private readonly ILogger<RegisterController> _logger;
         private readonly ApplicationDbContext _context;
-        private readonly ILoginService loginService;
+        private readonly IGeneralService generalService;
 
-        public RegisterController(ILogger<RegisterController> logger,ApplicationDbContext context,ILoginService loginService)
+        public RegisterController(ILogger<RegisterController> logger,ApplicationDbContext context,IGeneralService generalService)
         {
             _logger = logger;
             _context = context;
-            this.loginService = loginService;
+            this.generalService = generalService;
         }
 
         public IActionResult Index()
@@ -29,16 +29,18 @@ namespace ProfileProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var existingUser = _context.Users.FirstOrDefault(u => u.Username == model.Username);
+                var existingUser = _context.Users.FirstOrDefault(u => u.Username == model.Username && u.Email == model.Email);
 
                 if (existingUser != null)
                 {
-                    ModelState.AddModelError("", "Bu kullanýcý adý zaten alýnmýþ.");
+                    ModelState.AddModelError("", "Bu kullanýcý adý veya email adresi zaten alýnmýþ.");
                     return View(model);
                 }
 
-                model.Password = loginService.SetHash(model.Password);
-                ConfirmPassword = loginService.SetHash(ConfirmPassword);
+                var date = generalService.GetCurrentDate();
+
+                model.Password = generalService.SetHash(model.Password);
+                ConfirmPassword = generalService.SetHash(ConfirmPassword);
 
                 if(model.Password != ConfirmPassword)
                 {
@@ -46,7 +48,7 @@ namespace ProfileProject.Controllers
                     return View(model);
                 }
 
-                var user = new User(model.Name, model.Surname, model.Email,model.MobilePhone,model.Username,model.Password,model.Birthday,false,true,false);
+                var user = new User(model.NameSurname, model.Email,model.MobilePhone1,model.MobilePhone2,model.Username,model.Password,model.Birthday,false,true,false,date,date);
 
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();

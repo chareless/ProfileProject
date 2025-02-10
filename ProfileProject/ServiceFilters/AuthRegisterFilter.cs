@@ -22,15 +22,27 @@ public class AuthRegisterFilter : Controller, IAuthorizationFilter
     private bool IsValidUser(AuthorizationFilterContext context)
     {
         var userID = context.HttpContext.Session.GetInt32("UserId");
-        return _context.Users.Where(a=>a.Id == userID && a.IsActive && !a.IsDeleted).Any();
+
+        return _context.Users.Any(a => a.Id == userID && !a.IsDeleted && a.IsActive);
     }
 
     public void OnAuthorization(AuthorizationFilterContext context)
 	{
-		var isAdmin = context.HttpContext.Session.GetInt32("IsAdmin");
-		if (isAdmin != 1 || !IsValidUser(context))
-		{
-			context.Result = new RedirectResult("/Login");
-		}
-	}
+        if (!IsValidUser(context))
+        {
+            try
+            {
+                HttpContext?.Session?.Remove("Username");
+                HttpContext?.Session?.Remove("Email");
+                HttpContext?.Session?.Remove("UserId");
+                HttpContext?.Session?.Remove("SessionStartTime");
+                HttpContext?.Session?.Remove("IsAdmin");
+                context.Result = new RedirectResult("/Login");
+            }
+            catch
+            {
+                context.Result = new RedirectResult("/Login");
+            }
+        }
+    }
 }
