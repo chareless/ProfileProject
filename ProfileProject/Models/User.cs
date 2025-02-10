@@ -21,12 +21,16 @@ namespace ProfileProject.Models
         [Phone(ErrorMessage = "Geçerli bir telefon numarası giriniz!")]
         [StringLength(15, ErrorMessage = "Telefon numarası 15 karakterden uzun olamaz.")]
         [Display(Name = "Telefon-1")]
-        public string MobilePhone1 { get; set; }
+        public string? MobilePhone1 { get; set; }
 
         [Phone(ErrorMessage = "Geçerli bir telefon numarası giriniz!")]
         [StringLength(15, ErrorMessage = "Telefon numarası 15 karakterden uzun olamaz.")]
         [Display(Name = "Telefon-2")]
-        public string MobilePhone2 { get; set; }
+        public string? MobilePhone2 { get; set; }
+
+        [Required(ErrorMessage = "Cinsiyet seçimi zorunludur.")]
+        [Display(Name = "Cinsiyet")]
+        public GenderType Gender { get; set; }
 
         [Required(ErrorMessage = "Kullanıcı adı girmek zorunludur.")]
         [StringLength(50, ErrorMessage = "Kullanıcı adı 50 karakterden uzun olamaz!")]
@@ -34,29 +38,32 @@ namespace ProfileProject.Models
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Şifre girmek zorunludur.")]
-        [StringLength(20, MinimumLength = 6, ErrorMessage = "Şifre uzunluğu 6 ile 20 karakter arasında olmalıdır.")] // Şifre uzunluğu
+        [MinLength(6, ErrorMessage = "Şifre uzunluğu en az 6 karakter olmalıdır!")]
         [Display(Name = "Şifre")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Doğum tarihi girmek zorunludur.")]
         [DataType(DataType.Date)]
         [Display(Name = "Doğum Tarihi")]
-        public DateTime Birthday { get; set; }
+        public DateOnly Birthday { get; set; }
+
+        [Display(Name = "Meslek")]
+        public string? Job { get; set; } = null;
 
         [Display(Name = "Hakkında")]
-        public string About { get; set; }
+        public string? About { get; set; } = null;
 
         [Display(Name = "Medeni Durumu")]
-        public string Marriage { get; set; }
+        public string? Marriage { get; set; } = null;
 
         [Display(Name = "Sürücü Belgesi")]
-        public string DrivingLicense { get; set; }
+        public string? DrivingLicense { get; set; } = null;
 
         [Display(Name = "Askerlik")]
-        public string Military { get; set; }
+        public string? Military { get; set; } = null;
 
         [Display(Name = "Hobiler")]
-        public string Hobbies { get; set; }
+        public string? Hobbies { get; set; } = null;
 
         [Display(Name = "Silindi")]
         public bool IsDeleted { get; set; } = false;
@@ -105,7 +112,7 @@ namespace ProfileProject.Models
             VisitorCount = 0;
         }
 
-        public User(string name, string email,string mobilePhone1,string mobilePhone2, string username, string password, DateTime birthday, bool ısDeleted, bool ısActive, bool ısAdmin, DateTime create, DateTime update)
+        public User(string name, string email,string mobilePhone1,string mobilePhone2, GenderType gender, string username, string password, DateOnly birthday, bool ısDeleted, bool ısActive, bool ısAdmin, DateTime create, DateTime update)
         {
             NameSurname = name;
             Email = email;
@@ -119,6 +126,13 @@ namespace ProfileProject.Models
             IsAdmin = ısAdmin;
             CreateWhen = create;
             UpdateWhen = update;
+            Gender = gender;
+        }
+
+        public enum GenderType
+        {
+            Male = 1,
+            Female = 0
         }
     }
 }

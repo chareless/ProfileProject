@@ -14,7 +14,7 @@ namespace ProfileProject.Models
         public string Title { get; set; }
 
         [Display(Name = "Açıklama")]
-        public string Information { get; set; }
+        public string? Information { get; set; }
 
         [Display(Name = "Silindi")]
         public bool IsDeleted { get; set; } = false;

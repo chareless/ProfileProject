@@ -21,18 +21,18 @@ namespace ProfileProject.Models
 
         [StringLength(100, ErrorMessage = "Pozisyon 100 karakterden uzun olamaz!")]
         [Display(Name = "Pozisyon")]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         [Display(Name = "Açıklama")]
-        public string Information { get; set; }
+        public string? Information { get; set; }
 
         [EmailAddress(ErrorMessage = "Geçersiz mail formatı!")]
         [Display(Name = "E-Posta")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [StringLength(15, ErrorMessage = "Telefon numarası 15 karakterden uzun olamaz.")]
         [Display(Name = "Telefon")]
-        public string MobilePhone { get; set; }
+        public string? MobilePhone { get; set; }
 
         [Display(Name = "Silindi")]
         public bool IsDeleted { get; set; } = false;

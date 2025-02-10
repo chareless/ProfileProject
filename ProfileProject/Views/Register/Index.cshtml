@@ -9,37 +9,56 @@
 <form class="form-signin" asp-controller="Register" asp-action="Index" method="post">
     <h1 class="h3 mb-3 font-weight-normal login">Kullanıcı Kaydı</h1>
 
+    <!-- Validation Summary -->
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <!-- Kullanıcı Adı -->
-    <label for="Username" class="sr-only login">Kullanıcı Adı *</label>
-    <input type="text" id="Username" class="form-control" name="Username" required="" placeholder="Kullanıcı Adı" autofocus="">
+    <label asp-for="Username" class="sr-only login"></label>
+    <input type="text" class="form-control" asp-for="Username" placeholder="Kullanıcı Adı" autofocus="">
+    <span asp-validation-for="Username" class="text-danger"></span>
 
     <!-- Ad Soyad -->
-    <label for="NameSurname" class="sr-only login">Ad Soyad *</label>
-    <input type="text" id="NameSurname" class="form-control" name="NameSurname" required="" placeholder="Ad Soyad">
+    <label asp-for="NameSurname" class="sr-only login"></label>
+    <input type="text" class="form-control" asp-for="NameSurname" placeholder="Ad Soyad">
+    <span asp-validation-for="NameSurname" class="text-danger"></span>
 
     <!-- E-posta -->
-    <label for="Email" class="sr-only login">E-Posta *</label>
-    <input type="email" id="Email" class="form-control" name="Email" required="" placeholder="E-posta">
+    <label asp-for="Email" class="sr-only login"></label>
+    <input type="email" class="form-control" asp-for="Email" placeholder="E-posta">
+    <span asp-validation-for="Email" class="text-danger"></span>
 
     <!-- Telefon 1 -->
-    <label for="MobilePhone1" class="sr-only login">Telefon-1</label>
-    <input type="text" id="MobilePhone1" class="form-control" name="MobilePhone1" placeholder="Telefon-1">
+    <label asp-for="MobilePhone1" class="sr-only login"></label>
+    <input type="text" class="form-control" asp-for="MobilePhone1" placeholder="Telefon-1">
 
     <!-- Telefon 2 -->
-    <label for="MobilePhone2" class="sr-only login">Telefon-2</label>
-    <input type="text" id="MobilePhone2" class="form-control" name="MobilePhone2" placeholder="Telefon-2">
+    <label asp-for="MobilePhone2" class="sr-only login"></label>
+    <input type="text" class="form-control" asp-for="MobilePhone2" placeholder="Telefon-2">
+
+    <!-- Cinsiyet (Zorunlu Radio Butonlar) -->
+    <label class="login">Cinsiyet *</label>
+    <div>
+        <input type="radio" asp-for="Gender" value="1" id="Male" required>
+        <label for="Male">Erkek</label>
+
+        <input type="radio" asp-for="Gender" value="0" id="Female">
+        <label for="Female">Kadın</label>
+    </div>
+    <span asp-validation-for="Gender" class="text-danger"></span>
 
     <!-- Şifre -->
-    <label for="Password" class="sr-only login">Şifre *</label>
-    <input type="password" id="Password" name="Password" class="form-control" placeholder="Şifre" required="">
+    <label asp-for="Password" class="sr-only login"></label>
+    <input type="password" class="form-control" asp-for="Password" placeholder="Şifre">
+    <span asp-validation-for="Password" class="text-danger"></span>
 
     <!-- Şifre Tekrarı -->
     <label for="ConfirmPassword" class="sr-only login">Şifre Doğrulama *</label>
     <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" placeholder="Şifre Tekrarı" required="">
 
     <!-- Doğum Tarihi -->
-    <label for="Birthday" class="sr-only login">Doğum Tarihi *</label>
-    <input type="date" id="Birthday" name="Birthday" class="form-control" required="">
+    <label asp-for="Birthday" class="sr-only login"></label>
+    <input type="date" class="form-control" asp-for="Birthday">
+    <span asp-validation-for="Birthday" class="text-danger"></span>
 
     <div style="text-align: center; margin-top:10px;">
         <button class="buton" type="submit">Kayıt Ol</button>

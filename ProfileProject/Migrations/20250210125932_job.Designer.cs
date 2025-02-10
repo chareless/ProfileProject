@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ProfileProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250210125932_job")]
+    partial class job
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,8 +40,8 @@ namespace ProfileProject.Migrations
                     b.Property<DateTime>("CreateWhen")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateOnly>("EndWhen")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("EndWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Information")
                         .IsRequired()
@@ -47,8 +50,8 @@ namespace ProfileProject.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<DateOnly>("StartWhen")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("StartWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("UpdateWhen")
                         .HasColumnType("datetime2");
@@ -74,13 +77,15 @@ namespace ProfileProject.Migrations
                     b.Property<DateTime>("CreateWhen")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateOnly>("EndWhen")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("EndWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("GradePoint")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Information")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -91,8 +96,8 @@ namespace ProfileProject.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<DateOnly>("StartWhen")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("StartWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -124,6 +129,7 @@ namespace ProfileProject.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Information")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -157,10 +163,11 @@ namespace ProfileProject.Migrations
                     b.Property<DateTime>("CreateWhen")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateOnly>("EndWhen")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("EndWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Information")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -171,8 +178,8 @@ namespace ProfileProject.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<DateOnly>("StartWhen")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("StartWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("UpdateWhen")
                         .HasColumnType("datetime2");
@@ -204,15 +211,18 @@ namespace ProfileProject.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Information")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("MobilePhone")
+                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
@@ -222,6 +232,7 @@ namespace ProfileProject.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -250,6 +261,7 @@ namespace ProfileProject.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Information")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -281,25 +293,25 @@ namespace ProfileProject.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("About")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly>("Birthday")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("Birthday")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreateWhen")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DrivingLicense")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
-
                     b.Property<string>("Hobbies")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
@@ -312,19 +324,24 @@ namespace ProfileProject.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Job")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Marriage")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Military")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MobilePhone1")
+                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("MobilePhone2")
+                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
@@ -335,7 +352,8 @@ namespace ProfileProject.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("UpdateWhen")
                         .HasColumnType("datetime2");
@@ -369,17 +387,18 @@ namespace ProfileProject.Migrations
                     b.Property<DateTime>("CreateWhen")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateOnly>("EndWhen")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("EndWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Information")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<DateOnly>("StartWhen")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("StartWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()

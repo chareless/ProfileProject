@@ -20,16 +20,16 @@ namespace ProfileProject.Models
         public string Title { get; set; }
 
         [Display(Name = "Açıklama")]
-        public string Information { get; set; }
+        public string? Information { get; set; }
 
         [Required(ErrorMessage = "Başlangıç tarihi girmek zorunludur.")]
         [DataType(DataType.Date)]
         [Display(Name = "Başlangıç Tarihi")]
-        public DateTime StartWhen { get; set; }
+        public DateOnly StartWhen { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Bitiş Tarihi")]
-        public DateTime EndWhen { get; set; }
+        public DateOnly EndWhen { get; set; }
 
         [Display(Name = "Silindi")]
         public bool IsDeleted { get; set; } = false;
@@ -52,7 +52,7 @@ namespace ProfileProject.Models
             IsDeleted = false;
         }
 
-        public WorkExperience(string companyName, string title, string info, bool ısDeleted, DateTime start, DateTime end, DateTime create, DateTime update,int userId, User user)
+        public WorkExperience(string companyName, string title, string info, bool ısDeleted, DateOnly start, DateOnly end, DateTime create, DateTime update,int userId, User user)
         {
             Title = title;
             CompanyName = companyName;

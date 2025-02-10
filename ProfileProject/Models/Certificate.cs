@@ -20,11 +20,11 @@ namespace ProfileProject.Models
         [Required(ErrorMessage = "Başlangıç tarihi girmek zorunludur.")]
         [DataType(DataType.Date)]
         [Display(Name = "Başlangıç Tarihi")]
-        public DateTime StartWhen { get; set; }
+        public DateOnly StartWhen { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Bitiş Tarihi")]
-        public DateTime EndWhen { get; set; }
+        public DateOnly EndWhen { get; set; }
 
         [Display(Name = "Silindi")]
         public bool IsDeleted { get; set; } = false;
@@ -47,7 +47,7 @@ namespace ProfileProject.Models
             IsDeleted = false;
         }
 
-        public Certificate(string companyName,string info, bool ısDeleted, DateTime start, DateTime end,  DateTime create, DateTime update,int userId, User user)
+        public Certificate(string companyName,string info, bool ısDeleted, DateOnly start, DateOnly end,  DateTime create, DateTime update,int userId, User user)
         {
             CompanyName = companyName;
             Information = info;
