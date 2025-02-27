@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
 @inject IHttpContextAccessor HttpContextAccessor
 
 @{
@@ -14,9 +15,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ProfileProject</title>
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ProfileProject.styles.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/css/aos.css" rel="stylesheet">
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/styles/main.css" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -27,22 +30,15 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                       
                         @{
                             if(user == null){
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Login</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Giriş Yap</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Register" asp-action="Index">Register</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Register" asp-action="Index">Kayıt Ol</a>
                                 </li>
                             }
 
@@ -57,10 +53,10 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">@user</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="ChangePassword">Change Password</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="ChangePassword">Şifre Değiştir</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Çıkış Yap</a>
                                 </li>
                             }
                         }
@@ -72,18 +68,73 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            @if (TempData["AlertMessage"] != null)
+            {
+                AlertMessage alertMessage = JsonConvert.DeserializeObject<AlertMessage>(TempData["AlertMessage"] as String);
+
+                <script>
+                                 document.addEventListener('DOMContentLoaded', function () {
+                                     Swal.fire({
+                                         icon: '@GetSweetAlertIcon(alertMessage.AlertType)',
+                                             title: @Html.Raw(JsonConvert.SerializeObject(alertMessage.Title)),
+                                             text: @Html.Raw(JsonConvert.SerializeObject(alertMessage.Message)),
+                                             confirmButtonText: 'Tamam',
+                                     });
+                                 });
+
+                    @functions {
+                    private string GetSweetAlertIcon(string alertType)
+                    {
+                        // AlertType değerlerinizi SweetAlert icon türlerine map edin
+                        switch (alertType.ToLower())
+                        {
+                            case "success":
+                                return "success";
+                            case "danger":
+                                return "error";
+                            case "error":
+                                return "error";
+                            case "warning":
+                                return "warning";
+                            case "info":
+                                return "info";
+                            case "question":
+                                return "question";
+                            default:
+                                return "info";
+                        }
+                    }
+                }
+            </script>
+            }
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger" style="z-index: 2;">
+                    <ul>
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <li>@error.ErrorMessage</li>
+                        }
+                    </ul>
+                </div>
+            }
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - ProfileProject - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="footer">
+        <div class="text-center text-muted">
+            <p>&copy; Creative CV. All rights reserved.<br>Design - <a class="credit" href="https://templateflip.com" target="_blank">TemplateFlip</a></p>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/core/jquery.3.2.1.min.js"></script>
+    <script src="~/js/core/popper.min.js"></script>
+    <script src="~/js/core/bootstrap.min.js"></script>
+    <script src="~/js/now-ui-kit.js?v=1.1.0"></script>
+    <script src="~/js/aos.js"></script>
+    <script src="~/scripts/main.js"></script>
+    <script src="~/js/sweetalert2.all.min.js"></script>
+    <script src="~/js/ac-alert.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

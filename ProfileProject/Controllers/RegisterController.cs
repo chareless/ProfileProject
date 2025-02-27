@@ -1,7 +1,9 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ProfileProject.Models;
 using ProfileProject.Services.GeneralServices;
+using static ProfileProject.Models.DataModels;
 
 namespace ProfileProject.Controllers
 {
@@ -25,33 +27,50 @@ namespace ProfileProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(User model,string ConfirmPassword)
+        public async Task<IActionResult> Index(RegisterModel model)
         {
             if (ModelState.IsValid)
             {
-                var existingUser = _context.Users.FirstOrDefault(u => u.Username == model.Username && u.Email == model.Email);
+                var modelUser = model.User;
+                var existingUser = _context.Users.FirstOrDefault(u => u.Username == modelUser.Username && u.Email == modelUser.Email);
 
                 if (existingUser != null)
                 {
-                    ModelState.AddModelError("", "Bu kullanýcý adý veya email adresi zaten alýnmýþ.");
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hatalý Kullanýcý",
+                        Message = "Bu kullanýcý adý veya email adresi zaten alýnmýþ!"
+                    });
                     return View(model);
                 }
 
                 var date = generalService.GetCurrentDate();
 
-                model.Password = generalService.SetHash(model.Password);
-                ConfirmPassword = generalService.SetHash(ConfirmPassword);
+                modelUser.Password = generalService.SetHash(modelUser.Password);
+                model.ConfirmPassword = generalService.SetHash(model.ConfirmPassword);
 
-                if(model.Password != ConfirmPassword)
+                if(modelUser.Password != model.ConfirmPassword)
                 {
-                    ModelState.AddModelError("", "Þifre doðrulanamadý.");
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Þifre Doðrulama Hatasý",
+                        Message = "Þifre doðrulanamadý!"    
+                    });
                     return View(model);
                 }
 
-                var user = new User(model.NameSurname, model.Email,model.MobilePhone1,model.MobilePhone2,model.Gender,model.Username,model.Password,model.Birthday,false,true,false,date,date);
+                var user = new User(modelUser.NameSurname, modelUser.Email,modelUser.MobilePhone1,modelUser.MobilePhone2,modelUser.Gender,modelUser.Username,modelUser.Password,modelUser.Birthday,false,true,false,date,date);
 
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
+
+                HttpContext.Session.SetString("Username", user.Username);
+                HttpContext.Session.SetString("Email", user.Email);
+                HttpContext.Session.SetInt32("UserId", user.Id);
+                HttpContext.Session.SetString("SessionStartTime", date.ToString());
+                HttpContext.Session.SetInt32("IsAdmin", user.IsAdmin ? 1 : 0);
 
                 return RedirectToAction("Index", "Home"); // Kayýt baþarýlýysa anasayfaya yönlendir
             }

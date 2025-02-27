@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using ProfileProject.Models;
 using ProfileProject.Services.LoginServices;
 using static ProfileProject.Models.DataModels;
@@ -35,6 +36,11 @@ namespace ProfileProject.Controllers
                 return NotFound();
         }
 
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ChangePassword(ChangePasswordModel model)
@@ -42,10 +48,45 @@ namespace ProfileProject.Controllers
             model.Username = HttpContext.Session.GetString("Username") ?? "";
             if (ModelState.IsValid)
             {
-                if (!loginService.ChangePassword(model))
+                if(model.Password != model.ConfirmPassword)
                 {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hatalý Þifre",
+                        Message = "Yeni þifreler eþleþmemektedir!"
+                    });
                     return View();
                 }
+
+                if (model.Password.Length < 6 )
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hatalý Þifre",
+                        Message = "Yeni þifre uzunluðu en az 6 karakter olmalýdýr!"
+                    });
+                    return View();
+                }
+
+                if (!loginService.ChangePassword(model))
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hatalý Þifre",
+                        Message = "Eski þifreniz hatalýdýr!"
+                    });
+                    return View();
+                }
+
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "success",
+                    Title = "Baþarýlý",
+                    Message = "Þifreniz baþarýlý bir þekilde güncellenmiþtir."
+                });
                 return RedirectToAction("Index", "Profile");
             }
 

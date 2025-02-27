@@ -8,9 +8,9 @@ namespace ProfileProject.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "İsim girmek zorunludur.")]
-        [StringLength(50, ErrorMessage = "İsim 50 karakterden uzun olamaz!")]
-        [Display(Name = "İsim Soyisim")]
+        [Required(ErrorMessage = "Ad Soyad girmek zorunludur.")]
+        [StringLength(50, ErrorMessage = "Ad Soyad 50 karakterden uzun olamaz!")]
+        [Display(Name = "Ad Soyad")]
         public string NameSurname { get; set; }
 
         [Required(ErrorMessage = "Mail adresi girmek zorunludur.")]
@@ -112,7 +112,7 @@ namespace ProfileProject.Models
             VisitorCount = 0;
         }
 
-        public User(string name, string email,string mobilePhone1,string mobilePhone2, GenderType gender, string username, string password, DateOnly birthday, bool ısDeleted, bool ısActive, bool ısAdmin, DateTime create, DateTime update)
+        public User(string name, string email,string? mobilePhone1,string? mobilePhone2, GenderType gender, string username, string password, DateOnly birthday, bool ısDeleted, bool ısActive, bool ısAdmin, DateTime create, DateTime update)
         {
             NameSurname = name;
             Email = email;

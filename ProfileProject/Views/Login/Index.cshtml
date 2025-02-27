@@ -1,23 +1,35 @@
-﻿@model ProfileProject.Models.User
+﻿@model DataModels.LoginModel
 
 @{
     ViewData["Title"] = "Giriş Yap";
 }
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
 
-<h2>@ViewData["Title"]</h2>
+    <form class="form-signin" asp-controller="Login" asp-action="Index" method="post">
+        <div class="row">
+            <!-- Kullanıcı Adı -->
+            <div class="col-lg-3">
+                <label asp-for="Username" class="sr-only login"></label>
+                <input asp-for="Username" class="form-control" autofocus="">
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <!-- Şifre -->
+            <div class="col-lg-3">
+                <label asp-for="Password" class="sr-only login"></label>
+                <input asp-for="Password" class="form-control" type="password">
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
 
-<form class="form-signin" asp-controller="Register" asp-action="Index" method="post">
-    <h1 class="h3 mb-3 font-weight-normal login">Kullanıcı Kaydı</h1>
+            <div class="col-lg-3" style="text-align: center; align-content:center; margin-top:15px">
+                <button class="btn btn-primary" type="submit">Giriş Yap</button>
+            </div>
+        </div>
 
-    <!-- Kullanıcı Adı -->
-    <label for="Username" class="sr-only login">Kullanıcı Adı</label>
-    <input type="text" id="Username" class="form-control" name="Username" required="" placeholder="Kullanıcı Adı" autofocus="">
+    </form>
+</div>
 
-    <!-- Şifre -->
-    <label for="Password" class="sr-only login">Şifre</label>
-    <input type="password" id="Password" name="Password" class="form-control" placeholder="Şifre" required="">
 
-    <div style="text-align: center; margin-top:10px;">
-        <button class="buton" type="submit">Giriş Yap</button>
-    </div>
-</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

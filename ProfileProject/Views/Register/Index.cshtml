@@ -1,4 +1,4 @@
-﻿@model ProfileProject.Models.User
+﻿@model ProfileProject.Models.DataModels.RegisterModel
 
 @{
     ViewData["Title"] = "Kayıt Ol";
@@ -7,60 +7,81 @@
 <h2>@ViewData["Title"]</h2>
 
 <form class="form-signin" asp-controller="Register" asp-action="Index" method="post">
-    <h1 class="h3 mb-3 font-weight-normal login">Kullanıcı Kaydı</h1>
-
     <!-- Validation Summary -->
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <!-- Kullanıcı Adı -->
-    <label asp-for="Username" class="sr-only login"></label>
-    <input type="text" class="form-control" asp-for="Username" placeholder="Kullanıcı Adı" autofocus="">
-    <span asp-validation-for="Username" class="text-danger"></span>
-
-    <!-- Ad Soyad -->
-    <label asp-for="NameSurname" class="sr-only login"></label>
-    <input type="text" class="form-control" asp-for="NameSurname" placeholder="Ad Soyad">
-    <span asp-validation-for="NameSurname" class="text-danger"></span>
-
-    <!-- E-posta -->
-    <label asp-for="Email" class="sr-only login"></label>
-    <input type="email" class="form-control" asp-for="Email" placeholder="E-posta">
-    <span asp-validation-for="Email" class="text-danger"></span>
-
-    <!-- Telefon 1 -->
-    <label asp-for="MobilePhone1" class="sr-only login"></label>
-    <input type="text" class="form-control" asp-for="MobilePhone1" placeholder="Telefon-1">
-
-    <!-- Telefon 2 -->
-    <label asp-for="MobilePhone2" class="sr-only login"></label>
-    <input type="text" class="form-control" asp-for="MobilePhone2" placeholder="Telefon-2">
-
-    <!-- Cinsiyet (Zorunlu Radio Butonlar) -->
-    <label class="login">Cinsiyet *</label>
-    <div>
-        <input type="radio" asp-for="Gender" value="1" id="Male" required>
-        <label for="Male">Erkek</label>
-
-        <input type="radio" asp-for="Gender" value="0" id="Female">
-        <label for="Female">Kadın</label>
+    <div class="row">
+        <!-- Kullanıcı Adı -->
+        <div class="col-lg-4">
+            <label asp-for="User.Username" class="sr-only login"></label>
+            <input type="text" class="form-control" asp-for="User.Username" autofocus="">
+            <span asp-validation-for="User.Username" class="text-danger"></span>
+        </div>
+        <!-- Ad Soyad -->
+        <div class="col-lg-4">
+            <label asp-for="User.NameSurname" class="sr-only login"></label>
+            <input type="text" class="form-control" asp-for="User.NameSurname">
+            <span asp-validation-for="User.NameSurname" class="text-danger"></span>
+        </div>
+        <!-- E-posta -->
+        <div class="col-lg-4">
+            <label asp-for="User.Email" class="sr-only login"></label>
+            <input type="email" class="form-control" asp-for="User.Email">
+            <span asp-validation-for="User.Email" class="text-danger"></span>
+        </div>
     </div>
-    <span asp-validation-for="Gender" class="text-danger"></span>
+    <br />
+    <div class="row">
+        <!-- Telefon 1 -->
+        <div class="col-lg-4">
+            <label asp-for="User.MobilePhone1" class="sr-only login"></label>
+            <input type="text" class="form-control" asp-for="User.MobilePhone1">
+        </div>
+        <!-- Telefon 2 -->
+        <div class="col-lg-4">
+            <label asp-for="User.MobilePhone2" class="sr-only login"></label>
+            <input type="text" class="form-control" asp-for="User.MobilePhone2">
+        </div>
+        <!-- Cinsiyet (Zorunlu Radio Butonlar) -->
+        <div class="col-lg-4">
+            <label class="login">Cinsiyet</label>
+            <div style="padding-top:10px;">
+                <input type="radio" asp-for="User.Gender" value="1" id="Male" required>
+                <label for="Male" style="margin-right:10px;">Erkek</label>
 
-    <!-- Şifre -->
-    <label asp-for="Password" class="sr-only login"></label>
-    <input type="password" class="form-control" asp-for="Password" placeholder="Şifre">
-    <span asp-validation-for="Password" class="text-danger"></span>
-
-    <!-- Şifre Tekrarı -->
-    <label for="ConfirmPassword" class="sr-only login">Şifre Doğrulama *</label>
-    <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" placeholder="Şifre Tekrarı" required="">
-
-    <!-- Doğum Tarihi -->
-    <label asp-for="Birthday" class="sr-only login"></label>
-    <input type="date" class="form-control" asp-for="Birthday">
-    <span asp-validation-for="Birthday" class="text-danger"></span>
-
+                <input type="radio" asp-for="User.Gender" value="0" id="Female">
+                <label for="Female">Kadın</label>
+            </div>
+            <span asp-validation-for="User.Gender" class="text-danger"></span>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <!-- Şifre -->
+        <div class="col-lg-4">
+            <label asp-for="User.Password" class="sr-only login"></label>
+            <input type="password" class="form-control" asp-for="User.Password">
+            <span asp-validation-for="User.Password" class="text-danger"></span>
+        </div>
+        <!-- Şifre Tekrarı -->
+        <div class="col-lg-4">
+            <label asp-for="ConfirmPassword" class="sr-only login"></label>
+            <input type="password" class="form-control" asp-for="ConfirmPassword">
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+        <!-- Doğum Tarihi -->
+        <div class="col-lg-4">
+            <label asp-for="User.Birthday" class="sr-only login"></label>
+            <input type="date" class="form-control" asp-for="User.Birthday">
+            <span asp-validation-for="User.Birthday" class="text-danger"></span>
+        </div>
+    </div>
+    <br />
     <div style="text-align: center; margin-top:10px;">
         <button class="buton" type="submit">Kayıt Ol</button>
     </div>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ProfileProject.Models;
 using ProfileProject.Services.GeneralServices;
 using ProfileProject.Services.LoginServices;
@@ -35,7 +36,12 @@ namespace ProfileProject.Controllers
             {
                 if (!loginService.LoginControl(model))
                 {
-                    ModelState.AddModelError("", "Kullanýcý bilgileri doðrulanamadý.");
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hatalý Kullanýcý",
+                        Message = "Kullanýcý bilgileri doðrulanamadý!"
+                    });
                     return View(model);
                 }
 
