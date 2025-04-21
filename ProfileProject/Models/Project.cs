@@ -12,7 +12,7 @@ namespace ProfileProject.Models
         [Required(ErrorMessage = "Proje Adı girmek zorunludur.")]
         [StringLength(250, ErrorMessage = "Proje Adı 250 karakterden uzun olamaz!")]
         [Display(Name = "Proje Adı")]
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
         [Display(Name = "Açıklama")]
         public string? Information { get; set; }
@@ -39,7 +39,7 @@ namespace ProfileProject.Models
         public int UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
 
         public Project()
         {

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using ProfileProject.Core;
 using ProfileProject.Services.GeneralServices;
 using ProfileProject.Services.LoginServices;
 
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Connection string'i appsettings.json'dan al
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+Logg.BasePath = Path.Combine(builder.Environment.ContentRootPath, "..");
 
 // DbContext'i yapýlandýr
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -31,7 +34,16 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add(typeof(LogUserAccessAttribute));
+});
+
 var app = builder.Build();
+
+var httpContextAccessor = app.Services.GetRequiredService<IHttpContextAccessor>();
+var env = app.Environment; // IWebHostEnvironment
+Logg.Configure(httpContextAccessor, env);
 
 // Middleware'leri yapýlandýr
 if (!app.Environment.IsDevelopment())

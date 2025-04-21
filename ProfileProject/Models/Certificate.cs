@@ -12,10 +12,10 @@ namespace ProfileProject.Models
         [Required(ErrorMessage = "Şirket Adı girmek zorunludur.")]
         [StringLength(250, ErrorMessage = "Şirket Adı 250 karakterden uzun olamaz!")]
         [Display(Name = "Şirket Adı")]
-        public string CompanyName { get; set; }
+        public string CompanyName { get; set; } = "";
 
         [Display(Name = "Açıklama")]
-        public string Information { get; set; }
+        public string Information { get; set; } = "";
 
         [Required(ErrorMessage = "Başlangıç tarihi girmek zorunludur.")]
         [DataType(DataType.Date)]
@@ -40,7 +40,7 @@ namespace ProfileProject.Models
         public int UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
 
         public Certificate()
         {

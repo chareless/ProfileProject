@@ -17,6 +17,11 @@ namespace ProfileProject.Services.GeneralServices
             return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time"));
         }
 
+        public static DateTime GetCurrentDateStatic()
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time"));
+        }
+
         public string SetHash(string password)
         {
             using (var sha256 = SHA256.Create())

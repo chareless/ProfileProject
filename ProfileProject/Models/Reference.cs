@@ -12,12 +12,12 @@ namespace ProfileProject.Models
         [Required(ErrorMessage = "Şirket Adı girmek zorunludur.")]
         [StringLength(250, ErrorMessage = "Şirket Adı 250 karakterden uzun olamaz!")]
         [Display(Name = "Şirket Adı")]
-        public string CompanyName { get; set; }
+        public string CompanyName { get; set; } = "";
 
         [Required(ErrorMessage = "İsim Soyisim girmek zorunludur.")]
         [StringLength(100, ErrorMessage = "İsim Soyisim 100 karakterden uzun olamaz!")]
         [Display(Name = "İsim Soyisim")]
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
         [StringLength(100, ErrorMessage = "Pozisyon 100 karakterden uzun olamaz!")]
         [Display(Name = "Pozisyon")]
@@ -48,7 +48,7 @@ namespace ProfileProject.Models
         public int UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
 
         public Reference()
         {

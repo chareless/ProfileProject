@@ -12,12 +12,12 @@ namespace ProfileProject.Models
         [Required(ErrorMessage = "Eğitim Derecesi girmek zorunludur.")]
         [StringLength(50, ErrorMessage = "Eğitim Derecesi 50 karakterden uzun olamaz!")]
         [Display(Name = "Eğitim Derecesi")]
-        public string Title { get; set; }
+        public string Title { get; set; } = "";
 
         [Required(ErrorMessage = "Okul Adı girmek zorunludur.")]
         [StringLength(250, ErrorMessage = "Okul Adı 250 karakterden uzun olamaz!")]
         [Display(Name = "Okul Adı")]
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
         [Display(Name = "Mezuniyet Notu")]
         public string? GradePoint { get; set; }
@@ -48,7 +48,7 @@ namespace ProfileProject.Models
         public int UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
 
         public Education()
         {

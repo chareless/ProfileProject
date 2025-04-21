@@ -11,12 +11,12 @@ namespace ProfileProject.Models
         [Required(ErrorMessage = "Ad Soyad girmek zorunludur.")]
         [StringLength(50, ErrorMessage = "Ad Soyad 50 karakterden uzun olamaz!")]
         [Display(Name = "Ad Soyad")]
-        public string NameSurname { get; set; }
+        public string NameSurname { get; set; } = "";
 
         [Required(ErrorMessage = "Mail adresi girmek zorunludur.")]
         [EmailAddress(ErrorMessage = "Geçersiz mail formatı!")]
         [Display(Name = "E-Posta")]
-        public string Email { get; set; }
+        public string Email { get; set; } = "";
 
         [Phone(ErrorMessage = "Geçerli bir telefon numarası giriniz!")]
         [StringLength(15, ErrorMessage = "Telefon numarası 15 karakterden uzun olamaz.")]
@@ -35,12 +35,12 @@ namespace ProfileProject.Models
         [Required(ErrorMessage = "Kullanıcı adı girmek zorunludur.")]
         [StringLength(50, ErrorMessage = "Kullanıcı adı 50 karakterden uzun olamaz!")]
         [Display(Name = "Kullanıcı Adı")]
-        public string Username { get; set; }
+        public string Username { get; set; } = "";
 
         [Required(ErrorMessage = "Şifre girmek zorunludur.")]
         [MinLength(6, ErrorMessage = "Şifre uzunluğu en az 6 karakter olmalıdır!")]
         [Display(Name = "Şifre")]
-        public string Password { get; set; }
+        public string Password { get; set; } = "";
 
         [Required(ErrorMessage = "Doğum tarihi girmek zorunludur.")]
         [DataType(DataType.Date)]

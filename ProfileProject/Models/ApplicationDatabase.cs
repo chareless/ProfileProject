@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ProfileProject.Models;
+﻿using ProfileProject.Models;
+using Microsoft.EntityFrameworkCore;
 
 public class ApplicationDbContext : DbContext
 {
@@ -16,4 +16,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<Reference> References { get; set; }
     public DbSet<Project> Projects { get; set; }
     public DbSet<Certificate> Certificates { get; set; }
+    public DbSet<LoginControl> LoginControls { get; set; }
+    public DbSet<UserAccessLog> UserAccessLogs { get; set; }
 }

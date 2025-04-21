@@ -11,7 +11,7 @@ namespace ProfileProject.Models
 
         [Required(ErrorMessage = "Dil girmek zorunludur.")]
         [Display(Name = "Dil")]
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
         [Display(Name = "Açıklama")]
         public string? Information { get; set; }
@@ -30,7 +30,7 @@ namespace ProfileProject.Models
         public int UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
 
         public Language()
         {
