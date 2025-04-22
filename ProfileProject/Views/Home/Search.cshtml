@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Profile Project";
+    ViewBag.BreadcrumbItemActive = "Arama";
+    var data = ViewBag.Text;
+}
+@Html.Partial("~/Views/Shared/_breadcrumb.cshtml")
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>@data</a></p>
+</div>
+
+@section scripts {
+    <!-- [Page Specific JS] start -->
+    <script src="../assets/js/plugins/apexcharts.min.js"></script>
+    <script src="~/js/utils.js"></script>
+
+    <script src="../assets/js/pages/dashboard-default.js"></script>
+}

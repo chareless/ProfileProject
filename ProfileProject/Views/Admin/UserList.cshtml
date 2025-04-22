@@ -1,18 +1,72 @@
-﻿@{
-    ViewData["Title"] = "Admin Ana Sayfa";
+﻿@model List<User>
+
+@{
+    ViewData["Title"] = "Kullanıcı Listesi";
+    var index = 0;
 }
+
+<link rel="stylesheet" href="../assets/css/plugins/dataTables.bootstrap5.min.css">
 
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
 </div>
+
 <div class="container">
-    <div class="card">
-        <div class="col-lg-4">
-            <ul>
-                <li>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="UserList">Kullanıcıları Yönet</a>
-                </li>
-            </ul>
+    <div class="row" id="new-design">
+        <div class="card table-card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" style="text-align:center" id="pc-dt-simple">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Kullanıcı Adı</th>
+                                <th>Email</th>
+                                <th>Aktif</th>
+                                <th>Yönetici</th>
+                                <th>Silindi</th>
+                                <th>Oluşturulma Tarihi</th>
+                                <th>Güncellenme Tarihi</th>
+                                <th class="text-center">İşlemler</th>
+                                <th>ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                index = index + 1;
+                                <tr>
+                                    <td>@index</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Username)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                    <td><input class="form-check-input" disabled asp-for=@item.IsActive /></td>
+                                    <td><input class="form-check-input" disabled asp-for=@item.IsAdmin /></td>
+                                    <td><input class="form-check-input" disabled asp-for=@item.IsDeleted /></td>
+                                    <td>@Html.DisplayFor(modelItem => item.CreateWhen)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.UpdateWhen)</td>
+                                    <td class="text-center">
+                                        <ul class="list-inline me-auto mb-0">
+                                            <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Düzenle">
+                                                <a asp-action="UserEdit" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
+
 </div>
+
+<script src="../assets/js/plugins/simple-datatables.js"></script>
+<script>
+    const dataTable = new simpleDatatables.DataTable('#pc-dt-simple', {
+      sortable: false,
+      perPage: 10
+    });
+</script>

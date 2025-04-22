@@ -1,0 +1,29 @@
+<!-- [ Sidebar Menu ] start -->
+<nav class="pc-sidebar">
+    <div class="navbar-wrapper">
+        <div class="m-header">
+            <a href="index.html" class="b-brand">
+                <!-- ========   Change your logo from here   ============ -->
+                <img src="../assets/images/icon.png" alt="" class="logo logo-lg" width="170">
+                <img src="../assets/images/favicon-32x32.png" alt="" class="logo logo-sm" width="32">
+                <span class="badge bg-light-success rounded-pill ms-2 theme-version">@TempData["version"]</span>
+            </a>
+        </div>
+        <div class="tab-container">
+            <div class="tab-sidemenu">
+                <ul class="pc-tab-link nav flex-column" role="tablist" id="pc-layout-submenus">
+                </ul>
+            </div>
+            <div class="tab-link">
+                <div class="navbar-content">
+                    <div class="tab-content" id="pc-layout-tab">
+                    </div>
+                    <ul class="pc-navbar">
+                        @Html.Partial("~/Views/Shared/_menu-list.cshtml")
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- [ Sidebar Menu ] end -->

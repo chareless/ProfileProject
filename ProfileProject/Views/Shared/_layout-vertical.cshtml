@@ -1,0 +1,42 @@
+@Html.Partial("~/Views/Shared/_loader.cshtml")
+@Html.Partial("~/Views/Shared/_sidebar.cshtml")
+@Html.Partial("~/Views/Shared/_topbar.cshtml")
+@if (TempData["AlertMessage"] != null)
+{
+    AlertMessage alertMessage = JsonConvert.DeserializeObject<AlertMessage>(TempData["AlertMessage"] as String);
+
+    <script>
+             document.addEventListener('DOMContentLoaded', function () {
+                 Swal.fire({
+                     icon: '@GetSweetAlertIcon(alertMessage.AlertType)',
+                         title: @Html.Raw(JsonConvert.SerializeObject(alertMessage.Title)),
+                         text: @Html.Raw(JsonConvert.SerializeObject(alertMessage.Message)),
+                         confirmButtonText: 'Tamam',
+                 });
+             });
+
+        @functions {
+        private string GetSweetAlertIcon(string alertType)
+        {
+            // AlertType deðerlerinizi SweetAlert icon türlerine map edin
+            switch (alertType.ToLower())
+            {
+                case "success":
+                    return "success";
+                case "danger":
+                    return "error";
+                case "error":
+                    return "error";
+                case "warning":
+                    return "warning";
+                case "info":
+                    return "info";
+                case "question":
+                    return "question";
+                default:
+                    return "info";
+            }
+        }
+    }
+</script>
+}

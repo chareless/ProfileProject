@@ -1,4 +1,4 @@
-﻿@model ErrorViewModel
+﻿@* @model ErrorViewModel
 @{
     ViewData["Title"] = "Error";
 }
@@ -23,3 +23,37 @@
     For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
     and restarting the app.
 </p>
+ *@
+
+@{
+    ViewBag.Title = "Site is Under Maintenance";
+    Layout = "~/Views/Shared/_Layout-empty.cshtml";
+}
+<div class="maintenance-block construction-card-1">
+    <div class="container">
+        <div class="row">
+            <!-- [ sample-page ] start -->
+            <div class="col-sm-12">
+                <div class="card construction-card">
+                    <div class="card-body">
+                        <div class="construction-image-block">
+                            <div class="row justify-content-center align-items-center construction-card-bottom">
+                                <div class="col-md-6">
+                                    <div class="text-center">
+                                        <h1 class="mt-4"><b>Bakımda</b></h1>
+                                        <p class="mt-4 text-muted">Hey! Lütfen daha sonra bu siteye göz atın. Şu anda <br>üzerinde biraz bakım yapıyoruz.</p>
+                                        <a href="@Url.Action("Index", "Home")" class="btn btn-primary mb-3">Go to home</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <img class="img-fluid" src="../assets/images/pages/img-cunstruct-1.svg" alt="img">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ sample-page ] end -->
+    </div>
+</div>

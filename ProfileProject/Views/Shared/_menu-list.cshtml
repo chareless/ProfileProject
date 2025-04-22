@@ -1,0 +1,753 @@
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var user = HttpContextAccessor.HttpContext.Session.GetString("Username");
+    var id = HttpContextAccessor.HttpContext.Session.GetInt32("UserId");
+    var admin = HttpContextAccessor.HttpContext.Session.GetInt32("IsAdmin");
+}
+<!-- #region Navigation -->
+<li class="pc-item pc-caption">
+    <label>Ana Sayfa</label>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="@Url.Action("Index", "Home")" class="pc-link">
+        <span class="pc-micon">
+            <i class="material-icons-two-tone">home</i>
+        </span>
+
+        <span class="pc-mtext">Ana Sayfa</span>
+    </a>
+</li>
+@* <li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-document"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Layouts</span>
+        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Vertical", "Demo")">Vertical</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Horizontal", "Demo")">Horizontal</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("ColorHeader", "Demo")">Layouts 2</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Compact", "Demo")">Compact</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Tab", "Demo")">Tab</a></li>
+    </ul>
+</li> *@
+<!-- #endregion -->
+<!-- #region Admin Panel -->
+@if (admin == 1)
+{
+    <li class="pc-item pc-caption">
+        <label>Admin Panel</label>
+        <svg class="pc-icon">
+            <use xlink:href="#custom-layer"></use>
+        </svg>
+    </li>
+    <li class="pc-item pc-hasmenu">
+        <a href="#!" class="pc-link">
+            <span class="pc-micon">
+                <svg class="pc-icon">
+                    <use xlink:href="#custom-user"></use>
+                </svg>
+            </span>
+            <span class="pc-mtext">Kullanýcý Ýþlemleri</span>
+            <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+        </a>
+        <ul class="pc-submenu">
+            <li class="pc-item"><a class="pc-link" href="@Url.Action("UserList", "Admin")">Kullanýcý Listesi</a></li>
+            <li class="pc-item"><a class="pc-link" href="@Url.Action("UserCreate", "Admin")">Kullanýcý Oluþtur</a></li>
+        </ul>
+       
+    </li>
+    <li class="pc-item pc-hasmenu">
+        <a href="@Url.Action("Index", "Dashboard")" class="pc-link">
+            <span class="pc-micon">
+                <svg class="pc-icon">
+                    <use xlink:href="#custom-presentation-chart"></use>
+                </svg>
+            </span>
+            <span class="pc-mtext">Kullanýcý Ýstatistikleri</span>
+        </a>
+    </li>
+}
+<!-- #endregion -->
+<!-- #region Tables -->
+@if(user == null)
+{
+    <li class="pc-item pc-caption">
+        <label>Giriþ</label>
+        <svg class="pc-icon">
+            <use xlink:href="#custom-text-align-justify-center"></use>
+        </svg>
+    </li>
+    <li class="pc-item">
+        <a href="@Url.Action("Index", "Login")" class="pc-link">
+            <span class="pc-micon">
+                <i class="material-icons-two-tone">login</i>
+            </span>
+            <span class="pc-mtext">Giriþ Yap</span>
+        </a>
+    </li>
+    <li class="pc-item">
+        <a href="@Url.Action("Index", "Register")" class="pc-link">
+            <span class="pc-micon">
+                <i class="material-icons-two-tone">assignment</i>
+            </span>
+            <span class="pc-mtext">Kayýt Ol</span>
+        </a>
+    </li>
+}
+
+<!-- #endregion -->
+@*
+<li class="pc-item pc-caption">
+    <label>Widget</label>
+    <svg class="pc-icon">
+        <use xlink:href="#custom-presentation-chart"></use>
+    </svg>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("Statistics", "Widget")" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-story"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Statistics</span>
+    </a>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("Data", "Widget")" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-fatrows"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Data</span>
+    </a>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("Chart", "Widget")" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-presentation-chart"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Chart</span>
+    </a>
+</li>
+<li class="pc-item pc-caption">
+    <label>Admin Panel</label>
+    <svg class="pc-icon">
+        <use xlink:href="#custom-layer"></use>
+    </svg>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-layer"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Online Courses</span>
+        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("CourseDashboard", "AdminPanelOnlineCourse")">Dashboard</a></li>
+        <li class="pc-item pc-hasmenu">
+            <a class="pc-link" href="#!">Teacher<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("CourseTeacherList", "AdminPanelOnlineCourse")">List</a></li>
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("CourseTeacherApply", "AdminPanelOnlineCourse")">Apply</a></li>
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("CourseTeacherAdd", "AdminPanelOnlineCourse")">Add</a></li>
+            </ul>
+        </li>
+        <li class="pc-item pc-hasmenu">
+            <a class="pc-link" href="#!">Student<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("CourseStudentList", "AdminPanelOnlineCourse")">list</a></li>
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("CourseStudentApply", "AdminPanelOnlineCourse")">Apply</a></li>
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("CourseStudentAdd", "AdminPanelOnlineCourse")">Add</a></li>
+            </ul>
+        </li>
+        <li class="pc-item pc-hasmenu">
+            <a class="pc-link" href="#!">Courses<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("CourseCourseView", "AdminPanelOnlineCourse")">View</a></li>
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("CourseCourseAdd", "AdminPanelOnlineCourse")">Add</a></li>
+            </ul>
+        </li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("CoursePricing", "AdminPanelOnlineCourse")">Pricing</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("CourseSite", "AdminPanelOnlineCourse")">Site</a></li>
+        <li class="pc-item pc-hasmenu">
+            <a class="pc-link" href="#!">Setting<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("CourseSettingPayment", "AdminPanelOnlineCourse")">Payment</a></li>
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("CourseSettingPricing", "AdminPanelOnlineCourse")">Pricing</a></li>
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("CourseSettingNotifications", "AdminPanelOnlineCourse")">Notifications</a></li>
+            </ul>
+        </li>
+    </ul>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-user"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Membership</span>
+        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("MembershipDashboard", "AdminPanelMembership")">Dashboard</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("MembershipList", "AdminPanelMembership")">List</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("MembershipPricing", "AdminPanelMembership")">Pricing</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("MembershipSetting", "AdminPanelMembership")">Setting</a></li>
+    </ul>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link ">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-24-support"></use>
+            </svg>
+        </span><span class="pc-mtext">Helpdesk</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("HelpdeskDashboard", "AdminPanelHelpdesk")">Dashboard</a></li>
+        <li class="pc-item pc-hasmenu">
+            <a class="pc-link" href="#!">Ticket<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("HelpdeskTicketCreate", "AdminPanelHelpdesk")">Create</a></li>
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("HelpdeskTicket", "AdminPanelHelpdesk")">List</a></li>
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("HelpdeskTicketDetails", "AdminPanelHelpdesk")">Details</a></li>
+            </ul>
+        </li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("HelpdeskCustomer", "AdminPanelHelpdesk")">Customer</a></li>
+    </ul>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-bill"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Invoice</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Dashboard", "ApplicationInvoice")">Dashboard</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Create", "ApplicationInvoice")">Create</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Details", "ApplicationInvoice")">Details</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("List", "ApplicationInvoice")">List</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Edit", "ApplicationInvoice")">Edit</a></li>
+    </ul>
+</li>
+<li class="pc-item pc-caption">
+    <label>UI Components</label>
+    <svg class="pc-icon">
+        <use xlink:href="#custom-box-1"></use>
+    </svg>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("Alert", "ElementBasic")" class="pc-link" target="_blank">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-box-1"></use>
+            </svg>
+        </span><span class="pc-mtext">Components</span>
+    </a>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("Animation", "ElementBasic")" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-flag"></use>
+            </svg>
+        </span><span class="pc-mtext">Animation</span>
+    </a>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-mouse-circle"></use>
+            </svg>
+        </span><span class="pc-mtext">Icons</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Feather", "ElementIcon")">Feather</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("FontAwesome", "ElementIcon")">Font Awesome 5</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Material", "ElementIcon")">Material</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Tabler", "ElementIcon")">Tabler</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Phosphor", "ElementIcon")">Phosphor</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Custom", "ElementIcon")">Custom</a></li>
+    </ul>
+</li>
+<li class="pc-item pc-caption">
+    <label>Forms</label>
+    <svg class="pc-icon">
+        <use xlink:href="#custom-element-plus"></use>
+    </svg>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-element-plus"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">
+            Forms
+            Elements
+        </span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("FormBasic", "FormElement")">Form Basic</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("FormFloating", "FormElement")">Form Floating</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("FormOption", "FormElement")">Form Options</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("InputGroup", "FormElement")">Input Groups</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Checkbox", "FormElement")">Checkbox</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Radio", "FormElement")">Radio</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Switch", "FormElement")">Switch</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("MegaOption", "FormElement")">Mega option</a></li>
+    </ul>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-cpu-charge"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Forms Plugins</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item pc-hasmenu">
+            <a class="pc-link" href="#">Date<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("DatePicker", "FormPlugin")">Datepicker</a></li>
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("DateRangePicker", "FormPlugin")">Date Range Picker</a> </li>
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("TimePicker", "FormPlugin")">Timepicker</a></li>
+            </ul>
+        </li>
+        <li class="pc-item pc-hasmenu">
+            <a class="pc-link" href="#">Select<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("Choicejs", "FormPlugin")">Choices js</a></li>
+            </ul>
+        </li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Rating", "FormPlugin")">Rating</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("GoogleReCaptcha", "FormPlugin")">Google reCaptcha</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("InputMask", "FormPlugin")">Input Masks</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Clipboard", "FormPlugin")">Clipboard</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Nouislider", "FormPlugin")">Nouislider</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("BootstrapSwitch", "FormPlugin")">Bootstrap Switch</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Typeahead", "FormPlugin")">Typeahead</a></li>
+    </ul>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-text-block"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">
+            Text
+            Editors
+        </span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Tinymce", "TextEditor")">Tinymce</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Quill", "TextEditor")">Quill</a></li>
+        <li class="pc-item pc-hasmenu">
+            <a class="pc-link" href="#">CK editor<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("CKEditorClassic", "TextEditor")">classic</a></li>
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("CKEditorDocument", "TextEditor")">Document</a></li>
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("CKEditorInline", "TextEditor")">Inline</a></li>
+                <li class="pc-item"><a class="pc-link" href="@Url.Action("CKEditorBalloon", "TextEditor")">Balloon</a></li>
+            </ul>
+        </li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Markdown", "TextEditor")">Markdown</a></li>
+    </ul>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-row-vertical"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">
+            Form
+            Layouts
+        </span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Layout", "FormLayout")">Layouts</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Multicolumn", "FormLayout")">Multicolumn</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Actionbar", "FormLayout")">Actionbars</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("StickyActionbar", "FormLayout")">Sticky Action bars</a> </li>
+    </ul>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-document-upload"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">File upload</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Dropzone", "FileUpload")">Dropzone</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Uppy", "FileUpload")">Uppy</a></li>
+    </ul>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("FormWizard", "FormWizard")" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-password-check"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Wizard</span>
+    </a>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("FormValidation", "FormValidation")" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-password-check"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Form Validation</span>
+    </a>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("ImageCropper", "ImageCropper")" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-crop"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Image cropper</span>
+    </a>
+</li>
+
+<li class="pc-item pc-caption">
+    <label>Charts</label>
+    <svg class="pc-icon">
+        <use xlink:href="#custom-graph"></use>
+    </svg>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-graph"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Charts</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("ChartApex", "Chart")">Apex Chart</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("ChartPeity", "Chart")">Peity Chart</a></li>
+    </ul>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-shapes"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Maps</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("MapVector", "Maps")">Vector Maps</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("MapGmap", "Maps")">Gmaps</a></li>
+    </ul>
+</li>
+<li class="pc-item pc-caption">
+    <label>Application</label>
+    <svg class="pc-icon">
+        <use xlink:href="#custom-shopping-bag"></use>
+    </svg>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("Calendar", "ApplicationCalendar")" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-calendar-1"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Calendar</span>
+    </a>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("Chat", "ApplicationChat")" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-message-2"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Chat</span>
+    </a>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("CustomerList", "ApplicationCustomer")" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-notification-status"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Customer</span>
+    </a>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-shopping-bag"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">E-commerce</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Product", "ApplicationEcommerce")">Product</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("ProductDetails", "ApplicationEcommerce")">ProductDetails</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("ProductList", "ApplicationEcommerce")">ProductList</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("ProductAdd", "ApplicationEcommerce")">Add New Product</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Checkout", "ApplicationEcommerce")">Checkout</a></li>
+    </ul>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("ApplicationFileManager", "ApplicationFileManager")" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-document-filter"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">File manager</span>
+    </a>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("Mail", "ApplicationMail")" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-direct-inbox"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Mail</span>
+    </a>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-user-square"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Users</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("AccountProfile", "ApplicationUser")">Account Profile</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("SocialMedia", "ApplicationUser")">Social media</a></li>
+    </ul>
+</li>
+<li class="pc-item pc-caption">
+    <label>Pages</label>
+    <svg class="pc-icon">
+        <use xlink:href="#custom-flag"></use>
+    </svg>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-shield"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Authentication</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item pc-hasmenu">
+            <a href="#!" class="pc-link">
+                Authentication 1<span class="pc-arrow">
+                    <i data-feather="chevron-right"></i>
+                </span>
+            </a>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" target="_blank" href="@Url.Action("AuthLogin1", "Page") ">Login</a></li>
+                <li class="pc-item"><a class="pc-link" target="_blank" href="@Url.Action("AuthRegister1", "Page") ">Register</a></li>
+                <li class="pc-item"><a class="pc-link" target="_blank" href="@Url.Action("AuthForgetPassword1", "Page")">Forgot Password</a></li>
+                <li class="pc-item"><a class="pc-link" target="_blank" href="@Url.Action("AuthCheckMail1", "Page")">check mail</a></li>
+                <li class="pc-item"><a class="pc-link" target="_blank" href="@Url.Action("AuthResetPassword1", "Page")">reset password</a></li>
+                <li class="pc-item"><a class="pc-link" target="_blank" href="@Url.Action("AuthCodeVerification1", "Page")">code verification</a></li>
+            </ul>
+        </li>
+        <li class="pc-item pc-hasmenu">
+            <a href="#!" class="pc-link">
+                Authentication 2<span class="pc-arrow">
+                    <i data-feather="chevron-right"></i>
+                </span>
+            </a>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" target="_blank" href="@Url.Action("AuthLogin2", "Page") ">Login</a></li>
+                <li class="pc-item"><a class="pc-link" target="_blank" href="@Url.Action("AuthRegister2", "Page") ">Register</a></li>
+                <li class="pc-item"><a class="pc-link" target="_blank" href="@Url.Action("AuthForgetPassword2", "Page")">Forgot Password</a></li>
+                <li class="pc-item"><a class="pc-link" target="_blank" href="@Url.Action("AuthCheckMail2", "Page")">check mail</a></li>
+                <li class="pc-item"><a class="pc-link" target="_blank" href="@Url.Action("AuthResetPassword2", "Page")">reset password</a></li>
+                <li class="pc-item"><a class="pc-link" target="_blank" href="@Url.Action("AuthCodeVerification2", "Page")">code verification</a></li>
+            </ul>
+        </li>
+        <li class="pc-item">
+            <a href="@Url.Action("AuthLogin3", "Page")" target="_blank" class="pc-link">Authentication 3</a>
+        </li>
+    </ul>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-flag"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Maintenance</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" target="_blank" href="@Url.Action("Error404", "Page")">Error 404</a></li>
+        <li class="pc-item"><a class="pc-link" target="_blank" href="@Url.Action("Error500", "Page")">Error 500</a></li>
+        <li class="pc-item pc-hasmenu">
+            <a href="#!" class="pc-link">
+                Under construction<span class="pc-arrow">
+                    <i data-feather="chevron-right"></i>
+                </span>
+            </a>
+            <ul class="pc-submenu">
+                <li class="pc-item">
+                    <a class="pc-link" target="_blank" href="@Url.Action("UnderConstruction1", "Page")">
+                        Under
+                        Construction 1
+                    </a>
+                </li>
+                <li class="pc-item">
+                    <a class="pc-link" target="_blank" href="@Url.Action("UnderConstruction2", "Page")">
+                        Under
+                        Construction 2
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="pc-item pc-hasmenu">
+            <a href="#!" class="pc-link">Coming soon<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
+                <li class="pc-item">
+                    <a class="pc-link" target="_blank" href="@Url.Action("Comingsoon1", "Page")">Coming soon 1</a>
+                </li>
+                <li class="pc-item">
+                    <a class="pc-link" target="_blank" href="@Url.Action("Comingsoon2", "Page")">Coming soon 2</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("ContactUs", "Page")" class="pc-link" target="_blank">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-24-support"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Contact us</span>
+    </a>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-dollar-square"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Price</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Price1", "Page")">Price 1</a></li>
+        <li class="pc-item"><a class="pc-link" href="@Url.Action("Price2", "Page")">Price 2</a></li>
+    </ul>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("Landing", "Page")" class="pc-link" target="_blank">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-airplane"></use>
+            </svg>
+        </span><span class="pc-mtext">Landing</span>
+    </a>
+</li>
+<li class="pc-item pc-caption">
+    <label>Other</label>
+    <svg class="pc-icon">
+        <use xlink:href="#custom-notification-status"></use>
+    </svg>
+</li>
+<li class="pc-item pc-hasmenu">
+    <a href="#!" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-level"></use>
+            </svg>
+        </span><span class="pc-mtext">
+            Menu
+            levels
+        </span><span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+    </a>
+    <ul class="pc-submenu">
+        <li class="pc-item"><a class="pc-link" href="#!">Level 2.1</a></li>
+        <li class="pc-item pc-hasmenu">
+            <a href="#!" class="pc-link">Level 2.2<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="#!">Level 3.1</a></li>
+                <li class="pc-item"><a class="pc-link" href="#!">Level 3.2</a></li>
+                <li class="pc-item pc-hasmenu">
+                    <a href="#!" class="pc-link">Level 3.3<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+                    <ul class="pc-submenu">
+                        <li class="pc-item"><a class="pc-link" href="#!">Level 4.1</a></li>
+                        <li class="pc-item"><a class="pc-link" href="#!">Level 4.2</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li class="pc-item pc-hasmenu">
+            <a href="#!" class="pc-link">Level 2.3<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="#!">Level 3.1</a></li>
+                <li class="pc-item"><a class="pc-link" href="#!">Level 3.2</a></li>
+                <li class="pc-item pc-hasmenu">
+                    <a href="#!" class="pc-link">Level 3.3<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+                    <ul class="pc-submenu">
+                        <li class="pc-item"><a class="pc-link" href="#!">Level 4.1</a></li>
+                        <li class="pc-item"><a class="pc-link" href="#!">Level 4.2</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</li>
+<li class="pc-item">
+    <a href="@Url.Action("SamplePage", "Other")" class="pc-link">
+        <span class="pc-micon">
+            <svg class="pc-icon">
+                <use xlink:href="#custom-notification-status"></use>
+            </svg>
+        </span>
+        <span class="pc-mtext">Sample page</span>
+    </a>
+</li> *@

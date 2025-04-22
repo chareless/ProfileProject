@@ -1,0 +1,42 @@
+<!-- =============================================================== -->
+<!-- ----------------   Able Pro Theme Configuration  ----------------->
+<!-- =============================================================== -->
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var session = HttpContextAccessor.HttpContext.Session;
+
+    var DarkLayout = session.GetString("DarkLayout");
+    var ThemeContrast = session.GetString("ThemeContrast");
+    var CaptionShow = session.GetString("CaptionShow");
+    var PresetTheme = session.GetString("PresetTheme");
+    var RtlLayout = session.GetString("RtlLayout");
+    var BoxContainer = session.GetString("BoxContainer");
+
+    TempData["ThemeContrast"] = ThemeContrast ?? "false"; // [ false , true ]
+    TempData["CaptionShow"] = CaptionShow ?? "true"; // [ false , true ]
+    TempData["PresetTheme"] = PresetTheme ?? "preset-1"; // [ preset-1 to preset-10 ]
+    TempData["DarkLayout"] = DarkLayout ?? "false"; // [ false , true , default ]
+    TempData["RtlLayout"] = RtlLayout ?? "false"; // [ false , true ]
+    TempData["BoxContainer"] = BoxContainer ?? "false"; // [ false , true ]
+    TempData["version"] = "v1.0.0 "; // [ false , true ]
+}
+<!-- =============================================================== -->
+@{
+    if (TempData["RtlLayout"].ToString() == "true")
+    {
+        TempData["SetRtlLayout"] = "rtl";
+    }
+    else
+    {
+        TempData["SetRtlLayout"] = "ltr";
+    }
+    if (TempData["DarkLayout"].ToString() == "true")
+    {
+        TempData["SetDarkLayout"] = "dark";
+    }
+    else
+    {
+        TempData["SetDarkLayout"] = "light";
+    }
+}

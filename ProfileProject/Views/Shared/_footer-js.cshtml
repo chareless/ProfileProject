@@ -1,0 +1,61 @@
+<!-- Required Js -->
+<script src="../assets/js/plugins/popper.min.js"></script>
+<script src="../assets/js/plugins/simplebar.min.js"></script>
+<script src="../assets/js/plugins/bootstrap.min.js"></script>
+<script src="../assets/js/plugins/feather.min.js"></script>
+<script src="../assets/js/fonts/custom-font.js"></script>
+<script src="../assets/js/pcoded.js"></script>
+@* <div class="floting-button">
+  <a href="https://1.envato.market/zNkqj6" class="btn btn btn-danger buynowlinks d-inline-flex align-items-center gap-2" data-bs-toggle="tooltip" title="Buy Now">
+    <i class="ph-duotone ph-shopping-cart"></i>
+    <span>Buy Now</span>
+  </a>
+</div> *@
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        if('@TempData["DarkLayout"]' == "default"){
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                dark_layout = "true";
+            } else {
+                dark_layout = 'false';
+            }
+            layout_change_default();
+            if (dark_layout == 'true') {
+                layout_change('dark');
+            } else {
+                layout_change('light');
+            }
+        }
+        if('@TempData["DarkLayout"]' != "default"){
+            if('@TempData["DarkLayout"]' == "true"){
+                layout_change('dark');
+            }else{
+                layout_change('light');
+            }
+        }
+        if('@TempData["ThemeContrast"]' == "true"){
+            layout_theme_contrast_change('true');
+        }else{
+            layout_theme_contrast_change('false');
+        }
+        if('@TempData["BoxContainer"]' == "true"){
+            change_box_container('true');
+        }else{
+            change_box_container('false');
+        }
+        if('@TempData["CaptionShow"]' == "true"){
+            layout_caption_change('true');
+        }else{
+            layout_caption_change('false');
+        }
+        if('@TempData["RtlLayout"]' == "true"){
+            layout_rtl_change('true');
+        }else{
+            layout_rtl_change('false');
+        }
+        if('@TempData["PresetTheme"]' != ""){
+            preset_change('@TempData["PresetTheme"]');
+        }
+    });
+</script>

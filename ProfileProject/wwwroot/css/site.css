@@ -29,3 +29,9 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+.nav-item:hover {
+    background-color: #d3d3d3; /* Light gray background */
+    color: #000; /* Black text color */
+    border-radius:20px;
+}

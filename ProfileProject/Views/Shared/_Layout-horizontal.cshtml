@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<!-- [Head] start -->
+<head>
+    @Html.Partial("~/Views/Shared/_head-page-meta.cshtml")
+    @Html.Partial("~/Views/Shared/_head-css.cshtml")
+    @RenderSection("styles", required: false)
+</head>
+<!-- [Head] end -->
+<!-- [Body] Start -->
+<body data-pc-preset="@TempData["PresetTheme"]" data-pc-sidebar-caption="@TempData["CaptionShow"]" data-pc-direction="@TempData["SetRtlLayout"]" data-pc-theme_contrast="@TempData["ThemeContrast"]" data-pc-theme="@TempData["SetDarkLayout"]">
+    @Html.Partial("~/Views/Shared/_layout-vertical.cshtml")
+
+    <!-- [ Main Content ] start -->
+    <div class="pc-container">
+        <div class="pc-content">
+            @if (TempData["AlertMessage"] != null)
+            {
+                AlertMessage alertMessage = JsonConvert.DeserializeObject<AlertMessage>(TempData["AlertMessage"] as String);
+
+                <script>
+                             document.addEventListener('DOMContentLoaded', function () {
+                                 Swal.fire({
+                                     icon: '@GetSweetAlertIcon(alertMessage.AlertType)',
+                                         title: @Html.Raw(JsonConvert.SerializeObject(alertMessage.Title)),
+                                         text: @Html.Raw(JsonConvert.SerializeObject(alertMessage.Message)),
+                                         confirmButtonText: 'Tamam',
+                                 });
+                             });
+
+                    @functions {
+                    private string GetSweetAlertIcon(string alertType)
+                    {
+                        // AlertType değerlerinizi SweetAlert icon türlerine map edin
+                        switch (alertType.ToLower())
+                        {
+                            case "success":
+                                return "success";
+                            case "danger":
+                                return "error";
+                            case "error":
+                                return "error";
+                            case "warning":
+                                return "warning";
+                            case "info":
+                                return "info";
+                            case "question":
+                                return "question";
+                            default:
+                                return "info";
+                        }
+                    }
+                }
+            </script>
+            }
+            @RenderBody()
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+    @Html.Partial("~/Views/Shared/_footer-block.cshtml")
+    @Html.Partial("~/Views/Shared/_footer-js.cshtml")
+    @Html.Partial("~/Views/Shared/_customizer.cshtml")
+    <script src="../assets/js/layout-horizontal.js"></script>
+    <script>
+                 document.addEventListener('DOMContentLoaded', function () {
+            var alertMessage = @Html.Raw(JsonConvert.SerializeObject(TempData["AlertMessage"]));
+            if (alertMessage) {
+                var alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+                alertModal.show();
+            }
+        });
+    </script>
+    @await RenderSectionAsync("scripts", required: false)
+
+</body>
+<!-- [Body] end -->
+</html>

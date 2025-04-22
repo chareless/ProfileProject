@@ -1,6 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http
-@using Newtonsoft.Json
-@inject IHttpContextAccessor HttpContextAccessor
+﻿@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     var user = HttpContextAccessor.HttpContext.Session.GetString("Username");
@@ -11,63 +9,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ProfileProject</title>
-    <script type="importmap"></script>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-    <link href="~/css/aos.css" rel="stylesheet">
-    <link href="~/css/bootstrap.min.css" rel="stylesheet">
-    <link href="~/styles/main.css" rel="stylesheet">
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ProfileProject</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
-                    <ul class="navbar-nav flex-grow-1">
-                        @{
-                            if(user == null){
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Giriş Yap</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Register" asp-action="Index">Kayıt Ol</a>
-                                </li>
-                            }
+    @Html.Partial("~/Views/Shared/_head-page-meta.cshtml")
+    @RenderSection("styles", required: false)
+    @Html.Partial("~/Views/Shared/_head-css.cshtml")
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 
-                            if(user != null){
-                                if (admin == 1)
-                                {
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
-                                    </li>
-                                }
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">@user</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="ChangePassword">Şifre Değiştir</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Çıkış Yap</a>
-                                </li>
-                            }
-                        }
-                      
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+</head>
+<!-- [Head] end -->
+<!-- [Body] Start -->
+<body data-pc-preset="@TempData["PresetTheme"]" data-pc-sidebar-caption="@TempData["CaptionShow"]" data-pc-direction="@TempData["SetRtlLayout"]" data-pc-theme_contrast="@TempData["ThemeContrast"]" data-pc-theme="@TempData["SetDarkLayout"]">
+    @Html.Partial("~/Views/Shared/_layout-vertical.cshtml")
+
+    <!-- [ Main Content ] start -->
+    <div class="pc-container">
+        <div class="pc-content">
             @if (TempData["AlertMessage"] != null)
             {
                 AlertMessage alertMessage = JsonConvert.DeserializeObject<AlertMessage>(TempData["AlertMessage"] as String);
@@ -119,22 +75,24 @@
                 </div>
             }
             @RenderBody()
-        </main>
-    </div>
-
-    <footer class="footer">
-        <div class="text-center text-muted">
-            <p>&copy; Creative CV. All rights reserved.<br>Design - <a class="credit" href="https://templateflip.com" target="_blank">TemplateFlip</a></p>
         </div>
-    </footer>
-    <script src="~/js/core/jquery.3.2.1.min.js"></script>
-    <script src="~/js/core/popper.min.js"></script>
-    <script src="~/js/core/bootstrap.min.js"></script>
-    <script src="~/js/now-ui-kit.js?v=1.1.0"></script>
-    <script src="~/js/aos.js"></script>
-    <script src="~/scripts/main.js"></script>
-    <script src="~/js/sweetalert2.all.min.js"></script>
-    <script src="~/js/ac-alert.js"></script>
+    </div>
+    <!-- [ Main Content ] end -->
+    @Html.Partial("~/Views/Shared/_footer-block.cshtml")
+    @Html.Partial("~/Views/Shared/_footer-js.cshtml")
+    @Html.Partial("~/Views/Shared/_customizer.cshtml")
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var alertMessage = @Html.Raw(JsonConvert.SerializeObject(TempData["AlertMessage"]));
+            if (alertMessage) {
+                var alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+                alertModal.show();
+            }
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../assets/js/plugins/sweetalert2.all.min.js"></script>
+    <script src="../assets/js/pages/ac-alert.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

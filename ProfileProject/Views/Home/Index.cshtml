@@ -1,8 +1,18 @@
 ﻿@{
-    ViewData["Title"] = "Ana Sayfa";
+    ViewBag.Title = "Profile Project";
+    ViewBag.BreadcrumbItemActive = "Ana Sayfa";
 }
+@Html.Partial("~/Views/Shared/_breadcrumb.cshtml")
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+@section scripts {
+    <!-- [Page Specific JS] start -->
+    <script src="../assets/js/plugins/apexcharts.min.js"></script>
+    <script src="~/js/utils.js"></script>
+
+    <script src="../assets/js/pages/dashboard-default.js"></script>
+}

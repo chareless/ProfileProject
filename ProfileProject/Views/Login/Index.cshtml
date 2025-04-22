@@ -1,8 +1,15 @@
 ﻿@model DataModels.LoginModel
 
-@{
-    ViewData["Title"] = "Giriş Yap";
+@if (ViewBag.Message != null)
+{
+    <h1>@ViewBag.Message</h1>
 }
+
+@{
+    ViewBag.Title = "Giriş Ekranı";
+    Layout = "~/Views/Shared/_Layout-empty.cshtml";
+}
+
 <div class="container">
     <h2>@ViewData["Title"]</h2>
 

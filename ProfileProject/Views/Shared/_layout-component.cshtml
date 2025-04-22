@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    @Html.Partial("~/Views/Shared/_head-page-meta.cshtml")
+    <!-- [Page specific CSS] start -->
+    <link href="../assets/css/plugins/animate.min.css" rel="stylesheet" type="text/css">
+    <!-- [Page specific CSS] end -->
+    @RenderSection("styles", required: false)
+    @Html.Partial("~/Views/Shared/_head-css.cshtml")
+    <link rel="stylesheet" href="../assets/css/uikit.css">
+</head>
+<body data-pc-preset="@TempData["PresetTheme"]" data-pc-sidebar-caption="@TempData["CaptionShow"]" data-pc-direction="@TempData["SetRtlLayout"]" data-pc-theme_contrast="@TempData["ThemeContrast"]" data-pc-theme="@TempData["SetDarkLayout"]" class="component-page">
+    <!-- [ Main Content ] start -->
+    @Html.Partial("~/Views/Shared/_loader.cshtml")
+    <!-- [ Nav ] start -->
+    @Html.Partial("~/Views/Shared/_layout-front-header.cshtml")
+    <!-- [ Nav ] start -->
+    <section class="component-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3">
+                    <div class="offcanvas-xl offcanvas-start component-offcanvas" tabindex="-1" id="offcanvas_component">
+                        <div class="offcanvas-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvas_component" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body p-0">
+                            <div class="card component-list-card position-xl-fixed">
+                                <div class="card-header">
+                                    <div class="form-search">
+                                        <i class="ph-duotone ph-magnifying-glass icon-search"></i>
+                                        <input type="search" class="form-control" placeholder="ex. alert, textbox... " id="compo-menu-search" />
+                                    </div>
+                                </div>
+                                <div class="card-body p-0">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item"><h5 class="mt-3">Basic Components</h5></li>
+                                        <li><a href="#" class="list-group-item list-group-item-action">All</a></li>
+                                        <li><a href="@Url.Action("Alert", "ElementBasic")" class="list-group-item list-group-item-action">Alert</a></li>
+                                        <li><a href="@Url.Action("Button", "ElementBasic")" class="list-group-item list-group-item-action">Button</a></li>
+                                        <li><a href="@Url.Action("Badge", "ElementBasic")" class="list-group-item list-group-item-action">Badges</a></li>
+                                        <li><a href="@Url.Action("BreadCrumb", "ElementBasic")" class="list-group-item list-group-item-action">Breadcrumb</a></li>
+                                        <li><a href="@Url.Action("Card", "ElementBasic")" class="list-group-item list-group-item-action">Cards</a></li>
+                                        <li><a href="@Url.Action("Color", "ElementBasic")" class="list-group-item list-group-item-action">Color</a></li>
+                                        <li><a href="@Url.Action("Collapse", "ElementBasic")" class="list-group-item list-group-item-action">Collapse</a></li>
+                                        <li><a href="@Url.Action("Carousel", "ElementBasic")" class="list-group-item list-group-item-action">Carousel</a></li>
+                                        <li><a href="@Url.Action("Dropdown", "ElementBasic")" class="list-group-item list-group-item-action">Dropdowns</a></li>
+                                        <li><a href="@Url.Action("OffCanvas", "ElementBasic")" class="list-group-item list-group-item-action">Offcanvas</a></li>
+                                        <li><a href="@Url.Action("Pagination", "ElementBasic")" class="list-group-item list-group-item-action">Pagination</a></li>
+                                        <li><a href="@Url.Action("Progress", "ElementBasic")" class="list-group-item list-group-item-action">Progress</a></li>
+                                        <li><a href="@Url.Action("ListGroup", "ElementBasic")" class="list-group-item list-group-item-action">List group</a></li>
+                                        <li><a href="@Url.Action("Modal", "ElementBasic")" class="list-group-item list-group-item-action">Modal</a></li>
+                                        <li><a href="@Url.Action("Spinner", "ElementBasic")" class="list-group-item list-group-item-action">Spinner</a></li>
+                                        <li><a href="@Url.Action("TabsAndPills", "ElementBasic")" class="list-group-item list-group-item-action">Tabs & pills</a></li>
+                                        <li><a href="@Url.Action("TooltipPopover", "ElementBasic")" class="list-group-item list-group-item-action">Tooltip</a></li>
+                                        <li><a href="@Url.Action("Toast", "ElementBasic")" class="list-group-item list-group-item-action">Toasts</a></li>
+                                        <li><a href="@Url.Action("Typography", "ElementBasic")" class="list-group-item list-group-item-action">Typography</a></li>
+                                        <li><a href="@Url.Action("Other", "ElementBasic")" class="list-group-item list-group-item-action">Other</a></li>
+                                        <li class="list-group-item"><h5 class="mt-3">Advance Components</h5></li>
+                                        <li><a href="@Url.Action("SweetAlert", "ElementAdvanced")" class="list-group-item list-group-item-action">Sweet alert</a></li>
+                                        <li><a href="@Url.Action("Datepicker", "ElementAdvanced")" class="list-group-item list-group-item-action">Datepicker</a></li>
+                                        <li><a href="@Url.Action("Lightbox", "ElementAdvanced")" class="list-group-item list-group-item-action">Lightbox</a></li>
+                                        <li><a href="@Url.Action("Modal", "ElementAdvanced")" class="list-group-item list-group-item-action">Modal</a></li>
+                                        <li><a href="@Url.Action("Notification", "ElementAdvanced")" class="list-group-item list-group-item-action">Notification</a></li>
+                                        <li><a href="@Url.Action("RangeSlider", "ElementAdvanced")" class="list-group-item list-group-item-action">Rangeslider</a></li>
+                                        <li><a href="@Url.Action("Slider", "ElementAdvanced")" class="list-group-item list-group-item-action">Slider</a></li>
+                                        <li><a href="@Url.Action("SyntaxHighlighter", "ElementAdvanced")" class="list-group-item list-group-item-action">Syntax Highlighter</a></li>
+                                        <li><a href="@Url.Action("Tour", "ElementAdvanced")" class="list-group-item list-group-item-action">Tour</a></li>
+                                        <li><a href="@Url.Action("TreeView", "ElementAdvanced")" class="list-group-item list-group-item-action">Tree view</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9">
+                    <div class="row">
+                        <div class="col-md-10 col-xxl-9 mb-4">
+                            <a href="#" class="d-inline-flex align-items-center d-xl-none btn btn-dark mb-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_component"><i class="ti ti-menu-2 me-2"></i> Explore Components</a>
+                            <h2>@ViewBag.BreadcrumbItemActive</h2>
+                            <p class="text-muted">@ViewBag.Text</p>
+                            <div>
+                                <a class="btn btn-sm btn-light-dark rounded-pill px-2" role="button" target="_blank" href="@ViewBag.Link">
+                                    <i class="ti ti-external-link me-1"></i>
+                                    Reference
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    @if (TempData["AlertMessage"] != null)
+                    {
+                        AlertMessage alertMessage = JsonConvert.DeserializeObject<AlertMessage>(TempData["AlertMessage"] as String);
+
+                        <script>
+                                     document.addEventListener('DOMContentLoaded', function () {
+                                         Swal.fire({
+                                             icon: '@GetSweetAlertIcon(alertMessage.AlertType)',
+                                                 title: @Html.Raw(JsonConvert.SerializeObject(alertMessage.Title)),
+                                                 text: @Html.Raw(JsonConvert.SerializeObject(alertMessage.Message)),
+                                                 confirmButtonText: 'Tamam',
+                                         });
+                                     });
+
+                            @functions {
+                            private string GetSweetAlertIcon(string alertType)
+                            {
+                                // AlertType değerlerinizi SweetAlert icon türlerine map edin
+                                switch (alertType.ToLower())
+                                {
+                                    case "success":
+                                        return "success";
+                                    case "danger":
+                                        return "error";
+                                    case "error":
+                                        return "error";
+                                    case "warning":
+                                        return "warning";
+                                    case "info":
+                                        return "info";
+                                    case "question":
+                                        return "question";
+                                    default:
+                                        return "info";
+                                }
+                            }
+                        }
+                    </script>
+                    }
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- [ Main Content ] end -->
+    @Html.Partial("~/Views/Shared/_footer-js.cshtml")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="../assets/js/plugins/clipboard.min.js"></script>
+    <script src="../assets/js/component.js"></script>
+    <script>
+        // pc-component
+        var elem = document.querySelectorAll('.component-list-card a');
+        for (var l = 0; l < elem.length; l++) {
+            var pageUrl = window.location.href.split(/[?#]/)[0];
+            if (elem[l].href == pageUrl && elem[l].getAttribute('href') != '') {
+                elem[l].classList.add('active');
+            }
+        }
+        document.querySelector('#compo-menu-search').addEventListener("keyup", function () {
+            var tval = document.querySelector('#compo-menu-search').value.toLowerCase();
+            var elem = document.querySelectorAll('.component-list-card a');
+            for (var l = 0; l < elem.length; l++) {
+                var aval = elem[l].innerHTML.toLowerCase();
+                var n = aval.indexOf(tval);
+                if (n !== -1) {
+                    elem[l].style.display= "block";
+                } else {
+                    elem[l].style.display= "none";
+                }
+            }
+        });
+    </script>
+    <script>
+                 document.addEventListener('DOMContentLoaded', function () {
+            var alertMessage = @Html.Raw(JsonConvert.SerializeObject(TempData["AlertMessage"]));
+            if (alertMessage) {
+                var alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+                alertModal.show();
+            }
+        });
+    </script>
+    @await RenderSectionAsync("scripts", required: false)
+    @Html.Partial("~/Views/Shared/_customizer.cshtml")
+</body>
+
+</html>
