@@ -12,38 +12,44 @@
 
     <div class="row">
         <!-- Kullanıcı Adı -->
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <label asp-for="User.Username" class="sr-only login"></label>
             <input type="text" class="form-control" asp-for="User.Username" autofocus="">
             <span asp-validation-for="User.Username" class="text-danger"></span>
         </div>
         <!-- Ad Soyad -->
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <label asp-for="User.NameSurname" class="sr-only login"></label>
             <input type="text" class="form-control" asp-for="User.NameSurname">
             <span asp-validation-for="User.NameSurname" class="text-danger"></span>
         </div>
         <!-- E-posta -->
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <label asp-for="User.Email" class="sr-only login"></label>
             <input type="email" class="form-control" asp-for="User.Email">
             <span asp-validation-for="User.Email" class="text-danger"></span>
+        </div>
+        <!-- Doğum Tarihi -->
+        <div class="col-lg-2">
+            <label asp-for="User.Birthday" class="sr-only login"></label>
+            <input type="date" class="form-control" asp-for="User.Birthday">
+            <span asp-validation-for="User.Birthday" class="text-danger"></span>
         </div>
     </div>
     <br />
     <div class="row">
         <!-- Telefon 1 -->
-        <div class="col-lg-4">
+        <div class="col-lg-2">
             <label asp-for="User.MobilePhone1" class="sr-only login"></label>
             <input type="text" class="form-control" asp-for="User.MobilePhone1">
         </div>
         <!-- Telefon 2 -->
-        <div class="col-lg-4">
+        <div class="col-lg-2">
             <label asp-for="User.MobilePhone2" class="sr-only login"></label>
             <input type="text" class="form-control" asp-for="User.MobilePhone2">
         </div>
         <!-- Cinsiyet (Zorunlu Radio Butonlar) -->
-        <div class="col-lg-4">
+        <div class="col-lg-2">
             <label class="login">Cinsiyet</label>
             <div style="padding-top:10px;">
                 <input type="radio" asp-for="User.Gender" value="1" id="Male" required>
@@ -54,31 +60,22 @@
             </div>
             <span asp-validation-for="User.Gender" class="text-danger"></span>
         </div>
-    </div>
-    <br />
-    <div class="row">
         <!-- Şifre -->
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <label asp-for="User.Password" class="sr-only login"></label>
             <input type="password" class="form-control" asp-for="User.Password">
             <span asp-validation-for="User.Password" class="text-danger"></span>
         </div>
         <!-- Şifre Tekrarı -->
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <label asp-for="ConfirmPassword" class="sr-only login"></label>
             <input type="password" class="form-control" asp-for="ConfirmPassword">
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </div>
-        <!-- Doğum Tarihi -->
-        <div class="col-lg-4">
-            <label asp-for="User.Birthday" class="sr-only login"></label>
-            <input type="date" class="form-control" asp-for="User.Birthday">
-            <span asp-validation-for="User.Birthday" class="text-danger"></span>
-        </div>
     </div>
     <br />
-    <div style="text-align: center; margin-top:10px;">
-        <button class="buton" type="submit">Kayıt Ol</button>
+    <div class="col-lg-12" style="text-align: center; align-content:center; margin-top:20px;">
+        <button class="btn btn-primary" type="submit">Kayıt Ol</button>
     </div>
 </form>
 

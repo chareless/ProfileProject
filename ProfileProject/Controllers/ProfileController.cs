@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ProfileProject.Models;
+using ProfileProject.Services.GeneralServices;
 using ProfileProject.Services.LoginServices;
 using static ProfileProject.Models.DataModels;
 
 namespace ProfileProject.Controllers
 {
-    [ServiceFilter(typeof(AuthRegisterFilter))]
     public class ProfileController : Controller
     {
         private readonly ILogger<ProfileController> _logger;
@@ -31,7 +31,6 @@ namespace ProfileProject.Controllers
             {
                 return View(user);
             }
-
             else
                 return NotFound();
         }
@@ -99,7 +98,10 @@ namespace ProfileProject.Controllers
                  .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).FirstOrDefault(a => a.Id == id);
             if (user != null)
             {
-                user.VisitorCount++;
+                var visitor = new UserVisit(user.Id);
+                _context.UserVisits.Add(visitor);
+                _context.SaveChanges();
+                user.VisitorCount = _context.UserVisits.Where(a=>a.UserId == user.Id).Count();
                 _context.Update(user);
                 _context.SaveChanges();
                 return View(user);
@@ -120,6 +122,28 @@ namespace ProfileProject.Controllers
 
             else
                 return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<string?> PictureUpload(IFormFile formFile, int UserID)
+        {
+            if (formFile != null)
+            {
+                string originalExtension = Path.GetExtension(formFile.FileName);
+                string sanitizedFileName = GeneralService.SanitizeFileName(Path.GetFileNameWithoutExtension(formFile.FileName));
+                string newFileName = sanitizedFileName + originalExtension;
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Profiles\\" + UserID.ToString() + "\\Images\\", newFileName);
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await formFile.CopyToAsync(stream);
+                }
+
+                return newFileName;
+            }
+
+            return null;
         }
 
         [HttpPost]

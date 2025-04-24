@@ -32,5 +32,22 @@ namespace ProfileProject.Services.GeneralServices
             }
         }
 
+        public static string SanitizeFileName(string fileName)
+        {
+            string invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            foreach (char c in invalidChars)
+            {
+                fileName = fileName.Replace(c.ToString(), "_");
+            }
+
+            return fileName.Replace("+", "_")
+                           .Replace(" ", "_")
+                           .Replace("&", "_")
+                           .Replace("#", "_")
+                           .Replace("?", "_")
+                           .Replace("=", "_")
+                           .Replace("%", "_");
+        }
+
     }
 }

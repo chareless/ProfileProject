@@ -7,10 +7,9 @@
 
 @{
     ViewBag.Title = "Giriş Ekranı";
-    Layout = "~/Views/Shared/_Layout-empty.cshtml";
 }
 
-<div class="container">
+<div>
     <h2>@ViewData["Title"]</h2>
 
     <form class="form-signin" asp-controller="Login" asp-action="Index" method="post">
@@ -27,8 +26,7 @@
                 <input asp-for="Password" class="form-control" type="password">
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-
-            <div class="col-lg-3" style="text-align: center; align-content:center; margin-top:15px">
+            <div class="col-lg-2" style="text-align: center; align-content:center; margin-top:20px;">
                 <button class="btn btn-primary" type="submit">Giriş Yap</button>
             </div>
         </div>

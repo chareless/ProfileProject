@@ -1,13 +1,30 @@
-﻿@{
+﻿@model List<User>
+
+@{
     ViewBag.Title = "Profile Project";
-    ViewBag.BreadcrumbItemActive = "Arama";
+    ViewBag.BreadcrumbItemActive = "Arama Sonuçları";
     var data = ViewBag.Text;
 }
 @Html.Partial("~/Views/Shared/_breadcrumb.cshtml")
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>@data</a></p>
+ 
+<div>
+    <div class="text-center">
+        <h3>Arama Sonuçları: "@data"</h3>
+    </div>
+    <div class="col-lg-12">
+        @if(Model != null && Model?.Count > 0)
+        {
+            @foreach (var item in Model)
+            {
+                <h4><a asp-action="Index" asp-controller="Profile" asp-route-id="@item.Id">@item.NameSurname</a></h4>
+            }
+        }
+        else
+        {
+            <h4>Sonuç Bulunamadı.</h4>
+        }
+        
+    </div>
 </div>
 
 @section scripts {

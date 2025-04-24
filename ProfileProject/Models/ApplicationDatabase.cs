@@ -18,4 +18,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<Certificate> Certificates { get; set; }
     public DbSet<LoginControl> LoginControls { get; set; }
     public DbSet<UserAccessLog> UserAccessLogs { get; set; }
+    public DbSet<UserVisit> UserVisits { get; set; }
 }

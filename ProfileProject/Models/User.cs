@@ -50,6 +50,9 @@ namespace ProfileProject.Models
         [Display(Name = "Meslek")]
         public string? Job { get; set; } = null;
 
+        [Display(Name = "Resim")]
+        public string? Picture { get; set; } = null;
+
         [Display(Name = "Hakkında")]
         public string? About { get; set; } = null;
 
@@ -103,6 +106,9 @@ namespace ProfileProject.Models
 
         [Display(Name = "Sertifikalar")]
         public virtual List<Certificate> Certificates { get; set; } = new List<Certificate>();
+
+        [Display(Name = "Ziyaretçiler")]
+        public virtual List<UserVisit> Visitors { get; set; } = new List<UserVisit>();
 
         public User()
         {
