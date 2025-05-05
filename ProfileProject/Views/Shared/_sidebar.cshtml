@@ -10,8 +10,8 @@
         <div class="m-header">
             <a href="@Url.Action("Index", "Home")" class="b-brand text-primary">
                 <!-- ========   Change your logo from here   ============ -->
-                @* <img src="../assets/images/logo-dark.svg" class="img-fluid logo-lg" alt="logo"> *@
-                <img src="../assets/images/icon.png" class="img-fluid logo-lg" width="170" alt="logo">
+                @* <img src="/assets/images/logo-dark.svg" class="img-fluid logo-lg" alt="logo"> *@
+                <img src="/assets/images/icon.png" class="img-fluid logo-lg" width="170" alt="logo">
 
                 <span class="badge bg-light-success rounded-pill ms-2 theme-version">@TempData["version"]</span>
             </a>
@@ -23,10 +23,10 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
-                                <img src="../assets/images/user/avatar-1.jpg" alt="user-image" class="user-avtar wid-45 rounded-circle" />
+                                <img src="/assets/images/user/avatar-1.jpg" alt="user-image" class="user-avtar wid-45 rounded-circle" />
                             </div>
                             <div class="flex-grow-1 ms-3 me-2">
-                                <h6 class="mb-0">@user</h6>
+                                <a asp-action="Index" asp-controller="Profile"><h6 class="mb-0">@user</h6></a>
                                 @if (admin == 1)
                                 {
                                     <small>Administrator</small>

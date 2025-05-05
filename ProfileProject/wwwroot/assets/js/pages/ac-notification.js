@@ -22,15 +22,15 @@
     });
 
     document.querySelector('#btn-default-i').addEventListener('click', function () {
-      notifier.show('Default!', 'I am a default notification.', '', '../assets/images/notification/clock-48.png', 0);
+      notifier.show('Default!', 'I am a default notification.', '', '/assets/images/notification/clock-48.png', 0);
     });
 
     document.querySelector('#btn-info-i').addEventListener('click', function () {
-      notifier.show('Reminder!', 'You have a meeting at 10:30 AM.', 'info', '../assets/images/notification/survey-48.png', 0);
+      notifier.show('Reminder!', 'You have a meeting at 10:30 AM.', 'info', '/assets/images/notification/survey-48.png', 0);
     });
 
     document.querySelector('#btn-success-i').addEventListener('click', function () {
-      notifier.show('Well Done!', 'You just submit your resume successfully.', 'success', '../assets/images/notification/ok-48.png', 0);
+      notifier.show('Well Done!', 'You just submit your resume successfully.', 'success', '/assets/images/notification/ok-48.png', 0);
     });
 
     document.querySelector('#btn-warning-i').addEventListener('click', function () {
@@ -38,25 +38,25 @@
         'Warning!',
         'The data presented here can be change.',
         'warning',
-        '../assets/images/notification/medium_priority-48.png',
+        '/assets/images/notification/medium_priority-48.png',
         0
       );
     });
 
     document.querySelector('#btn-danger-i').addEventListener('click', function () {
-      notifier.show('Sorry!', 'Could not complete your transaction.', 'danger', '../assets/images/notification/high_priority-48.png', 0);
+      notifier.show('Sorry!', 'Could not complete your transaction.', 'danger', '/assets/images/notification/high_priority-48.png', 0);
     });
 
     document.querySelector('#btn-default-ac').addEventListener('click', function () {
-      notifier.show('Default!', 'I am a default notification.', '', '../assets/images/notification/clock-48.png', 4000);
+      notifier.show('Default!', 'I am a default notification.', '', '/assets/images/notification/clock-48.png', 4000);
     });
 
     document.querySelector('#btn-info-ac').addEventListener('click', function () {
-      notifier.show('Reminder!', 'You have a meeting at 10:30 AM.', 'info', '../assets/images/notification/survey-48.png', 4000);
+      notifier.show('Reminder!', 'You have a meeting at 10:30 AM.', 'info', '/assets/images/notification/survey-48.png', 4000);
     });
 
     document.querySelector('#btn-success-ac').addEventListener('click', function () {
-      notifier.show('Well Done!', 'You just submit your resume successfully.', 'success', '../assets/images/notification/ok-48.png', 4000);
+      notifier.show('Well Done!', 'You just submit your resume successfully.', 'success', '/assets/images/notification/ok-48.png', 4000);
     });
 
     document.querySelector('#btn-warning-ac').addEventListener('click', function () {
@@ -64,13 +64,13 @@
         'Warning!',
         'The data presented here can be change.',
         'warning',
-        '../assets/images/notification/medium_priority-48.png',
+        '/assets/images/notification/medium_priority-48.png',
         4000
       );
     });
 
     document.querySelector('#btn-danger-ac').addEventListener('click', function () {
-      notifier.show('Sorry!', 'Could not complete your transaction.', 'danger', '../assets/images/notification/high_priority-48.png', 4000);
+      notifier.show('Sorry!', 'Could not complete your transaction.', 'danger', '/assets/images/notification/high_priority-48.png', 4000);
     });
 
     var notificationId;
@@ -79,7 +79,7 @@
         'Reminder!',
         'You have a meeting at 10:30 AM.',
         'info',
-        '../assets/images/notification/survey-48.png',
+        '/assets/images/notification/survey-48.png',
         4000
       );
     };

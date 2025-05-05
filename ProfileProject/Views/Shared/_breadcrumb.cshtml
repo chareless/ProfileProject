@@ -5,9 +5,9 @@
             <div class="col-md-12">
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Profile Project</a></li>
-                    @if (ViewBag.BreadcrumItem != null)
+                    @if (ViewBag.BreadcrumbItemToAdmin != null)
                     {
-                        <li class="breadcrumb-item"><a href="javascript: void(0)">@ViewBag.BreadcrumItem</a></li>
+                        <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index">@ViewBag.BreadcrumbItemToAdmin</a></li>
                     }
                     @if (ViewBag.BreadcrumbItemActive != null)
                     {

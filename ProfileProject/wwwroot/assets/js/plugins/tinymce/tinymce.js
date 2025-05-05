@@ -16868,7 +16868,7 @@
           return path;
         }
         for (i = 0, l = normalizedBase.length - (breakPoint - 1); i < l; i++) {
-          out += '../';
+          out += '/';
         }
         for (i = breakPoint - 1, l = items.length; i < l; i++) {
           if (i !== breakPoint - 1) {

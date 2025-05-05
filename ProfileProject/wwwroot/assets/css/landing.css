@@ -430,7 +430,7 @@ header .container {
   background: #131920;
 }
 [data-pc-theme=dark].landing-page .contact-hero {
-  background-image: url("../images/landing/img-headerbg-dark.jpg") !important;
+  background-image: url("/images/landing/img-headerbg-dark.jpg") !important;
 }
 
 [data-pc-direction=rtl] header .technology-block .list-inline-item {

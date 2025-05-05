@@ -19,4 +19,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<LoginControl> LoginControls { get; set; }
     public DbSet<UserAccessLog> UserAccessLogs { get; set; }
     public DbSet<UserVisit> UserVisits { get; set; }
+    public DbSet<UserTheme> UserThemes { get; set; }
 }

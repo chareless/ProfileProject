@@ -4,11 +4,11 @@
 <head>
     @Html.Partial("~/Views/Shared/_head-page-meta.cshtml")
     <!-- [Page specific CSS] start -->
-    <link href="../assets/css/plugins/animate.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/plugins/animate.min.css" rel="stylesheet" type="text/css">
     <!-- [Page specific CSS] end -->
     @RenderSection("styles", required: false)
     @Html.Partial("~/Views/Shared/_head-css.cshtml")
-    <link rel="stylesheet" href="../assets/css/uikit.css">
+    <link rel="stylesheet" href="/assets/css/uikit.css">
 </head>
 <body data-pc-preset="@TempData["PresetTheme"]" data-pc-sidebar-caption="@TempData["CaptionShow"]" data-pc-direction="@TempData["SetRtlLayout"]" data-pc-theme_contrast="@TempData["ThemeContrast"]" data-pc-theme="@TempData["SetDarkLayout"]" class="component-page">
     <!-- [ Main Content ] start -->
@@ -134,8 +134,8 @@
     <!-- [ Main Content ] end -->
     @Html.Partial("~/Views/Shared/_footer-js.cshtml")
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    <script src="../assets/js/plugins/clipboard.min.js"></script>
-    <script src="../assets/js/component.js"></script>
+    <script src="/assets/js/plugins/clipboard.min.js"></script>
+    <script src="/assets/js/component.js"></script>
     <script>
         // pc-component
         var elem = document.querySelectorAll('.component-list-card a');

@@ -227,33 +227,36 @@
             </div>
         </li>
       *@
-        <li class="dropdown pc-h-item header-user-profile">
-            <a class="pc-head-link dropdown-toggle arrow-none me-0"
-               data-bs-toggle="dropdown"
-               href="#"
-               role="button"
-               aria-haspopup="false"
-               data-bs-auto-close="outside"
-               aria-expanded="false">
-                <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
-            </a>
-            <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
-                <div class="dropdown-header d-flex align-items-center justify-content-between">
-                    <h5 class="m-0">Profil</h5>
-                </div>
-                <div class="dropdown-body">
-                    <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 225px)">
-                        <div class="d-flex mb-1">
-                            <div class="flex-shrink-0">
-                                <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar wid-35" />
+
+      @if(user != null)
+      {
+            <li class="dropdown pc-h-item header-user-profile">
+                <a class="pc-head-link dropdown-toggle arrow-none me-0"
+                   data-bs-toggle="dropdown"
+                   href="#"
+                   role="button"
+                   aria-haspopup="false"
+                   data-bs-auto-close="outside"
+                   aria-expanded="false">
+                    <img src="/assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
+                </a>
+                <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
+                    <div class="dropdown-header d-flex align-items-center justify-content-between">
+                        <h5 class="m-0">Profil</h5>
+                    </div>
+                    <div class="dropdown-body">
+                        <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 225px)">
+                            <div class="d-flex mb-1">
+                                <div class="flex-shrink-0">
+                                    <img src="/assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar wid-35" />
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <a asp-action="Index" asp-controller="Profile"><h6 class="mb-1">@user 🖖</h6></a>
+                                    <span>@email</span>
+                                </div>
                             </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h6 class="mb-1">@user 🖖</h6>
-                                <span>@email</span>
-                            </div>
-                        </div>
-                        <hr class="border-secondary border-opacity-50" />
-                        @*                         <div class="card">
+                            <hr class="border-secondary border-opacity-50" />
+                            @*                         <div class="card">
                             <div class="card-body py-3">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <h5 class="mb-0 d-inline-flex align-items-center">
@@ -267,8 +270,8 @@
                                 </div>
                             </div>
                         </div> *@
-                        <p class="text-span">Yönetim</p>
-                        @*  
+                            <p class="text-span">Yönetim</p>
+                            @*  
                         <a href="#" class="dropdown-item">
                             <span>
                                 <svg class="pc-icon text-muted me-2">
@@ -285,16 +288,16 @@
                                 <span>Share</span>
                             </span>
                         </a> *@
-                        <a href="@Url.Action("ChangePassword", "User")" class="dropdown-item">
-                            <span>
-                                <svg class="pc-icon text-muted me-2">
-                                    <use xlink:href="#custom-lock-outline"></use>
-                                </svg>
-                                <span>Parola Değiştir</span>
-                            </span>
-                        </a>
-                        <hr class="border-secondary border-opacity-50" />
-                        @*                      <p class="text-span">Team</p>
+                            <a href="@Url.Action("ChangePassword", "User")" class="dropdown-item">
+                                <span>
+                                    <svg class="pc-icon text-muted me-2">
+                                        <use xlink:href="#custom-lock-outline"></use>
+                                    </svg>
+                                    <span>Parola Değiştir</span>
+                                </span>
+                            </a>
+                            <hr class="border-secondary border-opacity-50" />
+                            @*                      <p class="text-span">Team</p>
                         <a href="#" class="dropdown-item">
                             <span>
                                 <svg class="pc-icon text-muted me-2">
@@ -303,7 +306,7 @@
                                 <span>UI Design team</span>
                             </span>
                             <div class="user-group">
-                                <img src="../assets/images/user/avatar-1.jpg" alt="user-image" class="avtar" />
+                                <img src="/assets/images/user/avatar-1.jpg" alt="user-image" class="avtar" />
                                 <span class="avtar bg-danger text-white">K</span>
                                 <span class="avtar bg-success text-white">
                                     <svg class="pc-icon m-0">
@@ -321,7 +324,7 @@
                                 <span>Friends Groups</span>
                             </span>
                             <div class="user-group">
-                                <img src="../assets/images/user/avatar-1.jpg" alt="user-image" class="avtar" />
+                                <img src="/assets/images/user/avatar-1.jpg" alt="user-image" class="avtar" />
                                 <span class="avtar bg-danger text-white">K</span>
                                 <span class="avtar bg-success text-white">
                                     <svg class="pc-icon m-0">
@@ -346,26 +349,26 @@
                             </div>
                         </a>
                         <hr class="border-secondary border-opacity-50" /> *@
-                        <form asp-area="" asp-controller="Login" asp-action="Logout" method="post">
-                            <div class="d-grid mb-3">
+                            <form asp-area="" asp-controller="Login" asp-action="Logout" method="post">
+                                <div class="d-grid mb-3">
 
-                                <button class="btn btn-primary">
-                                    <svg class="pc-icon me-2">
-                                        <use xlink:href="#custom-logout-1-outline"></use>
-                                    </svg>Çıkış yap
-                                </button>
-                            </div>
-                        </form>
+                                    <button class="btn btn-primary">
+                                        <svg class="pc-icon me-2">
+                                            <use xlink:href="#custom-logout-1-outline"></use>
+                                        </svg>Çıkış yap
+                                    </button>
+                                </div>
+                            </form>
 
-                        @*                  <div class="card border-0 shadow-none drp-upgrade-card mb-0"
-                             style="background-image: url(../assets/images/layout/img-profile-card.jpg)">
+                            @*                  <div class="card border-0 shadow-none drp-upgrade-card mb-0"
+                             style="background-image: url(/assets/images/layout/img-profile-card.jpg)">
                             <div class="card-body">
                                 <div class="user-group">
-                                    <img src="../assets/images/user/avatar-1.jpg" alt="user-image" class="avtar" />
-                                    <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="avtar" />
-                                    <img src="../assets/images/user/avatar-3.jpg" alt="user-image" class="avtar" />
-                                    <img src="../assets/images/user/avatar-4.jpg" alt="user-image" class="avtar" />
-                                    <img src="../assets/images/user/avatar-5.jpg" alt="user-image" class="avtar" />
+                                    <img src="/assets/images/user/avatar-1.jpg" alt="user-image" class="avtar" />
+                                    <img src="/assets/images/user/avatar-2.jpg" alt="user-image" class="avtar" />
+                                    <img src="/assets/images/user/avatar-3.jpg" alt="user-image" class="avtar" />
+                                    <img src="/assets/images/user/avatar-4.jpg" alt="user-image" class="avtar" />
+                                    <img src="/assets/images/user/avatar-5.jpg" alt="user-image" class="avtar" />
                                     <span class="avtar bg-light-primary text-primary">+20</span>
                                 </div>
                                 <h3 class="my-3 text-dark">245.3k <small class="text-muted">Followers</small></h3>
@@ -377,9 +380,11 @@
                                 </div>
                             </div>
                         </div> *@
+                        </div>
                     </div>
                 </div>
-            </div>
-        </li>
+            </li>
+      }
+      
     </ul>
 </div>

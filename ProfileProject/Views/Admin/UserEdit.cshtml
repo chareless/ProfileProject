@@ -1,18 +1,12 @@
 ﻿@{
-    ViewData["Title"] = "Admin Ana Sayfa";
+    var index = 0;
+    ViewBag.Title = "Profile Project";
+    ViewBag.BreadcrumbItemActive = "Kullanıcı Düzenle";
+    ViewBag.BreadcrumbItemToAdmin = "Admin Panel";
 }
+@Html.Partial("~/Views/Shared/_breadcrumb.cshtml")
 
-<div class="text-center">
-    <h1 class="display-4">@ViewData["Title"]</h1>
-</div>
 <div class="container">
     <div class="card">
-        <div class="col-lg-4">
-            <ul>
-                <li>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="UserList">Kullanıcıları Yönet</a>
-                </li>
-            </ul>
-        </div>
     </div>
 </div>

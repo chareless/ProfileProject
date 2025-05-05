@@ -22255,7 +22255,7 @@ pre[class*=language-] > code {
 }
 .dropbox-card::after {
   content: "";
-  background-image: url("../images/widget/img-dropbox-bg.svg");
+  background-image: url("/images/widget/img-dropbox-bg.svg");
   position: absolute;
   top: 0;
   left: 0;
@@ -22524,7 +22524,7 @@ pre[class*=language-] > code {
 }
 .welcome-banner::after {
   content: "";
-  background-image: url("../images/widget/img-dropbox-bg.svg");
+  background-image: url("/images/widget/img-dropbox-bg.svg");
   position: absolute;
   top: 0;
   left: 0;
@@ -25825,7 +25825,7 @@ select[data-multiselectsplitter-secondselect-selector].dataTable-input {
 }
 .auth-main .auth-wrapper.v1 .auth-form {
   flex-direction: column;
-  background: url("../images/authentication/img-auth-bg.jpg");
+  background: url("/images/authentication/img-auth-bg.jpg");
   min-height: 100vh;
   padding: 24px;
   background-size: cover;
@@ -25985,13 +25985,13 @@ select[data-multiselectsplitter-secondselect-selector].dataTable-input {
 }
 
 .construction-card-1 {
-  background: url("../images/pages/img-cunstruct-1-bg.png");
+  background: url("/images/pages/img-cunstruct-1-bg.png");
   min-height: 100vh;
   background-size: 100%;
   background-repeat: no-repeat;
 }
 .construction-card-1 .construction-card-bottom {
-  background: url("../images/pages/img-cunstruct-1-bottom.svg");
+  background: url("/images/pages/img-cunstruct-1-bottom.svg");
   background-size: contain;
   background-position: bottom;
   background-repeat: no-repeat;
@@ -26012,7 +26012,7 @@ select[data-multiselectsplitter-secondselect-selector].dataTable-input {
 }
 
 .soon-card-1 {
-  background: url("../images/authentication/img-auth-bg.jpg");
+  background: url("/images/authentication/img-auth-bg.jpg");
   min-height: 100vh;
   background-size: cover;
   justify-content: center;
@@ -26985,7 +26985,7 @@ select[data-multiselectsplitter-secondselect-selector].dataTable-input {
   color: #ffffff;
 }
 .fc .fc-daygrid-day.fc-day-today {
-  background: url("../images/application/img-cal-bg.jpg");
+  background: url("/images/application/img-cal-bg.jpg");
   background-size: cover;
 }
 .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {

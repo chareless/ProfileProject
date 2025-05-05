@@ -1,6 +1,12 @@
 ﻿@model List<User>
 
+@inject IHttpContextAccessor HttpContextAccessor
+
 @{
+    var session = HttpContextAccessor.HttpContext.Session;
+
+    var id = session?.GetInt32("UserId");
+
     ViewBag.Title = "Profile Project";
     ViewBag.BreadcrumbItemActive = "Arama Sonuçları";
     var data = ViewBag.Text;
@@ -16,7 +22,15 @@
         {
             @foreach (var item in Model)
             {
-                <h4><a asp-action="Index" asp-controller="Profile" asp-route-id="@item.Id">@item.NameSurname</a></h4>
+                if (item.Id == id)
+                {
+                    <h4><a asp-action="Index" asp-controller="Profile">@item.NameSurname</a></h4>
+                }
+                else
+                {
+                    <h4><a asp-action="User" asp-controller="Profile" asp-route-id="@item.Id">@item.NameSurname</a></h4>
+                }
+               
             }
         }
         else
@@ -29,8 +43,8 @@
 
 @section scripts {
     <!-- [Page Specific JS] start -->
-    <script src="../assets/js/plugins/apexcharts.min.js"></script>
+    <script src="/assets/js/plugins/apexcharts.min.js"></script>
     <script src="~/js/utils.js"></script>
 
-    <script src="../assets/js/pages/dashboard-default.js"></script>
+    <script src="/assets/js/pages/dashboard-default.js"></script>
 }

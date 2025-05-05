@@ -44,6 +44,12 @@ namespace ProfileProject.Models
             public string ConfirmPassword { get; set; }
         }
 
+        public class LayoutModel
+        {
+            public string Layout { get; set; }
+            public string Type { get; set; }
+        }
+
 
     }
 }

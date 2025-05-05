@@ -23,11 +23,11 @@ public class LogUserAccessAttribute : IAsyncActionFilter
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
 
-            if (!env.IsDevelopment()) // sadece production'da loglama
-            //if (true) // sadece production'da loglama
+            //if (!env.IsDevelopment()&& !fullUrl.Contains("Layout")) // sadece production'da loglama
+            if (true && !fullUrl.Contains("Layout")) 
             {
                 var id = 0;
-                if (fullUrl.Contains("/User/"))
+                if (fullUrl.Contains("/User/") && !fullUrl.Contains("/Admin/"))
                 {
                     var list = fullUrl.Split("/User/").ToList();
                     int.TryParse(list[1],out id);

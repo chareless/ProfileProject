@@ -1,8 +1,10 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using ProfileProject.Models;
 using ProfileProject.Services.GeneralServices;
+using static ProfileProject.Models.DataModels;
 
 namespace ProfileProject.Controllers
 {
@@ -31,6 +33,7 @@ namespace ProfileProject.Controllers
                  .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).FirstOrDefault(a => a.Id == id);
             if (user != null)
             {
+                ViewData["User"] = user.NameSurname;
                 return View(user);
             }
 
@@ -80,6 +83,58 @@ namespace ProfileProject.Controllers
 
             else
                 return NotFound();
+        }
+
+        public IActionResult UserCreate()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UserCreate(RegisterModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var modelUser = model.User;
+                var existingUser = _context.Users.FirstOrDefault(u => u.Username == modelUser.Username && u.Email == modelUser.Email);
+
+                if (existingUser != null)
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hatalý Kullanýcý",
+                        Message = "Bu kullanýcý adý veya email adresi zaten alýnmýþ!"
+                    });
+                    return View(model);
+                }
+
+                var date = generalService.GetCurrentDate();
+
+                modelUser.Password = generalService.SetHash(modelUser.Password);
+                model.ConfirmPassword = generalService.SetHash(model.ConfirmPassword);
+
+                if (modelUser.Password != model.ConfirmPassword)
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Þifre Doðrulama Hatasý",
+                        Message = "Þifre doðrulanamadý!"
+                    });
+                    return View(model);
+                }
+
+                var user = new User(modelUser.NameSurname, modelUser.Email, modelUser.MobilePhone1, modelUser.MobilePhone2, modelUser.Gender, modelUser.Username, modelUser.Password, modelUser.Birthday, false, true, false, date, date);
+
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index", "Home"); // Kayýt baþarýlýysa anasayfaya yönlendir
+            }
+
+            return View(model); // Model geçersizse ayný sayfayý tekrar göster
         }
 
 

@@ -228,18 +228,18 @@ function setLayout() {
         var script = document.createElement('script');
         if (layout === 'horizontal') {
             document.querySelector('.pc-sidebar').classList.add('d-none');
-            script.src = '../assets/js/layout-horizontal.js'; // Load script for horizontal layout
+            script.src = '/assets/js/layout-horizontal.js'; // Load script for horizontal layout
             document.body.appendChild(script);
         } else if (layout === 'color-header') {
             // Change logo color for color-header layout
             if (document.querySelector('.pc-sidebar .m-header .logo-lg')) {
-                document.querySelector('.pc-sidebar .m-header .logo-lg').setAttribute('src', '../assets/images/logo-white.svg');
+                document.querySelector('.pc-sidebar .m-header .logo-lg').setAttribute('src', '/assets/images/logo-white.svg');
             }
         } else if (layout === 'compact') {
-            script.src = '../assets/js/layout-compact.js'; // Load script for compact layout
+            script.src = '/assets/js/layout-compact.js'; // Load script for compact layout
             document.body.appendChild(script);
         } else if (layout === 'tab') {
-            script.src = '../assets/js/layout-tab.js'; // Load script for tab layout
+            script.src = '/assets/js/layout-tab.js'; // Load script for tab layout
             document.body.appendChild(script);
         }
     }
@@ -365,7 +365,7 @@ for (var t = 0; t < tc.length; t++) {
 // Change authentication logo
 var tc = document.querySelectorAll('.auth-main.v2 .img-brand');
 for (var t = 0; t < tc.length; t++) {
-    tc[t].setAttribute('src', '../assets/images/logo-white.svg');
+    tc[t].setAttribute('src', '/assets/images/logo-white.svg');
 }
 
 // =======================================================
@@ -567,7 +567,7 @@ function layout_change(layout) {
 }
 
 function updateLogos(color) {
-    const logoSrc = color === 'white' ? '../assets/images/icon.png' : '../assets/images/icon.png';
+    const logoSrc = color === 'white' ? '/assets/images/icon.png' : '/assets/images/icon.png';
 
     if (document.querySelector('.pc-sidebar .m-header .logo-lg')) {
         document.querySelector('.pc-sidebar .m-header .logo-lg').setAttribute('src', logoSrc);

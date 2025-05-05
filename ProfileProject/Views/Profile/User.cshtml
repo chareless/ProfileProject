@@ -1,8 +1,15 @@
 ﻿@model User
 
-@{
-    ViewData["Title"] = "Kullanıcı";
-}
+@inject IHttpContextAccessor HttpContextAccessor
 
-<h1>@Model.NameSurname</h1>
+@{
+    var session = HttpContextAccessor.HttpContext.Session;
+
+    var id = session?.GetInt32("UserId");
+
+    ViewBag.Title = "Profile Project";
+    ViewBag.BreadcrumbItemActive = Model.NameSurname;
+}
+@Html.Partial("~/Views/Shared/_breadcrumb.cshtml")
+
 <h2>@Model.Job</h2>

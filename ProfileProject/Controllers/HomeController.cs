@@ -2,6 +2,8 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProfileProject.Models;
+using ProfileProject.Services.GeneralServices;
+using static ProfileProject.Models.DataModels;
 
 namespace ProfileProject.Controllers
 {
@@ -10,11 +12,13 @@ namespace ProfileProject.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly IGeneralService generalService;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context,IGeneralService generalService)
         {
             _logger = logger;
             _context = context;
+            this.generalService = generalService;
         }
 
         public IActionResult Index()
@@ -72,6 +76,88 @@ namespace ProfileProject.Controllers
 
             ViewBag.Text = param;
             return View(userData);
+        }
+
+        [HttpPost]
+        public IActionResult SaveLayout([FromBody] LayoutModel model)
+        {
+            var userID = HttpContext.Session.GetInt32("UserId");
+
+            if (userID != null)
+            {
+                var date = generalService.GetCurrentDate();
+                var theme = _context.UserThemes.FirstOrDefault(a => a.UserId == userID);
+                if (theme != null)
+                {
+                    theme.UpdateWhen = date;
+                    var propertyInfo = theme.GetType().GetProperty(model.Type);
+                    if (propertyInfo != null && propertyInfo.CanWrite)
+                    {
+                        propertyInfo.SetValue(theme, model.Layout);
+                        _context.Update(theme);
+                    }
+                }
+                else
+                {
+                    theme = new UserTheme(userID.Value, date, date);
+                    _context.UserThemes.Add(theme);
+                    _context.SaveChanges();
+
+                    theme = _context.UserThemes.FirstOrDefault(a => a.UserId == userID);
+                    if (theme != null)
+                    {
+                        theme.UpdateWhen = date;
+                        var propertyInfo = theme.GetType().GetProperty(model.Type);
+                        if (propertyInfo != null && propertyInfo.CanWrite)
+                        {
+                            propertyInfo.SetValue(theme, model.Layout);
+                            _context.Update(theme);
+                        }
+                    }
+                }
+                _context.SaveChanges();
+            }
+            // Save the selected layout to the session
+            HttpContext.Session.SetString(model.Type, model.Layout);
+            // Return a response (optional)
+            return Json(new { success = true });
+        }
+
+        [HttpPost]
+        public IActionResult ResetLayout()
+        {
+            var userID = HttpContext.Session.GetInt32("UserId");
+
+            if (userID != null)
+            {
+                var date = generalService.GetCurrentDate();
+                var theme = _context.UserThemes.FirstOrDefault(a => a.UserId == userID);
+                if (theme != null)
+                {
+                    _context.UserThemes.Remove(theme);
+                    _context.SaveChanges();
+                    theme = new UserTheme(userID.Value, date, date);
+                    _context.UserThemes.Add(theme);
+                    _context.SaveChanges();
+
+                    if (theme.DarkLayout != null)
+                        HttpContext.Session.SetString("DarkLayout", theme.DarkLayout);
+                    if (theme.ThemeContrast != null)
+                        HttpContext.Session.SetString("ThemeContrast", theme.ThemeContrast);
+                    if (theme.CaptionShow != null)
+                        HttpContext.Session.SetString("CaptionShow", theme.CaptionShow);
+                    if (theme.PresetTheme != null)
+                        HttpContext.Session.SetString("PresetTheme", theme.PresetTheme);
+                    if (theme.RtlLayout != null)
+                        HttpContext.Session.SetString("RtlLayout", theme.RtlLayout);
+                    if (theme.BoxContainer != null)
+                        HttpContext.Session.SetString("BoxContainer", theme.BoxContainer);
+                    if (theme.Layout != null)
+                        HttpContext.Session.SetString("Layout", theme.Layout);
+                }
+            }
+            // Return a response (optional)
+            return Json(new { success = true });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

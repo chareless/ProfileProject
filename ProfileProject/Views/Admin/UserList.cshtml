@@ -1,15 +1,15 @@
 ﻿@model List<User>
 
 @{
-    ViewData["Title"] = "Kullanıcı Listesi";
     var index = 0;
+    ViewBag.Title = "Profile Project";
+    ViewBag.BreadcrumbItemActive = "Kullanıcı Listesi";
+    ViewBag.BreadcrumbItemToAdmin = "Admin Panel";
 }
+@Html.Partial("~/Views/Shared/_breadcrumb.cshtml")
 
-<link rel="stylesheet" href="../assets/css/plugins/dataTables.bootstrap5.min.css">
 
-<div class="text-center">
-    <h1 class="display-4">@ViewData["Title"]</h1>
-</div>
+<link rel="stylesheet" href="/assets/css/plugins/dataTables.bootstrap5.min.css">
 
 <div class="container">
     <div class="row" id="new-design">
@@ -51,7 +51,7 @@
                                             </li>
                                         </ul>
                                     </td>
-                                    <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                    <td>  <a asp-action="User" asp-route-id="@item.Id" target="_blank">@item.Id</a></td>
                                 </tr>
                             }
                         </tbody>
@@ -63,7 +63,7 @@
 
 </div>
 
-<script src="../assets/js/plugins/simple-datatables.js"></script>
+<script src="/assets/js/plugins/simple-datatables.js"></script>
 <script>
     const dataTable = new simpleDatatables.DataTable('#pc-dt-simple', {
       sortable: false,
