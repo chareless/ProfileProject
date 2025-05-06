@@ -50,6 +50,12 @@ namespace ProfileProject.Models
             public string Type { get; set; }
         }
 
+        public class HomeModels
+        {
+            public List<User> mostVisitedUsers { get; set; }
+            public List<User> leastVisitedUsers { get; set; }
+            public List<User> randomlyUsers { get; set; }
+        }
 
     }
 }

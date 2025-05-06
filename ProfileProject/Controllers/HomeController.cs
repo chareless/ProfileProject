@@ -23,7 +23,68 @@ namespace ProfileProject.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            HomeModels homeModels = new HomeModels();
+
+            // 1. Ziyaret gruplarý: UserId + VisitCount
+            var groupedVisits = _context.UserVisits
+                .GroupBy(q => q.UserId)
+                .Select(g => new
+                {
+                    UserId = g.Key,
+                    VisitCount = g.Count()
+                })
+                .ToList();
+
+            // 2. En çok ziyaret edilen ilk 10
+            var topVisited = groupedVisits
+                .OrderByDescending(g => g.VisitCount)
+                .Take(10)
+                .ToList();
+
+            // 3. En az ziyaret edilen ilk 10
+            var leastVisited = groupedVisits
+                .OrderBy(g => g.VisitCount)
+                .Take(10)
+                .ToList();
+
+            // 4. Kullanýcý verilerini tek seferde al
+            var userIds = topVisited.Select(x => x.UserId)
+                .Concat(leastVisited.Select(x => x.UserId))
+                .Distinct()
+                .ToList();
+
+            var userList = _context.Users
+                .Where(u => userIds.Contains(u.Id))
+                .ToList();
+
+            // 5. Sýralý eþleþtirme: User + VisitCount
+            homeModels.mostVisitedUsers = topVisited
+                .Join(userList,
+                    visit => visit.UserId,
+                    user => user.Id,
+                    (visit, user) => new { User = user, VisitCount = visit.VisitCount })
+                .OrderByDescending(x => x.VisitCount)
+                .Select(x => x.User)
+                .ToList();
+
+            homeModels.leastVisitedUsers = leastVisited
+                .Join(userList,
+                    visit => visit.UserId,
+                    user => user.Id,
+                    (visit, user) => new { User = user, VisitCount = visit.VisitCount })
+                .OrderBy(x => x.VisitCount)
+                .Select(x => x.User)
+                .ToList();
+
+            // Rastgele 10 kullanýcý seç
+            var randomlyUsers = _context.Users
+                .OrderBy(u => Guid.NewGuid())
+                .Take(10)
+                .ToList();
+
+            homeModels.randomlyUsers = randomlyUsers;
+
+            return View(homeModels);
         }
 
         public IActionResult Search(string? param)

@@ -1,13 +1,54 @@
-﻿@{
+﻿@model DataModels.HomeModels
+
+@{
     ViewBag.Title = "Profile Project";
-    ViewBag.BreadcrumbItemActive = "Ana Sayfa";
 }
 @Html.Partial("~/Views/Shared/_breadcrumb.cshtml")
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="card-body">
+        <h2>En Çok Ziyaret Edilen Profiller</h2>
+        <div class="card">
+            <div class="row">
+                @foreach (var item in Model.mostVisitedUsers)
+                {
+                    <div class="col-lg-3">
+                        @item.NameSurname
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <h2>En Az Ziyaret Edilen Profiller</h2>
+        <div class="card">
+            <div class="row">
+
+                @foreach (var item in Model.leastVisitedUsers)
+                {
+                    <div class="col-lg-3">
+                        @item.NameSurname
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <h2>Rastgele Profiller</h2>
+        <div class="card">
+            <div class="row">
+
+                @foreach (var item in Model.randomlyUsers)
+                {
+                    <div class="col-lg-3">
+                        @item.NameSurname
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </div>
+
 
 @section scripts {
     <!-- [Page Specific JS] start -->

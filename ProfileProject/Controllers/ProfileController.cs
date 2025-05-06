@@ -133,18 +133,61 @@ namespace ProfileProject.Controllers
                 string sanitizedFileName = GeneralService.SanitizeFileName(Path.GetFileNameWithoutExtension(formFile.FileName));
                 string newFileName = sanitizedFileName + originalExtension;
 
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Profiles\\" + UserID.ToString() + "\\Images\\", newFileName);
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    await formFile.CopyToAsync(stream);
-                }
+                string folderPath = Path.Combine("wwwroot", "Profiles", UserID.ToString(), "Images");
+                string fullPath = Path.Combine(Directory.GetCurrentDirectory(), folderPath, newFileName);
 
-                return newFileName;
+                try
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
+
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+
+                    // Daha önce yüklenmiþ diðer resimleri sil
+                    var imageFiles = Directory.GetFiles(folderPath);
+                    foreach (var file in imageFiles)
+                    {
+                        string fileName = Path.GetFileName(file);
+                        if (!fileName.Equals(newFileName, StringComparison.OrdinalIgnoreCase))
+                        {
+                            System.IO.File.Delete(file);
+                        }
+                    }
+
+                    var user = _context.Users.FirstOrDefault(a => a.Id == UserID);
+                    if (user != null)
+                    {
+                        user.Picture = @$"/Profiles/{UserID}/Images/" + newFileName;
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        if (System.IO.File.Exists(fullPath))
+                        {
+                            System.IO.File.Delete(fullPath);
+                        }
+                        return null;
+                    }
+
+
+                    return newFileName;
+                }
+                catch (Exception e)
+                {
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        System.IO.File.Delete(fullPath);
+                    }
+                    throw;
+                }
             }
 
             return null;
         }
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
