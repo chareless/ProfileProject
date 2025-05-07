@@ -4,7 +4,15 @@
         <div class="row align-items-center">
             <div class="col-md-12">
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Profile Project</a></li>
+                    @if(ViewBag.Header != null)
+                    {
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")"><h1>@ViewBag.Header</h1></a></li>
+                    }
+                    else
+                    {
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Profile Project</a></li>
+                    }
+                  
                     @if (ViewBag.BreadcrumbItemToAdmin != null)
                     {
                         <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index">@ViewBag.BreadcrumbItemToAdmin</a></li>
@@ -13,7 +21,6 @@
                     {
                         <li class="breadcrumb-item" aria-current="page">@ViewBag.BreadcrumbItemActive</li>
                     }
-
                 </ul>
             </div>
             <div class="col-md-12">

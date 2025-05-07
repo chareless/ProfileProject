@@ -33,6 +33,11 @@ public class LogUserAccessAttribute : IAsyncActionFilter
                     int.TryParse(list[1],out id);
                 }
 
+                if(fullUrl.Contains("/Profile") && userId != null && !fullUrl.Contains("/User/"))
+                {
+                    id = (int)userId;
+                }
+
                 var log = new UserAccessLog(userId, controller, action, DateTime.Now, ip, fullUrl,id);
 
                 dbContext.UserAccessLogs.Add(log);

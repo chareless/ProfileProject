@@ -1,50 +1,292 @@
 ﻿@model DataModels.HomeModels
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
-    ViewBag.Title = "Profile Project";
+    var session = HttpContextAccessor.HttpContext.Session;
+
+    var userId = session?.GetInt32("UserId");
+    ViewBag.Header = "Profile Project";
 }
 @Html.Partial("~/Views/Shared/_breadcrumb.cshtml")
 
+
 <div class="container">
+
+    @*  EN ÇOK ZİYARET EDİLEN PROFİL *@
+
+    @{
+        var groupedMostVisitedUsers = Model.mostVisitedUsers
+        .Select((user, index) => new { user, index })
+        .GroupBy(x => x.index / 4)
+        .ToList();
+    }
+
     <div class="card-body">
-        <h2>En Çok Ziyaret Edilen Profiller</h2>
-        <div class="card">
-            <div class="row">
-                @foreach (var item in Model.mostVisitedUsers)
-                {
-                    <div class="col-lg-3">
-                        @item.NameSurname
-                    </div>
-                }
+        <h2 class="text-center mb-4">En Çok Ziyaret Edilen Profiller</h2>
+        <div class="d-flex align-items-center justify-content-between">
+            <!-- Sol Buton -->
+            <button class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center"
+                    style="width: 50px; height: 50px;"
+                    type="button" data-bs-target="#mostVisitedCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <!-- Carousel -->
+            <div id="mostVisitedCarousel" class="carousel slide flex-grow-1 mx-3" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @for (int i = 0; i < groupedMostVisitedUsers.Count; i++)
+                    {
+                        var group = groupedMostVisitedUsers[i];
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <div class="row justify-content-center">
+                                @foreach (var item in group)
+                                {
+                                    <div class="col-md-3 text-center mb-4">
+                                        <div class="card p-3">
+
+                                            <!-- Resim tıklanabilir -->
+                                            <div class="mb-2">
+                                                @if (item.user.Id == userId)
+                                                {
+                                                    <a asp-action="Index" asp-controller="Profile" target="_blank">
+                                                        <img src="@(string.IsNullOrEmpty(item.user.Picture) ? "/assets/images/no-photo.png" : item.user.Picture)"
+                                                             alt="User Picture"
+                                                             width="150px"
+                                                             height="150px"
+                                                             class="rounded-circle mx-auto d-block"
+                                                             style="object-fit: cover; cursor: pointer;" />
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Id" target="_blank">
+                                                        <img src="@(string.IsNullOrEmpty(item.user.Picture) ? "/assets/images/no-photo.png" : item.user.Picture)"
+                                                             alt="User Picture"
+                                                             width="150px"
+                                                             height="150px"
+                                                             class="rounded-circle mx-auto d-block"
+                                                             style="object-fit: cover; cursor: pointer;" />
+                                                    </a>
+                                                }
+                                            </div>
+
+                                            <!-- İsim tıklanabilir -->
+                                            <div>
+                                                <h5 class="mb-1">
+                                                    @if (item.user.Id == userId)
+                                                    {
+                                                        <a asp-action="Index" asp-controller="Profile" target="_blank" style="text-decoration: none;">
+                                                            @item.user.NameSurname
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Id" target="_blank" style="text-decoration: none;">
+                                                            @item.user.NameSurname
+                                                        </a>
+                                                    }
+                                                </h5>
+                                                <p class="text-muted">@item.user.Job</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
+            <!-- Sağ Buton -->
+            <button class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center"
+                    style="width: 50px; height: 50px;"
+                    type="button" data-bs-target="#mostVisitedCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+
         </div>
     </div>
-    <div class="card-body">
-        <h2>En Az Ziyaret Edilen Profiller</h2>
-        <div class="card">
-            <div class="row">
 
-                @foreach (var item in Model.leastVisitedUsers)
-                {
-                    <div class="col-lg-3">
-                        @item.NameSurname
-                    </div>
-                }
+    @*  EN AZ ZİYARET EDİLEN PROFİL *@
+
+    @{
+        var groupedLeastVisitedUsers = Model.leastVisitedUsers
+        .Select((user, index) => new { user, index })
+        .GroupBy(x => x.index / 4)
+        .ToList();
+    }
+
+    <div class="card-body">
+        <h2 class="text-center mb-4">En Az Ziyaret Edilen Profiller</h2>
+        <div class="d-flex align-items-center justify-content-between">
+            <!-- Sol Buton -->
+            <button class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center"
+                    style="width: 50px; height: 50px;"
+                    type="button" data-bs-target="#leastVisitedCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <!-- Carousel -->
+            <div id="leastVisitedCarousel" class="carousel slide flex-grow-1 mx-3" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @for (int i = 0; i < groupedLeastVisitedUsers.Count; i++)
+                    {
+                        var group = groupedLeastVisitedUsers[i];
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <div class="row justify-content-center">
+                                @foreach (var item in group)
+                                {
+                                    <div class="col-md-3 text-center mb-4">
+                                        <div class="card p-3">
+
+                                            <!-- Resim tıklanabilir -->
+                                            <div class="mb-2">
+                                                @if (item.user.Id == userId)
+                                                {
+                                                    <a asp-action="Index" asp-controller="Profile" target="_blank">
+                                                        <img src="@(string.IsNullOrEmpty(item.user.Picture) ? "/assets/images/no-photo.png" : item.user.Picture)"
+                                                             alt="User Picture"
+                                                             width="150px"
+                                                             height="150px"
+                                                             class="rounded-circle mx-auto d-block"
+                                                             style="object-fit: cover; cursor: pointer;" />
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Id" target="_blank">
+                                                        <img src="@(string.IsNullOrEmpty(item.user.Picture) ? "/assets/images/no-photo.png" : item.user.Picture)"
+                                                             alt="User Picture"
+                                                             width="150px"
+                                                             height="150px"
+                                                             class="rounded-circle mx-auto d-block"
+                                                             style="object-fit: cover; cursor: pointer;" />
+                                                    </a>
+                                                }
+                                            </div>
+
+                                            <!-- İsim tıklanabilir -->
+                                            <div>
+                                                <h5 class="mb-1">
+                                                    @if (item.user.Id == userId)
+                                                    {
+                                                        <a asp-action="Index" asp-controller="Profile" target="_blank" style="text-decoration: none;">
+                                                            @item.user.NameSurname
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Id" target="_blank" style="text-decoration: none;">
+                                                            @item.user.NameSurname
+                                                        </a>
+                                                    }
+                                                </h5>
+                                                <p class="text-muted">@item.user.Job</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
+            <!-- Sağ Buton -->
+            <button class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center"
+                    style="width: 50px; height: 50px;"
+                    type="button" data-bs-target="#leastVisitedCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
         </div>
     </div>
-    <div class="card-body">
-        <h2>Rastgele Profiller</h2>
-        <div class="card">
-            <div class="row">
 
-                @foreach (var item in Model.randomlyUsers)
-                {
-                    <div class="col-lg-3">
-                        @item.NameSurname
-                    </div>
-                }
+   @*  RASTGELE PROFİL *@
+
+    @{
+        var groupedUsers = Model.randomlyUsers
+        .Select((user, index) => new { user, index })
+        .GroupBy(x => x.index / 4)
+        .ToList();
+    }
+
+    <div class="card-body">
+        <h2 class="text-center mb-4">Rastgele Profiller</h2>
+        <div class="d-flex align-items-center justify-content-between">
+            <!-- Sol Buton -->
+            <button class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center"
+                    style="width: 50px; height: 50px;"
+                    type="button" data-bs-target="#userCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <!-- Carousel -->
+            <div id="userCarousel" class="carousel slide flex-grow-1 mx-3" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @for (int i = 0; i < groupedUsers.Count; i++)
+                    {
+                        var group = groupedUsers[i];
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <div class="row justify-content-center">
+                                @foreach (var item in group)
+                                {
+                                    <div class="col-md-3 text-center mb-4">
+                                        <div class="card p-3">
+
+                                            <!-- Resim kısmı -->
+                                            <div>
+                                                @if (item.user.Id == userId)
+                                                {
+                                                    <a asp-action="Index" asp-controller="Profile" target="_blank">
+                                                        <img src="@(string.IsNullOrEmpty(item.user.Picture) ? "/assets/images/no-photo.png" : item.user.Picture)"
+                                                             alt="User Picture"
+                                                             width="150px"
+                                                             height="150px"
+                                                             class="rounded-circle mx-auto d-block"
+                                                             style="object-fit: cover; cursor: pointer;" />
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Id" target="_blank">
+                                                        <img src="@(string.IsNullOrEmpty(item.user.Picture) ? "/assets/images/no-photo.png" : item.user.Picture)"
+                                                             alt="User Picture"
+                                                             width="150px"
+                                                             height="150px"
+                                                             class="rounded-circle mx-auto d-block"
+                                                             style="object-fit: cover; cursor: pointer;" />
+                                                    </a>
+                                                }
+                                            </div>
+
+                                            <!-- İsim kısmı (yine link olacak) -->
+                                            <div class="mt-2">
+                                                <h5 class="mb-1">
+                                                    @if (item.user.Id == userId)
+                                                    {
+                                                        <a asp-action="Index" asp-controller="Profile" target="_blank"
+                                                           style="text-decoration: none;">@item.user.NameSurname</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Id" target="_blank"
+                                                           style="text-decoration: none;">@item.user.NameSurname</a>
+                                                    }
+                                                </h5>
+                                                <p class="text-muted">@item.user.Job</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
+            <!-- Sağ Buton -->
+            <button class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center"
+                    style="width: 50px; height: 50px;"
+                    type="button" data-bs-target="#userCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
         </div>
     </div>
 </div>
