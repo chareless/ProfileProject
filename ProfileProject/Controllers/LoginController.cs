@@ -47,12 +47,40 @@ namespace ProfileProject.Controllers
 
                 var user = loginService.GetUserData(model);
                 var date = generalService.GetCurrentDate();
+                var theme = loginService.GetUserTheme(user.Id);
 
                 HttpContext.Session.SetString("Username", user.Username);
                 HttpContext.Session.SetString("Email", user.Email);
                 HttpContext.Session.SetInt32("UserId", user.Id);
                 HttpContext.Session.SetString("SessionStartTime", date.ToString());
                 HttpContext.Session.SetInt32("IsAdmin", user.IsAdmin ? 1 : 0);
+
+                loginService.LoginUser(user.Id);
+
+                if (theme == null)
+                {
+                    var userTheme = new UserTheme(user.Id, date, date);
+                    _context.UserThemes.Add(userTheme);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    if (theme.DarkLayout != null)
+                        HttpContext.Session.SetString("DarkLayout", theme.DarkLayout);
+                    if (theme.ThemeContrast != null)
+                        HttpContext.Session.SetString("ThemeContrast", theme.ThemeContrast);
+                    if (theme.CaptionShow != null)
+                        HttpContext.Session.SetString("CaptionShow", theme.CaptionShow);
+                    if (theme.PresetTheme != null)
+                        HttpContext.Session.SetString("PresetTheme", theme.PresetTheme);
+                    if (theme.RtlLayout != null)
+                        HttpContext.Session.SetString("RtlLayout", theme.RtlLayout);
+                    if (theme.BoxContainer != null)
+                        HttpContext.Session.SetString("BoxContainer", theme.BoxContainer);
+                    if (theme.Layout != null)
+                        HttpContext.Session.SetString("Layout", theme.Layout);
+                }
+
                 return RedirectToAction("Index", "Home"); 
             }
 

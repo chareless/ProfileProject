@@ -8,5 +8,7 @@ namespace ProfileProject.Services.LoginServices
         bool LoginControl(LoginModel model);
         User GetUserData(LoginModel model);
         bool ChangePassword(ChangePasswordModel model);
+        UserTheme? GetUserTheme(int id);
+        void LoginUser(int id);
     }
 }

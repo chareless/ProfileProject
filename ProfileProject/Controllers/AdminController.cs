@@ -8,7 +8,7 @@ using static ProfileProject.Models.DataModels;
 
 namespace ProfileProject.Controllers
 {
-    //[ServiceFilter(typeof(AuthAdminFilter))]
+    [ServiceFilter(typeof(AuthAdminFilter))]
     public class AdminController : Controller
     {
         private readonly ILogger<AdminController> _logger;

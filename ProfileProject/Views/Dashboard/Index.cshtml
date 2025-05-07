@@ -1,19 +1,427 @@
-﻿@{
+﻿@model AccessLogDashboardViewModel
+@using System.Web;
+
+
+
+@{
     ViewBag.Title = "Profile Project";
     ViewBag.BreadcrumbItemActive = "Kullanıcı İstatistikleri";
     ViewBag.BreadcrumbItemToAdmin = "Admin Panel";
 }
 @Html.Partial("~/Views/Shared/_breadcrumb.cshtml")
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div style="padding: 0 3%;">
+    <div class="custom-container">
+        <div>
+            <ul>
+                <li><a href="#dailyAccess">Günlük Erişim Sayısı</a></li>
+                <li><a href="#userAccessTable">Kullanıcı Bazlı Erişim Sayısı</a></li>
+                <li><a href="#userVisits">Kullanıcı Ziyaretleri</a></li>
+                <li><a href="#loginTable">Kullanıcı Girişleri</a></li>
+                <li><a href="#pageAccess">Sayfa Erişim Sayısı</a></li>
+                <li><a href="#allAccess">Tüm Erişim Kaydı</a></li>
+            </ul>
+            <hr />
+        </div>
+
+        @{
+            DateTime? earliestLogin = null;
+
+            var firstAccess = Model.LastAccessLogs
+            .OrderBy(l => l.AccessTime)
+            .FirstOrDefault();
+
+            if (firstAccess != null)
+            {
+                earliestLogin = firstAccess.AccessTime;
+            }
+            else
+            {
+                var firstLogin = Model.LoginControls
+                .OrderBy(l => l.LoginDate)
+                .FirstOrDefault();
+
+                if (firstLogin != null)
+                {
+                    earliestLogin = firstLogin.LoginDate;
+                }
+            }
+        }
+        <p style="color:red">
+            Giriş bilgileri @(earliestLogin?.ToString("dd.MM.yyyy") ?? "bilinmeyen bir tarihten") itibaren kaydedilmektedir.
+        </p>
+
+        <!-- Günlük Erişim -->
+        <div id="dailyAccess">
+            <h3>Günlük Erişim Sayısı</h3>
+            <div class="table-responsive">
+                <table class="table table-hover" style="text-align:center" id="pc-dt-simple-5">
+                    <thead style="cursor:pointer">
+                        <tr>
+                            <th>Tarih</th>
+                            <th>İstek Sayısı</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dailyAccessTableBody">
+                        @foreach (var item in Model.DailyAccesses)
+                        {
+                            <tr><td>@item.Date.ToString("dd.MM.yyyy")</td><td>@item.Count</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <br />
+        </div>
+
+        <!-- Kullanıcı Bazlı Erişim -->
+        <div id="userAccessTable">
+            <h3>Kullanıcı Bazlı Erişim Sayısı</h3>
+            <div class="table-responsive">
+                <table class="table table-hover" style="text-align:center" id="pc-dt-simple-1">
+                    <thead style="cursor:pointer">
+                        <tr>
+                            <th>Kullanıcı</th>
+                            <th>İstek Sayısı</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userAccessTableBody">
+                        @foreach (var item in Model.UserAccesses)
+                        {
+                            <tr>
+                                <td>
+                                @if (item.UserID != null && item.UserID != 0)
+                                {
+                                    <a asp-action="User" asp-controller="Admin" asp-route-id="@item.UserID" target="_blank">@item.UserName</a>
+                                }
+                                else
+                                {
+                                        @item.UserName
+                                }
+                                </td>
+                                <td>@item.Count</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <br />
+        </div>
+
+        <!-- Kullanıcı Ziyaretçi Sayısı -->
+        <div id="userVisits">
+            <h3>Kullanıcı Ziyaretçi Sayısı</h3>
+            <div class="row">
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Kullanıcı</label>
+                    <select id="visitedUser" name="visitedUser" class="form-control">
+                        <option value="0">Tümünü Göster</option>
+                    </select>
+                </div>
+                <div class="col-md-8 col-12 mt-4">
+                    <a href="" data-hash="#userVisits" id="a4" class="btn btn-danger" style="max-width: 100px; text-wrap: nowrap; height: auto" type="button"><i class="bi bi-search"></i> Süz</a>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover" style="text-align:center" id="pc-dt-simple-5">
+                    <thead style="cursor:pointer">
+                        <tr>
+                            <th>Kullanıcı Adı</th>
+                            <th>Ziyaretçi Sayısı</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userVisitsTableBody">
+                        @foreach (var item in Model.UserVisitCounts)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-action="User" asp-controller="Admin" asp-route-id="@item.UserID" target="_blank">@item.Username</a>
+                                </td>
+                                <td>@item.VisitedCount</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <br />
+        </div>
+
+        <!-- Kullanıcı Ziyaretçi Listesi -->
+        <div id="userVisits">
+            <h3>Kullanıcı Ziyaretçi Listesi</h3>
+            <div class="row">
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Ziyaretçi</label>
+                    <select id="userList" name="userList" class="form-control">
+                        <option value="0">Tümünü Göster</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Kullanıcı</label>
+                    <select id="visitedUserForList" name="visitedUserForList" class="form-control">
+                        <option value="0">Tümünü Göster</option>
+                    </select>
+                </div>
+                <div class="col-md-8 col-12 mt-4">
+                    <a href="" data-hash="#userVisits" id="a4" class="btn btn-danger" style="max-width: 100px; text-wrap: nowrap; height: auto" type="button"><i class="bi bi-search"></i> Süz</a>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover" style="text-align:center" id="pc-dt-simple-5">
+                    <thead style="cursor:pointer">
+                        <tr>
+                            <th>Ziyaretçi Adı</th>
+                            <th>Kullanıcı Adı</th>
+                            <th>Ziyaret Zamanı</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userVisitsTableBody">
+                        @foreach (var item in Model.UserVisitList)
+                        {
+                            <tr>
+                                <td>
+                                    @if(item.UserID != null && item.UserID != 0)
+                                    {
+                                        <a asp-action="User" asp-controller="Admin" asp-route-id="@item.UserID" target="_blank">@item.Username</a>
+                                    }
+                                    else
+                                    {
+                                        @item.Username
+                                    }
+                                    </td>
+                                <td><a asp-action="User" asp-controller="Admin" asp-route-id="@item.VisitedID" target="_blank">@item.VisitedUsername</a></td>
+                                <td>@item.AccessTime</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <br />
+        </div>
+
+
+        <!-- Kullanıcı Girişleri -->
+        <div id="loginTable">
+            <h3>Kullanıcı Girişleri</h3>
+            <div class="row">
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Kullanıcı</label>
+                    <select id="loginUser" name="loginUser" class="form-control">
+                        <option value="0">Tümünü Göster</option>
+                    </select>
+                </div>
+                <div class="col-md-8 col-12 mt-4">
+                    <a href="" data-hash="#loginTable" id="a2" class="btn btn-danger" style="max-width: 100px; text-wrap: nowrap; height: auto" type="button"><i class="bi bi-search"></i> Süz</a>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover" style="text-align:center" id="pc-dt-simple-4">
+                    <thead style="cursor:pointer">
+                        <tr>
+                            <th>Kullanıcı Adı</th>
+                            <th>Giriş Tarihi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loginTableBody">
+                        @foreach (var item in Model.LoginControls)
+                        {
+                            <tr>
+                                <td><a asp-action="User" asp-controller="Admin" asp-route-id="@item.UserId">@item.User.Username</a></td>
+                                <td>@item.LoginDate.ToString("dd.MM.yyyy HH:mm")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <br />
+        </div>
+
+        <!-- Sayfa Erişim Sayısı -->
+        <div id="pageAccess">
+            <h3>Sayfa Erişim Sayısı</h3>
+            <div class="table-responsive">
+                <table class="table table-hover" style="text-align:center" id="pc-dt-simple-2">
+                    <thead style="cursor:pointer">
+                        <tr>
+                            <th>Controller</th>
+                            <th>Action</th>
+                            <th>İstek Sayısı</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pageAccessTableBody">
+                        @foreach (var item in Model.PageAccesses)
+                        {
+                            <tr><td>@item.Controller</td><td>@item.Action</td><td>@item.Count</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <br />
+        </div>
+
+        <!-- Tüm Erişim -->
+        <div id="allAccess">
+            <h3>Tüm Erişim Kaydı</h3>
+            <div class="row">
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Kullanıcı</label>
+                    <select id="allAccessUser" name="allAccessUser" class="form-control">
+                        <option value="0">Tümünü Göster</option>
+                    </select>
+                </div>
+                <div class="col-md-6 col-12 mt-4">
+                    <a href="" data-hash="#allAccess" id="a1" class="btn btn-danger" style="max-width: 100px; text-wrap: nowrap; height: auto" type="button"><i class="bi bi-search"></i> Süz</a>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover" style="text-align:center" id="pc-dt-simple-3">
+                    <thead style="cursor:pointer">
+                        <tr>
+                            <th>UserName</th>
+                            <th>Controller</th>
+                            <th>Action</th>
+                            <th>Tarih</th>
+                            <th>URL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lastAccessTableBody">
+                        @foreach (var item in Model.LastAccessLogs)
+                        {
+                            <tr>
+                                <td>@item.UserName</td>
+                                <td>@item.ControllerName</td>
+                                <td>@item.ActionName</td>
+                                <td>@item.AccessTime.ToString("dd.MM.yyyy HH:mm")</td>
+                                <td>@item.Description</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <br />
+        </div>
+
+     
+       
+
+    </div>
 </div>
 
-@section scripts {
-    <!-- [Page Specific JS] start -->
-    <script src="/assets/js/plugins/apexcharts.min.js"></script>
-    <script src="~/js/utils.js"></script>
+<script src="../assets/js/plugins/simple-datatables.js"></script>
 
-    <script src="/assets/js/pages/dashboard-default.js"></script>
-}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll("table[id^='pc-dt-simple-']").forEach(function (table) {
+        new simpleDatatables.DataTable(table, {
+          sortable: false,
+          perPage: 10
+        });
+      });
+    });
+</script>
+
+
+<script src="../assets/js/plugins/bouncer.min.js"></script>
+<script src="../assets/js/pages/form-validation.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $("body").on("change", "#loginUser,#allAccessUser,#visitedUser", function () {
+        var user = $("#loginUser").val();
+        var accessUser = $("#allAccessUser").val();
+        var visited = $("#visitedUser").val();
+
+        var params = [];
+
+        if (user !== "0") params.push("LoginUser=" + user);
+        if (accessUser !== "0") params.push("AccessUser=" + accessUser);
+        if (visited !== "0") params.push("VisitedUser=" + visited);
+
+        var baseHref = params.length > 0 ? "?" + params.join("&") : "?";
+
+        // Her buton için sıfırdan href oluştur
+        $("#a1, #a2,#a3,#a4").each(function () {
+            var hash = $(this).data("hash"); // örn: "lastUserURL"
+            var finalHref = baseHref + (hash ? hash : "");
+            $(this).attr("href", finalHref);
+        });
+    });
+
+    });
+</script>
+
+<script>
+    var urlParams = new URLSearchParams(window.location.search);
+
+    ($.getJSON('/dashboard/GetLoginUserList'))
+                    .done(function (datam) {
+                        var loginUser = $("#loginUser");
+
+                        $.each(datam, function (key, val) {
+                            loginUser.append($("<option></option>")
+                                .val(val)
+                                .text(val));
+                        });
+
+                        var loginUserParam = urlParams.get('LoginUser');
+                        if (loginUserParam) {
+                            loginUser.val(loginUserParam);
+                        }
+
+                    });
+
+    ($.getJSON('/dashboard/GetAllAccessUserList'))
+                    .done(function (datam) {
+                        var allAccessUser = $("#allAccessUser");
+                         var userList = $("#userList");
+
+                        $.each(datam, function (key, val) {
+                            allAccessUser.append($("<option></option>")
+                                .val(val)
+                                .text(val));
+
+                                   userList.append($("<option></option>")
+                                .val(val)
+                                .text(val));
+                        });
+
+                        var allAccessUserParam = urlParams.get('AccessUser');
+                        if (allAccessUserParam) {
+                            allAccessUser.val(allAccessUserParam);
+                        }
+                    });
+
+                     ($.getJSON('/dashboard/GetAllUserList'))
+                    .done(function (datam) {
+                        var visitedUser = $("#visitedUser");
+                       
+                        var visitedUserForList = $("#visitedUserForList");
+
+                        $.each(datam, function (key, val) {
+                            visitedUser.append($("<option></option>")
+                                .val(val)
+                                .text(val));
+
+                               
+
+                                 visitedUserForList.append($("<option></option>")
+                                .val(val)
+                                .text(val));
+                        });
+
+                        var visitedUserParam = urlParams.get('VisitedUser');
+                        if (visitedUserParam) {
+                            visitedUser.val(visitedUserParam);
+                        }
+                    });
+</script>
+

@@ -52,6 +52,17 @@ namespace ProfileProject.Services.LoginServices
             }
             return false;
         }
+        public UserTheme? GetUserTheme(int id)
+        {
+            var theme = _context.UserThemes.FirstOrDefault(a => a.UserId == id);
+            return theme;
+        }
+        public void LoginUser(int id)
+        {
+            var LoginCheckModel = new LoginControl(DateTime.Now, id);
+            _context.Add(LoginCheckModel);
+            _context.SaveChanges();
+        }
 
     }
 }

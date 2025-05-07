@@ -7,7 +7,7 @@ using static ProfileProject.Models.DataModels;
 
 namespace ProfileProject.Controllers
 {
-    //[ServiceFilter(typeof(AuthRegisterFilter))]
+    [ServiceFilter(typeof(AuthRegisterFilter))]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

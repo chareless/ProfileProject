@@ -32,15 +32,27 @@ namespace ProfileProject.Controllers
             if (ModelState.IsValid)
             {
                 var modelUser = model.User;
-                var existingUser = _context.Users.FirstOrDefault(u => u.Username == modelUser.Username && u.Email == modelUser.Email);
+                var existingUsername = _context.Users.FirstOrDefault(u => u.Username == modelUser.Username);
+                var existingMail= _context.Users.FirstOrDefault(u => u.Email == modelUser.Email);
 
-                if (existingUser != null)
+                if (existingUsername != null)
                 {
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
                     {
                         AlertType = "warning",
                         Title = "Hatalý Kullanýcý",
-                        Message = "Bu kullanýcý adý veya email adresi zaten alýnmýþ!"
+                        Message = "Bu kullanýcý adý zaten alýnmýþ!"
+                    });
+                    return View(model);
+                }
+
+                if (existingMail != null)
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hatalý Kullanýcý",
+                        Message = "Bu email adresi zaten alýnmýþ!"
                     });
                     return View(model);
                 }
