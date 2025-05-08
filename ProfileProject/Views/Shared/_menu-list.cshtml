@@ -6,18 +6,21 @@
     var admin = HttpContextAccessor.HttpContext.Session.GetInt32("IsAdmin");
 }
 <!-- #region Navigation -->
-<li class="pc-item pc-caption">
-    <label>Ana Sayfa</label>
-</li>
-<li class="pc-item pc-hasmenu">
-    <a href="@Url.Action("Index", "Home")" class="pc-link">
-        <span class="pc-micon">
-            <i class="material-icons-two-tone">home</i>
-        </span>
+@if (user != null)
+{
+    <li class="pc-item pc-caption">
+        <label>Ana Sayfa</label>
+    </li>
+    <li class="pc-item pc-hasmenu">
+        <a href="@Url.Action("Index", "Home")" class="pc-link">
+            <span class="pc-micon">
+                <i class="material-icons-two-tone">home</i>
+            </span>
 
-        <span class="pc-mtext">Ana Sayfa</span>
-    </a>
-</li>
+            <span class="pc-mtext">Ana Sayfa</span>
+        </a>
+    </li>
+}
 @* <li class="pc-item pc-hasmenu">
     <a href="#!" class="pc-link">
         <span class="pc-micon">

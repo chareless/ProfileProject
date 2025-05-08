@@ -9,6 +9,7 @@ public class AccessLogDashboardViewModel
     public List<LoginControl> LoginControls { get; set; }
     public List<UserVisitCount> UserVisitCounts { get; set; }
     public List<UserVisitList> UserVisitList { get; set; }
+    public List<UserVisitGroup> UserVisitGroups { get; set; }
 }
 
 public class UserAccessCount
@@ -56,4 +57,13 @@ public class UserVisitList
     public int? VisitedID { get; set; }
     public string? VisitedUsername { get; set; }
     public DateTime AccessTime { get; set; } = DateTime.Now;
+}
+
+public class UserVisitGroup
+{
+    public int? UserID { get; set; }
+    public string? Username { get; set; }
+    public int? VisitedID { get; set; }
+    public string? VisitedUsername { get; set; }
+    public int count { get; set; } = 0;
 }

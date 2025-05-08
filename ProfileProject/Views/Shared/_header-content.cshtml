@@ -20,17 +20,21 @@
                 <i class="ti ti-menu-2"></i>
             </a>
         </li>
-        <li class="pc-h-item d-none d-md-inline-flex">
-            <form class="form-search d-flex" method="get" action="/Home/Search">
-                <i class="search-icon">
-                    <svg class="pc-icon">
-                        <use xlink:href="#custom-search-normal-1"></use>
-                    </svg>
-                </i>
-                <input type="search" name="param" class="form-control" placeholder="Arama" style="width:auto" />
-                <button class="btn btn-primary m-l-10" type="submit">Ara</button>
-            </form>
-        </li>
+        @if(user != null)
+        {
+            <li class="pc-h-item d-none d-md-inline-flex">
+                <form class="form-search d-flex" method="get" action="/Home/Search">
+                    <i class="search-icon">
+                        <svg class="pc-icon">
+                            <use xlink:href="#custom-search-normal-1"></use>
+                        </svg>
+                    </i>
+                    <input type="search" name="param" class="form-control" placeholder="Arama" style="width:auto" />
+                    <button class="btn btn-primary m-l-10" type="submit">Ara</button>
+                </form>
+            </li>
+        }
+      
     </ul>
 </div>
 <!-- [Mobile Media Block end] -->

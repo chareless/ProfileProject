@@ -7,6 +7,9 @@
     ViewBag.Title = "Profile Project";
     ViewBag.BreadcrumbItemActive = "Kullanıcı İstatistikleri";
     ViewBag.BreadcrumbItemToAdmin = "Admin Panel";
+
+    var allAccessStartDate = ViewData["AllAccessStartDate"];
+    var allAccessEndDate = ViewData["AllAccessEndDate"];
 }
 @Html.Partial("~/Views/Shared/_breadcrumb.cshtml")
 
@@ -17,7 +20,9 @@
             <ul>
                 <li><a href="#dailyAccess">Günlük Erişim Sayısı</a></li>
                 <li><a href="#userAccessTable">Kullanıcı Bazlı Erişim Sayısı</a></li>
-                <li><a href="#userVisits">Kullanıcı Ziyaretleri</a></li>
+                <li><a href="#userVisits">Kullanıcı Ziyaretçi Sayısı</a></li>
+                <li><a href="#userVisitList">Kullanıcı Ziyaretçi Listesi</a></li>
+                <li><a href="#userVisitGroup">Kullanıcı Ziyaretçi Gruplandırma</a></li>
                 <li><a href="#loginTable">Kullanıcı Girişleri</a></li>
                 <li><a href="#pageAccess">Sayfa Erişim Sayısı</a></li>
                 <li><a href="#allAccess">Tüm Erişim Kaydı</a></li>
@@ -150,7 +155,7 @@
         </div>
 
         <!-- Kullanıcı Ziyaretçi Listesi -->
-        <div id="userVisits">
+        <div id="userVisitList">
             <h3>Kullanıcı Ziyaretçi Listesi</h3>
             <div class="row">
                 <div class="col-md-2 col-12 mb-3">
@@ -166,7 +171,7 @@
                     </select>
                 </div>
                 <div class="col-md-8 col-12 mt-4">
-                    <a href="" data-hash="#userVisits" id="a4" class="btn btn-danger" style="max-width: 100px; text-wrap: nowrap; height: auto" type="button"><i class="bi bi-search"></i> Süz</a>
+                    <a href="" data-hash="#userVisitList" id="a5" class="btn btn-danger" style="max-width: 100px; text-wrap: nowrap; height: auto" type="button"><i class="bi bi-search"></i> Süz</a>
                 </div>
             </div>
             <div class="table-responsive">
@@ -178,7 +183,7 @@
                             <th>Ziyaret Zamanı</th>
                         </tr>
                     </thead>
-                    <tbody id="userVisitsTableBody">
+                    <tbody id="userVisitListTableBody">
                         @foreach (var item in Model.UserVisitList)
                         {
                             <tr>
@@ -203,6 +208,59 @@
             <br />
         </div>
 
+        <!-- Kullanıcı Ziyaretçi Gruplandırma -->
+        <div id="userVisitGroup">
+            <h3>Kullanıcı Ziyaretçi Gruplandırma</h3>
+            <div class="row">
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Ziyaretçi</label>
+                    <select id="userListGroup" name="userListGroup" class="form-control">
+                        <option value="0">Tümünü Göster</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Kullanıcı</label>
+                    <select id="visitedUserForGroup" name="visitedUserForGroup" class="form-control">
+                        <option value="0">Tümünü Göster</option>
+                    </select>
+                </div>
+                <div class="col-md-8 col-12 mt-4">
+                    <a href="" data-hash="#userVisitGroup" id="a6" class="btn btn-danger" style="max-width: 100px; text-wrap: nowrap; height: auto" type="button"><i class="bi bi-search"></i> Süz</a>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover" style="text-align:center" id="pc-dt-simple-5">
+                    <thead style="cursor:pointer">
+                        <tr>
+                            <th>Ziyaretçi Adı</th>
+                            <th>Kullanıcı Adı</th>
+                            <th>Ziyaret Sayısı</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userVisitGroupTableBody">
+                        @foreach (var item in Model.UserVisitGroups)
+                        {
+                            <tr>
+                                <td>
+                                    @if (item.UserID != null && item.UserID != 0)
+                                    {
+                                        <a asp-action="User" asp-controller="Admin" asp-route-id="@item.UserID" target="_blank">@item.Username</a>
+                                    }
+                                    else
+                                    {
+                                        @item.Username
+                                    }
+                                </td>
+                                <td><a asp-action="User" asp-controller="Admin" asp-route-id="@item.VisitedID" target="_blank">@item.VisitedUsername</a></td>
+                                <td>@item.count</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <br />
+        </div>
 
         <!-- Kullanıcı Girişleri -->
         <div id="loginTable">
@@ -275,7 +333,25 @@
                         <option value="0">Tümünü Göster</option>
                     </select>
                 </div>
-                <div class="col-md-6 col-12 mt-4">
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Başlangıç Tarihi</label>
+                    <input type="date" id="allAccessStartDate" class="form-control"
+                           value="@(allAccessStartDate != null ? Convert.ToDateTime(allAccessStartDate).ToString("yyyy-MM-dd") : "")" />
+                </div>
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Bitiş Tarihi</label>
+                    <input type="date" id="allAccessEndDate" class="form-control"
+                           value="@(allAccessEndDate != null ? Convert.ToDateTime(allAccessEndDate).ToString("yyyy-MM-dd") : "")" />
+                </div>
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Tarih Tipi</label>
+                    <select id="allAccessDateType" name="allAccessDateType" class="form-control">
+                        <option value="0">Bugün</option>
+                        <option value="1">Seçili Tarih</option>
+                        <option value="2">Tüm Zamanlar</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-12 mt-4">
                     <a href="" data-hash="#allAccess" id="a1" class="btn btn-danger" style="max-width: 100px; text-wrap: nowrap; height: auto" type="button"><i class="bi bi-search"></i> Süz</a>
                 </div>
             </div>
@@ -327,6 +403,47 @@
     });
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const OFFSET = 100;
+
+      function scrollToHash(hash) {
+        const targetId = hash.substring(1);
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+          const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+          const offsetPosition = elementPosition - OFFSET;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
+        }
+      }
+
+      // Tıklama ile scroll
+      document.querySelectorAll("a[href^='#']").forEach(function (anchor) {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const hash = this.getAttribute("href");
+          scrollToHash(hash);
+          history.pushState(null, null, hash);
+        });
+      });
+
+      // Sayfa yüklendiğinde hash varsa scroll yap
+      if (window.location.hash) {
+      setTimeout(() => {
+        scrollToHash(window.location.hash);
+      }, 100); // DOM'un tamamen yerleşmesini beklemek için kısa gecikme
+      }
+    });
+</script>
+
+
+
+
 
 <script src="../assets/js/plugins/bouncer.min.js"></script>
 <script src="../assets/js/pages/form-validation.js"></script>
@@ -335,29 +452,50 @@
 
 <script>
     $(document).ready(function () {
-        $("body").on("change", "#loginUser,#allAccessUser,#visitedUser", function () {
-        var user = $("#loginUser").val();
-        var accessUser = $("#allAccessUser").val();
-        var visited = $("#visitedUser").val();
+        const OFFSET_IDS = [
+            "#loginUser", "#allAccessUser", "#visitedUser", "#visitedUserForList",
+            "#userList", "#userListGroup", "#visitedUserForGroup",
+            "#allAccessStartDate", "#allAccessEndDate"
+        ];
 
-        var params = [];
+        function buildParams() {
+            const params = [];
 
-        if (user !== "0") params.push("LoginUser=" + user);
-        if (accessUser !== "0") params.push("AccessUser=" + accessUser);
-        if (visited !== "0") params.push("VisitedUser=" + visited);
+            const user = $("#loginUser").val();
+            const accessUser = $("#allAccessUser").val();
+            const visited = $("#visitedUser").val();
+            const visitedUserForList = $("#visitedUserForList").val();
+            const userList = $("#userList").val();
+            const userListGroup = $("#userListGroup").val();
+            const visitedUserForGroup = $("#visitedUserForGroup").val();
+            const allAccessStartDate = $("#allAccessStartDate").val();
+            const allAccessEndDate = $("#allAccessEndDate").val();
+            const allAccessDateType = $("#allAccessDateType").val();
 
-        var baseHref = params.length > 0 ? "?" + params.join("&") : "?";
+            if (user && user !== "0") params.push("LoginUser=" + encodeURIComponent(user));
+            if (accessUser && accessUser !== "0") params.push("AccessUser=" + encodeURIComponent(accessUser));
+            if (visited && visited !== "0") params.push("VisitedUser=" + encodeURIComponent(visited));
+            if (visitedUserForList && visitedUserForList !== "0") params.push("VisitedForList=" + encodeURIComponent(visitedUserForList));
+            if (userList && userList !== "0") params.push("UserForList=" + encodeURIComponent(userList));
+            if (userListGroup && userListGroup !== "0") params.push("UserForGroup=" + encodeURIComponent(userListGroup));
+            if (allAccessDateType && allAccessDateType !== "0") params.push("allAccessDateType=" + encodeURIComponent(allAccessDateType));
+            if (visitedUserForGroup && visitedUserForGroup !== "0") params.push("VisitedForGroup=" + encodeURIComponent(visitedUserForGroup));
+            if (allAccessStartDate && allAccessStartDate !== "null") params.push("allAccessStartDateParam=" + encodeURIComponent(allAccessStartDate));
+            if (allAccessEndDate && allAccessEndDate !== "null") params.push("allAccessEndDateParam=" + encodeURIComponent(allAccessEndDate));
 
-        // Her buton için sıfırdan href oluştur
-        $("#a1, #a2,#a3,#a4").each(function () {
-            var hash = $(this).data("hash"); // örn: "lastUserURL"
-            var finalHref = baseHref + (hash ? hash : "");
+            return params.length > 0 ? "?" + params.join("&") : "?";
+        }
+
+        $("#a1, #a2, #a3, #a4, #a5, #a6").on("click", function (e) {
+            const hash = $(this).data("hash") || "";
+            const queryParams = buildParams();
+            const finalHref = queryParams + hash;
+
             $(this).attr("href", finalHref);
         });
     });
-
-    });
 </script>
+
 
 <script>
     var urlParams = new URLSearchParams(window.location.search);
@@ -383,13 +521,18 @@
                     .done(function (datam) {
                         var allAccessUser = $("#allAccessUser");
                          var userList = $("#userList");
+                         var userListGroup = $("#userListGroup");
 
                         $.each(datam, function (key, val) {
                             allAccessUser.append($("<option></option>")
                                 .val(val)
                                 .text(val));
 
-                                   userList.append($("<option></option>")
+                                userList.append($("<option></option>")
+                                .val(val)
+                                .text(val));
+
+                                userListGroup.append($("<option></option>")
                                 .val(val)
                                 .text(val));
                         });
@@ -397,7 +540,17 @@
                         var allAccessUserParam = urlParams.get('AccessUser');
                         if (allAccessUserParam) {
                             allAccessUser.val(allAccessUserParam);
-                        }
+                        };
+
+                        var userListParam = urlParams.get('UserForList');
+                        if (userListParam) {
+                            userList.val(userListParam);
+                        };
+
+                        var userListGroupParam = urlParams.get('UserForGroup');
+                        if (userListGroupParam) {
+                            userListGroup.val(userListGroupParam);
+                        };
                     });
 
                      ($.getJSON('/dashboard/GetAllUserList'))
@@ -405,6 +558,7 @@
                         var visitedUser = $("#visitedUser");
                        
                         var visitedUserForList = $("#visitedUserForList");
+                        var visitedUserForGroup = $("#visitedUserForGroup");
 
                         $.each(datam, function (key, val) {
                             visitedUser.append($("<option></option>")
@@ -413,7 +567,11 @@
 
                                
 
-                                 visitedUserForList.append($("<option></option>")
+                                visitedUserForList.append($("<option></option>")
+                                .val(val)
+                                .text(val));
+
+                                visitedUserForGroup.append($("<option></option>")
                                 .val(val)
                                 .text(val));
                         });
@@ -421,7 +579,17 @@
                         var visitedUserParam = urlParams.get('VisitedUser');
                         if (visitedUserParam) {
                             visitedUser.val(visitedUserParam);
-                        }
+                        };
+
+                        var visitedUserForListParam = urlParams.get('VisitedForList');
+                        if (visitedUserForListParam) {
+                            visitedUserForList.val(visitedUserForListParam);
+                        };
+
+                        var visitedUserForGroupParam = urlParams.get('VisitedForGroup');
+                        if (visitedUserForGroupParam) {
+                            visitedUserForGroup.val(visitedUserForGroupParam);
+                        };
                     });
 </script>
 

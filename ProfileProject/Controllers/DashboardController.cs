@@ -49,9 +49,62 @@ namespace ProfileProject.Controllers
             return Json(userList);
         }
 
-        public IActionResult Index(string? LoginUser, string? AccessUser, string? VisitedUser)
+        public IActionResult Index(string? LoginUser, string? AccessUser, string? VisitedUser, string? UserForList, string? VisitedForList, string? UserForGroup, string? VisitedForGroup,
+            DateTime? allAccessStartDateParam,DateTime? allAccessEndDateParam, int? allAccessDateType
+            )
         {
             var userList = _context.Users.ToList();
+            int? userId = 0;
+            int? accessId = 0;
+            int? visitedId = 0;
+            int? userGroupId = 0;
+            int? visitedGroupId = 0;
+
+           
+
+            DateTime? allAccessStartDate = allAccessStartDateParam;
+            DateTime? allAccessEndDate = allAccessEndDateParam;
+
+            if(allAccessDateType == null || (allAccessDateType != null && allAccessDateType == 0))
+            {
+                //BAÞLANGIÇ BÝTÝÞ TARÝHÝ GÜN SONU VE GÜN BAÞI OLARAK AYARLANACAK
+                allAccessStartDate = DateTime.Now.Date;
+                allAccessEndDate = DateTime.Now.Date;
+            }
+            else if(allAccessDateType != null && allAccessDateType == 1)
+            {
+                allAccessStartDate = allAccessStartDateParam;
+                allAccessEndDate = allAccessEndDateParam;
+            }
+            else if(allAccessDateType != null && allAccessDateType == 2)
+            {
+                allAccessStartDate = null;
+                allAccessEndDate = null;
+            }
+
+           ViewData["AllAccessStartDate"] = allAccessStartDate;
+            ViewData["AllAccessEndDate"] = allAccessEndDate;
+
+            if (UserForList != null)
+            {
+                userId = userList.FirstOrDefault(a => a.Username == UserForList)?.Id;
+            }
+            if (VisitedForList != null)
+            {
+                visitedId = userList.FirstOrDefault(a => a.Username == VisitedForList)?.Id;
+            }
+            if(AccessUser != null)
+            {
+                accessId = userList.FirstOrDefault(a => a.Username == AccessUser)?.Id;
+            }
+            if (UserForGroup != null)
+            {
+                userGroupId = userList.FirstOrDefault(a => a.Username == UserForGroup)?.Id;
+            }
+            if (VisitedForGroup != null)
+            {
+                visitedGroupId = userList.FirstOrDefault(a => a.Username == VisitedForGroup)?.Id;
+            }
 
             var model = new AccessLogDashboardViewModel
             {
@@ -89,6 +142,9 @@ namespace ProfileProject.Controllers
                 .ToList(),
 
                 LastAccessLogs = _context.UserAccessLogs.Where(a => !a.ActionName.Contains("Layout"))
+                  .Where(a => accessId != 0 ? (a.UserID == accessId) : true)
+                  .Where(a=> allAccessStartDate != null ? (a.AccessTime >= allAccessStartDate) : true)
+                  .Where(a=> allAccessEndDate != null ? (a.AccessTime <= allAccessEndDate): true)
                  .ToList().Select(q => new LastAccessLogs
                  {
                      AccessTime = q.AccessTime,
@@ -98,7 +154,7 @@ namespace ProfileProject.Controllers
                      Description = q.Description,
                      UserID = q.UserID,
                      UserName = userList.FirstOrDefault(a => a.Id == q.UserID)?.Username ?? "Anonim"
-                 }).Where(a => !string.IsNullOrEmpty(AccessUser) ? a.UserName == AccessUser : true).OrderByDescending(x => x.AccessTime).ToList(),
+                 }).OrderByDescending(x => x.AccessTime).ToList(),
 
                 LoginControls = _context.LoginControls.Include(q => q.User).Where(a => !string.IsNullOrEmpty(LoginUser) ? a.User.Username == LoginUser : true).ToList(),
 
@@ -112,14 +168,32 @@ namespace ProfileProject.Controllers
                     }).OrderByDescending(g => g.VisitedCount)
                     .ToList(),
 
-                UserVisitList = _context.UserAccessLogs.Where(a => a.ControllerName == "Profile" && a.ActionName == "User").ToList().Select(q => new UserVisitList
+                UserVisitList = _context.UserAccessLogs.Where(a => a.ControllerName == "Profile" && a.ActionName == "User")
+                .Where(a=> userId != 0 ? (a.UserID ==userId) : true)
+                .Where(a=> visitedId != 0 ? (a.VisitedUserID == visitedId) : true)
+                .ToList().Select(q => new UserVisitList
                 {
                     AccessTime = q.AccessTime,
                     UserID = q.UserID,
                     VisitedID = q.VisitedUserID,
                     Username = userList.FirstOrDefault(a => a.Id == q.UserID)?.Username ?? "Anonim",
                     VisitedUsername = userList.FirstOrDefault(a => a.Id == q.VisitedUserID)?.Username ?? "Anonim"
-                }).ToList()
+                }).ToList(),
+
+                UserVisitGroups = _context.UserAccessLogs
+                .Where(a => a.ControllerName == "Profile" && a.ActionName == "User")
+                .Where(a => userGroupId != 0 ? (a.UserID == userGroupId) : true)
+    .           Where(a => visitedGroupId != 0 ? (a.VisitedUserID == visitedGroupId) : true).ToList()
+    .           GroupBy(q => new { q.UserID, q.VisitedUserID })
+                .Select(g => new UserVisitGroup
+                {
+                    count = g.Count(),
+                    UserID = g.Key.UserID,
+                    VisitedID = g.Key.VisitedUserID,
+                    Username = userList.FirstOrDefault(a => a.Id == g.Key.UserID)?.Username ?? "Anonim",
+                    VisitedUsername = userList.FirstOrDefault(a => a.Id == g.Key.VisitedUserID)?.Username ?? "Anonim"
+                })
+    .           ToList()
             };
 
             return View(model);
