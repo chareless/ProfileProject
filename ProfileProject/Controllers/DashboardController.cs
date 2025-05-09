@@ -50,7 +50,8 @@ namespace ProfileProject.Controllers
         }
 
         public IActionResult Index(string? LoginUser, string? AccessUser, string? VisitedUser, string? UserForList, string? VisitedForList, string? UserForGroup, string? VisitedForGroup,
-            DateTime? allAccessStartDateParam,DateTime? allAccessEndDateParam, int? allAccessDateType
+            DateTime? allAccessStartDateParam,DateTime? allAccessEndDateParam, int? allAccessDateType, DateTime? loginStartDateParam, DateTime? loginEndDateParam, int? loginDateType,
+            DateTime? visitStartDateParam, DateTime? visitEndDateParam, int? visitDateType
             )
         {
             var userList = _context.Users.ToList();
@@ -67,9 +68,8 @@ namespace ProfileProject.Controllers
 
             if(allAccessDateType == null || (allAccessDateType != null && allAccessDateType == 0))
             {
-                //BAÞLANGIÇ BÝTÝÞ TARÝHÝ GÜN SONU VE GÜN BAÞI OLARAK AYARLANACAK
                 allAccessStartDate = DateTime.Now.Date;
-                allAccessEndDate = DateTime.Now.Date;
+                allAccessEndDate = DateTime.Now.Date.AddDays(1).AddMinutes(-1);
             }
             else if(allAccessDateType != null && allAccessDateType == 1)
             {
@@ -82,8 +82,54 @@ namespace ProfileProject.Controllers
                 allAccessEndDate = null;
             }
 
-           ViewData["AllAccessStartDate"] = allAccessStartDate;
+            ViewData["AllAccessStartDate"] = allAccessStartDate;
             ViewData["AllAccessEndDate"] = allAccessEndDate;
+
+
+            DateTime? loginStartDate = loginStartDateParam;
+            DateTime? loginEndDate = loginEndDateParam;
+
+            if (loginDateType == null || (loginDateType != null && loginDateType == 0))
+            {
+                loginStartDate = DateTime.Now.Date;
+                loginEndDate = DateTime.Now.Date.AddDays(1).AddMinutes(-1);
+            }
+            else if (loginDateType != null && loginDateType == 1)
+            {
+                loginStartDate = loginStartDateParam;
+                loginEndDate = loginEndDateParam;
+            }
+            else if (loginDateType != null && loginDateType == 2)
+            {
+                loginStartDate = null;
+                loginEndDate = null;
+            }
+
+            ViewData["LoginStartDate"] = loginStartDate;
+            ViewData["LoginEndDate"] = loginEndDate;
+
+            DateTime? visitStartDate = visitStartDateParam;
+            DateTime? visitEndDate = visitEndDateParam;
+
+            if (visitDateType == null || (visitDateType != null && visitDateType == 0))
+            {
+                visitStartDate = DateTime.Now.Date;
+                visitEndDate = DateTime.Now.Date.AddDays(1).AddMinutes(-1);
+            }
+            else if (visitDateType != null && visitDateType == 1)
+            {
+                visitStartDate = visitStartDateParam;
+                visitEndDate = visitEndDateParam;
+            }
+            else if (visitDateType != null && visitDateType == 2)
+            {
+                visitStartDate = null;
+                visitEndDate = null;
+            }
+
+            ViewData["VisitStartDate"] = visitStartDate;
+            ViewData["VisitEndDate"] = visitEndDate;
+
 
             if (UserForList != null)
             {
@@ -156,7 +202,11 @@ namespace ProfileProject.Controllers
                      UserName = userList.FirstOrDefault(a => a.Id == q.UserID)?.Username ?? "Anonim"
                  }).OrderByDescending(x => x.AccessTime).ToList(),
 
-                LoginControls = _context.LoginControls.Include(q => q.User).Where(a => !string.IsNullOrEmpty(LoginUser) ? a.User.Username == LoginUser : true).ToList(),
+                LoginControls = _context.LoginControls.Include(q => q.User)
+                .Where(a => !string.IsNullOrEmpty(LoginUser) ? a.User.Username == LoginUser : true)
+                .Where(a => loginStartDate != null ? (a.LoginDate >= loginStartDate) : true)
+                .Where(a => loginEndDate != null ? (a.LoginDate <= loginEndDate) : true)
+                .ToList(),
 
                 UserVisitCounts = _context.UserVisits.Include(a => a.User).Where(a => !string.IsNullOrEmpty(VisitedUser) ? a.User.Username == VisitedUser : true)
                     .GroupBy(u => new { u.UserId, u.User.Username })
@@ -171,6 +221,8 @@ namespace ProfileProject.Controllers
                 UserVisitList = _context.UserAccessLogs.Where(a => a.ControllerName == "Profile" && a.ActionName == "User")
                 .Where(a=> userId != 0 ? (a.UserID ==userId) : true)
                 .Where(a=> visitedId != 0 ? (a.VisitedUserID == visitedId) : true)
+                .Where(a => visitStartDate != null ? (a.AccessTime >= visitStartDate) : true)
+                .Where(a => visitEndDate != null ? (a.AccessTime <= visitEndDate) : true)
                 .ToList().Select(q => new UserVisitList
                 {
                     AccessTime = q.AccessTime,

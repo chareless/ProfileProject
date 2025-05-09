@@ -10,6 +10,10 @@
 
     var allAccessStartDate = ViewData["AllAccessStartDate"];
     var allAccessEndDate = ViewData["AllAccessEndDate"];
+    var loginStartDate = ViewData["LoginStartDate"];
+    var loginEndDate = ViewData["LoginEndDate"];
+    var visitStartDate = ViewData["VisitStartDate"];
+    var visitEndDate = ViewData["VisitEndDate"];
 }
 @Html.Partial("~/Views/Shared/_breadcrumb.cshtml")
 
@@ -170,7 +174,25 @@
                         <option value="0">Tümünü Göster</option>
                     </select>
                 </div>
-                <div class="col-md-8 col-12 mt-4">
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Başlangıç Tarihi</label>
+                    <input type="date" id="visitStartDate" class="form-control"
+                           value="@(visitStartDate != null ? Convert.ToDateTime(visitStartDate).ToString("yyyy-MM-dd") : "")" />
+                </div>
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Bitiş Tarihi</label>
+                    <input type="date" id="visitEndDate" class="form-control"
+                           value="@(visitEndDate != null ? Convert.ToDateTime(visitEndDate).ToString("yyyy-MM-dd") : "")" />
+                </div>
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Tarih Tipi</label>
+                    <select id="visitDateType" name="visitDateType" class="form-control">
+                        <option value="0">Bugün</option>
+                        <option value="1">Seçili Tarih</option>
+                        <option value="2">Tüm Zamanlar</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-12 mt-4">
                     <a href="" data-hash="#userVisitList" id="a5" class="btn btn-danger" style="max-width: 100px; text-wrap: nowrap; height: auto" type="button"><i class="bi bi-search"></i> Süz</a>
                 </div>
             </div>
@@ -272,7 +294,25 @@
                         <option value="0">Tümünü Göster</option>
                     </select>
                 </div>
-                <div class="col-md-8 col-12 mt-4">
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Başlangıç Tarihi</label>
+                    <input type="date" id="loginStartDate" class="form-control"
+                           value="@(loginStartDate != null ? Convert.ToDateTime(loginStartDate).ToString("yyyy-MM-dd") : "")" />
+                </div>
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Bitiş Tarihi</label>
+                    <input type="date" id="loginEndDate" class="form-control"
+                           value="@(loginEndDate != null ? Convert.ToDateTime(loginEndDate).ToString("yyyy-MM-dd") : "")" />
+                </div>
+                <div class="col-md-2 col-12 mb-3">
+                    <label>Tarih Tipi</label>
+                    <select id="loginDateType" name="loginDateType" class="form-control">
+                        <option value="0">Bugün</option>
+                        <option value="1">Seçili Tarih</option>
+                        <option value="2">Tüm Zamanlar</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-12 mt-4">
                     <a href="" data-hash="#loginTable" id="a2" class="btn btn-danger" style="max-width: 100px; text-wrap: nowrap; height: auto" type="button"><i class="bi bi-search"></i> Süz</a>
                 </div>
             </div>
@@ -455,7 +495,9 @@
         const OFFSET_IDS = [
             "#loginUser", "#allAccessUser", "#visitedUser", "#visitedUserForList",
             "#userList", "#userListGroup", "#visitedUserForGroup",
-            "#allAccessStartDate", "#allAccessEndDate"
+            "#allAccessStartDate", "#allAccessEndDate",
+            "#loginStartDate", "#loginEndDate",
+            "#visitStartDate", "#visitEndDate"
         ];
 
         function buildParams() {
@@ -471,6 +513,12 @@
             const allAccessStartDate = $("#allAccessStartDate").val();
             const allAccessEndDate = $("#allAccessEndDate").val();
             const allAccessDateType = $("#allAccessDateType").val();
+            const loginDateType = $("#loginDateType").val();
+            const loginStartDate = $("#loginStartDate").val();
+            const loginEndDate = $("#loginEndDate").val();
+            const visitDateType = $("#visitDateType").val();
+            const visitStartDate = $("#visitStartDate").val();
+            const visitEndDate = $("#visitEndDate").val();
 
             if (user && user !== "0") params.push("LoginUser=" + encodeURIComponent(user));
             if (accessUser && accessUser !== "0") params.push("AccessUser=" + encodeURIComponent(accessUser));
@@ -479,9 +527,15 @@
             if (userList && userList !== "0") params.push("UserForList=" + encodeURIComponent(userList));
             if (userListGroup && userListGroup !== "0") params.push("UserForGroup=" + encodeURIComponent(userListGroup));
             if (allAccessDateType && allAccessDateType !== "0") params.push("allAccessDateType=" + encodeURIComponent(allAccessDateType));
+            if (loginStartDate && loginStartDate !== "0") params.push("loginStartDateParam=" + encodeURIComponent(loginStartDate));
+            if (loginEndDate && loginEndDate !== "0") params.push("loginEndDateParam=" + encodeURIComponent(loginEndDate));
+            if (loginDateType && loginDateType !== "0") params.push("loginDateType=" + encodeURIComponent(loginDateType));
             if (visitedUserForGroup && visitedUserForGroup !== "0") params.push("VisitedForGroup=" + encodeURIComponent(visitedUserForGroup));
             if (allAccessStartDate && allAccessStartDate !== "null") params.push("allAccessStartDateParam=" + encodeURIComponent(allAccessStartDate));
             if (allAccessEndDate && allAccessEndDate !== "null") params.push("allAccessEndDateParam=" + encodeURIComponent(allAccessEndDate));
+             if (visitStartDate && visitStartDate !== "0") params.push("visitStartDateParam=" + encodeURIComponent(visitStartDate));
+            if (visitEndDate && visitEndDate !== "0") params.push("visitEndDateParam=" + encodeURIComponent(visitEndDate));
+            if (visitDateType && visitDateType !== "0") params.push("visitDateType=" + encodeURIComponent(visitDateType));
 
             return params.length > 0 ? "?" + params.join("&") : "?";
         }
@@ -522,6 +576,9 @@
                         var allAccessUser = $("#allAccessUser");
                          var userList = $("#userList");
                          var userListGroup = $("#userListGroup");
+                         var allAccessDateType = $("#allAccessDateType");
+                         var loginDateType = $("#loginDateType");
+                         var visitDateType = $("#visitDateType");
 
                         $.each(datam, function (key, val) {
                             allAccessUser.append($("<option></option>")
@@ -550,6 +607,21 @@
                         var userListGroupParam = urlParams.get('UserForGroup');
                         if (userListGroupParam) {
                             userListGroup.val(userListGroupParam);
+                        };
+
+                        var allAccessDateTypeParam = urlParams.get('allAccessDateType');
+                        if (allAccessDateTypeParam) {
+                            allAccessDateType.val(allAccessDateTypeParam);
+                        };
+
+                        var loginDateTypeParam = urlParams.get('loginDateType');
+                        if (loginDateTypeParam) {
+                            loginDateType.val(loginDateTypeParam);
+                        };
+
+                        var visitDateTypeParam = urlParams.get('visitDateType');
+                        if (visitDateTypeParam) {
+                            visitDateType.val(visitDateTypeParam);
                         };
                     });
 

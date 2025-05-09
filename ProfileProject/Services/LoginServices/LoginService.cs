@@ -63,6 +63,5 @@ namespace ProfileProject.Services.LoginServices
             _context.Add(LoginCheckModel);
             _context.SaveChanges();
         }
-
     }
 }
