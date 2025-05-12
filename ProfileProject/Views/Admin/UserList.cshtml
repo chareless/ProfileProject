@@ -13,10 +13,39 @@
 
 <div class="container">
     <div class="row" id="new-design">
+        <div class="row">
+            <div class="col-md-2 col-12 mb-3">
+                <label>Aktif</label>
+                <select id="active" name="active" class="form-control">
+                    <option value="2">Tümünü Göster</option>
+                    <option value="1">Aktif</option>
+                    <option value="0">Pasif</option>
+                </select>
+            </div>
+            <div class="col-md-2 col-12 mb-3">
+                <label>Yönetici</label>
+                <select id="admin" name="admin" class="form-control">
+                    <option value="2">Tümünü Göster</option>
+                    <option value="1">Evet</option>
+                    <option value="0">Hayır</option>
+                </select>
+            </div>
+            <div class="col-md-2 col-12 mb-3">
+                <label>Silinmiş</label>
+                <select id="deleted" name="deleted" class="form-control">
+                    <option value="2">Tümünü Göster</option>
+                    <option value="1">Evet</option>
+                    <option value="0">Hayır</option>
+                </select>
+            </div>
+            <div class="col-md-6 col-12 mt-4">
+                <a href="" data-hash="#userList" id="a1" class="btn btn-danger" style="max-width: 100px; text-wrap: nowrap; height: auto" type="button"><i class="bi bi-search"></i> Süz</a>
+            </div>
+        </div>
         <div class="card table-card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover" style="text-align:center" id="pc-dt-simple">
+                    <table class="table table-hover" style="text-align:center" id="pc-dt-simple-1">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -31,7 +60,7 @@
                                 <th>ID</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="userList">
                             @foreach (var item in Model)
                             {
                                 index = index + 1;
@@ -60,13 +89,116 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <script src="/assets/js/plugins/simple-datatables.js"></script>
+
 <script>
-    const dataTable = new simpleDatatables.DataTable('#pc-dt-simple', {
-      sortable: false,
-      perPage: 10
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll("table[id^='pc-dt-simple-']").forEach(function (table) {
+        new simpleDatatables.DataTable(table, {
+          sortable: false,
+          perPage: 10
+        });
+      });
     });
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const OFFSET = 100;
+
+      function scrollToHash(hash) {
+        const targetId = hash.substring(1);
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+          const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+          const offsetPosition = elementPosition - OFFSET;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
+        }
+      }
+
+      // Tıklama ile scroll
+      document.querySelectorAll("a[href^='#']").forEach(function (anchor) {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const hash = this.getAttribute("href");
+          scrollToHash(hash);
+          history.pushState(null, null, hash);
+        });
+      });
+
+      // Sayfa yüklendiğinde hash varsa scroll yap
+      if (window.location.hash) {
+      setTimeout(() => {
+        scrollToHash(window.location.hash);
+      }, 100); // DOM'un tamamen yerleşmesini beklemek için kısa gecikme
+      }
+    });
+</script>
+
+<script src="../assets/js/plugins/bouncer.min.js"></script>
+<script src="../assets/js/pages/form-validation.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        const OFFSET_IDS = [
+            "#deleted", "#active", "#admin"
+        ];
+
+        function buildParams() {
+            const params = [];
+
+            const deleted = $("#deleted").val();
+            const active = $("#active").val();
+            const admin = $("#admin").val();
+
+            if (deleted && deleted !== "2") params.push("Deleted=" + encodeURIComponent(deleted));
+            if (active && active !== "2") params.push("Active=" + encodeURIComponent(active));
+            if (admin && admin !== "2") params.push("Admin=" + encodeURIComponent(admin));
+
+            return params.length > 0 ? "?" + params.join("&") : "?";
+        }
+
+        $("#a1").on("click", function (e) {
+            const hash = $(this).data("hash") || "";
+            const queryParams = buildParams();
+            const finalHref = queryParams + hash;
+
+            $(this).attr("href", finalHref);
+        });
+    });
+</script>
+
+<script>
+    var urlParams = new URLSearchParams(window.location.search);
+
+    var active = $("#active");
+
+    var activeParam = urlParams.get('Active');
+
+    if (activeParam) {
+        active.val(activeParam);
+    };
+
+    var admin = $("#admin");
+
+    var adminParam = urlParams.get('Admin');
+    if (adminParam) {
+        admin.val(adminParam);
+    };
+
+    var deleted = $("#deleted");
+
+    var deletedParam = urlParams.get('Deleted');
+    if (deletedParam) {
+        deleted.val(deletedParam);
+    };
+</script>
+

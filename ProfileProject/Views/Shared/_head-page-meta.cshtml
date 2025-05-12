@@ -1,15 +1,24 @@
 @Html.Partial("./_config.cshtml")
-<title>@ViewBag.Title | Index Grup Yönetim Paneli</title>
+@{
+    var title = "Profile Project";
+    if (!string.IsNullOrEmpty(ViewBag.BreadcrumbItemActive as string))
+    {
+        title += " | " + ViewBag.BreadcrumbItemActive;
+    }
+}
+<title>@title</title>
+
 <!-- [Meta] -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta
   name="description"
-      content="Index Grup Yönetim Paneli, yýllara göre istenilen istatistik tablolarýný ve detaylý verileri içeren bir Admin Dashboard'dýr." />
+      content="Profile Project, Kullanýcýlarýn kendi kiþisel sitelerini oluþturduðu bir ASP.NET MVC projesidir. Henüz yapým aþamasýndadýr. Kayýt olduktan sonra sitede kayýtlý kullanýcýlarýn
+                profillerini inceleyebilirsiniz. Proje, eðitim, sertifika vb. bilgilerinizi eklediðiniz online CV web sitesidir." />
 <meta
   name="keywords"
-      content="Index Grup, Dashboard, Yönetim Paneli" />
+      content="Profile Project, Deniz Sarýbayýr" />
 <meta name="author" content="Phoenixcoded" />
 
 <!-- [Favicon] icon -->

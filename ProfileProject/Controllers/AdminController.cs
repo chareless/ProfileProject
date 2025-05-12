@@ -41,9 +41,15 @@ namespace ProfileProject.Controllers
                 return NotFound();
         }
 
-        public IActionResult UserList()
+        public IActionResult UserList(string? Admin, string? Active, string? Deleted)
         {
-            var userList = _context.Users.ToList();
+            var userList = _context.Users.
+                Where(a=>Admin != null ? a.IsAdmin == (Admin == "1") : true ).
+                Where(a=> Active != null ? a.IsActive == (Active == "1") : true ).
+                Where(a=> Deleted != null ? a.IsDeleted == (Deleted == "1") : true )
+                
+                
+                .ToList();
             if (userList != null)
             {
                 return View(userList);

@@ -1,12 +1,69 @@
-﻿@{
-    var index = 0;
+﻿@model User
+
+@{
     ViewBag.Title = "Profile Project";
-    ViewBag.BreadcrumbItemActive = "Kullanıcı Düzenle";
+    ViewBag.BreadcrumbItemActive = $"Kullanıcı Düzenle";
     ViewBag.BreadcrumbItemToAdmin = "Admin Panel";
 }
 @Html.Partial("~/Views/Shared/_breadcrumb.cshtml")
 
 <div class="container">
     <div class="card">
+        <div id="uploadMessage" class="alert d-none" role="alert"></div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card-body">
+                    <div class="flex-shrink-0">
+                        <img src="@(string.IsNullOrEmpty(Model.Picture) ? "/assets/images/no-photo.png" : Model.Picture)"
+                             alt="User Picture"
+                             width="250px"
+                             height="250px"
+                             class="user-avtar rounded-circle"
+                             id="profilePicture"
+                             style="object-fit: cover;" />
+                    </div>
+                    <br />
+                    <h1>@Model.NameSurname</h1>
+                </div>
+                <div class="card-body">
+                    <h3>@Model.Job</h3>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card-body">
+                    <form class="form-signin" asp-controller="Admin" asp-action="UserEdit" method="post">
+                        <div class="row m-5">
+                            <div class="col-lg-2 form-check">
+                                <input type="checkbox" class="form-check-input" asp-for="IsActive" />
+                                <label class="form-check-label" asp-for="IsActive"></label>
+                                <span asp-validation-for="IsActive" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row m-5">
+                            <div class="col-lg-2 form-check">
+                                <input type="checkbox" class="form-check-input" asp-for="IsAdmin" />
+                                <label class="form-check-label" asp-for="IsAdmin"></label>
+                                <span asp-validation-for="IsAdmin" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row m-5">
+                            <div class="col-lg-2 form-check">
+                                <input type="checkbox" class="form-check-input" asp-for="IsDeleted" />
+                                <label class="form-check-label" asp-for="IsDeleted"></label>
+                                <span asp-validation-for="IsDeleted" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-lg-12" style="text-align: end; align-content:end; margin-top:20px;">
+                            <button class="btn btn-primary" type="submit">Güncelle</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+       
+       
+       
     </div>
 </div>

@@ -54,7 +54,7 @@ namespace ProfileProject.Controllers
                 .ToList();
 
             var userList = _context.Users
-                .Where(u => userIds.Contains(u.Id))
+                .Where(u => userIds.Contains(u.Id) && !u.IsDeleted && u.IsActive)
                 .ToList();
 
             // 5. Sýralý eþleþtirme: User + VisitCount
@@ -77,7 +77,7 @@ namespace ProfileProject.Controllers
                 .ToList();
 
             // Rastgele 10 kullanýcý seç
-            var randomlyUsers = _context.Users
+            var randomlyUsers = _context.Users.Where(a=>!a.IsDeleted && a.IsActive)
                 .OrderBy(u => Guid.NewGuid())
                 .Take(10)
                 .ToList();
@@ -102,6 +102,7 @@ namespace ProfileProject.Controllers
                 .Include(q => q.WorkExperiences)
                 .Include(q => q.Projects)
                 .AsEnumerable()
+                .Where(a=>!a.IsDeleted && a.IsActive)
                 .Where(a =>
                     (a.Email != null && a.Email.Trim().ToLower().Equals(normalizedParam)) ||
                     (a.Username != null && a.Username.ToLower().Contains(normalizedParam)) ||
