@@ -26,7 +26,7 @@ namespace ProfileProject.Controllers
         {
             var id = HttpContext.Session.GetInt32("UserId");
             var user = _context.Users.Include(a => a.Projects).Include(a => a.Certificates).Include(a => a.WorkExperiences).Include(a => a.Educations)
-                .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).FirstOrDefault(a => a.Id == id);
+                .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a => a.Socials).FirstOrDefault(a => a.Id == id);
             if (user != null)
             {
                 return View(user);
@@ -95,7 +95,7 @@ namespace ProfileProject.Controllers
         public IActionResult User(int id)
         {
             var user = _context.Users.Include(a => a.Projects).Include(a => a.Certificates).Include(a => a.WorkExperiences).Include(a => a.Educations)
-                 .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).FirstOrDefault(a => a.Id == id);
+                 .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a => a.Socials).FirstOrDefault(a => a.Id == id);
             if (user != null)
             {
                 var visitor = new UserVisit(user.Id);
@@ -114,7 +114,7 @@ namespace ProfileProject.Controllers
         public IActionResult Edit(int id)
         {
             var user = _context.Users.Include(a => a.Projects).Include(a => a.Certificates).Include(a => a.WorkExperiences).Include(a => a.Educations)
-                 .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).FirstOrDefault(a => a.Id == id);
+                 .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a => a.Socials).FirstOrDefault(a => a.Id == id);
             if (user != null)
             {
                 return View(user);
@@ -193,16 +193,71 @@ namespace ProfileProject.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(User model)
         {
-            var user = _context.Users.Include(a => a.Projects).Include(a => a.Certificates).Include(a => a.WorkExperiences).Include(a => a.Educations)
-                .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).FirstOrDefault(a => a.Id == model.Id);
-            if (user != null)
-            {
-                return View(user);
-            }
+            if (!ModelState.IsValid)
+                return View(model);
 
-            else
+            var user = _context.Users
+                .Include(a => a.Projects)
+                .Include(a => a.Certificates)
+                .Include(a => a.WorkExperiences)
+                .Include(a => a.Educations)
+                .Include(a => a.References)
+                .Include(a => a.Languages)
+                .Include(a => a.Skills)
+                .Include(a => a.Socials)
+                .FirstOrDefault(a => a.Id == model.Id);
+
+            if (user == null)
                 return NotFound();
+
+            user.NameSurname = model.NameSurname;
+            user.Email = model.Email;
+            user.MobilePhone1 = model.MobilePhone1;
+            user.MobilePhone2 = model.MobilePhone2;
+            user.Birthday = model.Birthday;
+            user.Job = model.Job;
+            user.About = model.About;
+            user.Marriage = model.Marriage;
+            user.DrivingLicense = model.DrivingLicense;
+            user.Military = model.Military;
+            user.Hobbies = model.Hobbies;
+            user.IsActive = model.IsActive;
+            user.UpdateWhen = GeneralService.GetCurrentDateStatic();
+
+            _context.Educations.RemoveRange(user.Educations);
+            _context.WorkExperiences.RemoveRange(user.WorkExperiences);
+            _context.Projects.RemoveRange(user.Projects);
+            _context.Certificates.RemoveRange(user.Certificates);
+            _context.References.RemoveRange(user.References);
+            _context.Languages.RemoveRange(user.Languages);
+            _context.Skills.RemoveRange(user.Skills);
+            _context.Socials.RemoveRange(user.Socials);
+
+            user.Educations = model.Educations;
+            user.WorkExperiences = model.WorkExperiences;
+            user.Projects = model.Projects;
+            user.Certificates = model.Certificates;
+            user.References = model.References;
+            user.Languages = model.Languages;
+            user.Skills = model.Skills;
+            user.Socials = model.Socials;
+
+            _context.SaveChanges();
+
+            TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+            {
+                AlertType = "success",
+                Title = "Baþarýlý",
+                Message = "Kullanýcý bilgileriniz baþarýlý bir þekilde güncellenmiþtir."
+            });
+
+            var id = HttpContext.Session.GetInt32("UserId");
+            if(id == model.Id)
+                return RedirectToAction("Index", "Profile");
+            else
+                return RedirectToAction($"User/{id}", "Profile");
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

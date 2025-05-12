@@ -6,9 +6,6 @@
     var session = HttpContextAccessor.HttpContext.Session;
 
     var id = session?.GetInt32("UserId");
-
-    ViewBag.Title = "Profile Project";
-    ViewBag.BreadcrumbItemActive = Model.NameSurname;
 }
 
 <div class="container">

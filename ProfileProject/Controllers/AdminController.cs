@@ -30,7 +30,7 @@ namespace ProfileProject.Controllers
         public IActionResult User(int id)
         {
             var user = _context.Users.Include(a => a.Projects).Include(a => a.Certificates).Include(a => a.WorkExperiences).Include(a => a.Educations)
-                 .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).FirstOrDefault(a => a.Id == id);
+                 .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a=>a.Socials).FirstOrDefault(a => a.Id == id);
             if (user != null)
             {
                 ViewData["User"] = user.NameSurname;

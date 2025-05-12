@@ -1,6 +1,126 @@
-﻿@{
-    ViewData["Title"] = "Profilimi Düzenle";
-}
-<h1>@ViewData["Title"]</h1>
+﻿@model User
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var session = HttpContextAccessor.HttpContext.Session;
 
-<p>Use this page to detail your site's privacy policy.</p>
+    var id = session?.GetInt32("UserId");
+
+    ViewBag.Title = "Profile Project";
+    ViewBag.BreadcrumbItemActive = Model.NameSurname;
+}
+@Html.Partial("~/Views/Shared/_breadcrumb.cshtml")
+
+<div class="container">
+    <div class="card">
+         <form id="editProfileForm" asp-controller="Profile" asp-action="Edit" method="post">
+        <div id="uploadMessage" class="alert d-none" role="alert"></div>
+            <input asp-for="Username" class="form-control" type="text" hidden/>
+            <input asp-for="Password" class="form-control" type="text" hidden/>
+
+        <div class="card-body">
+            <div class="row">
+                    <div class="col-lg-3">
+                        <div class="flex-shrink-0">
+                            <img src="@(string.IsNullOrEmpty(Model.Picture) ? "/assets/images/no-photo.png" : Model.Picture)"
+                                 alt="User Picture"
+                                 width="250px"
+                                 height="250px"
+                                 class="user-avtar rounded-circle"
+                                 id="profilePicture"
+                                 style="cursor:pointer; object-fit: cover;" />
+
+                            <!-- Gizli dosya yükleme input'u -->
+                            <input type="file" id="fileUpload" style="display:none;" accept="image/*" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        Adı Soyadı:  <input asp-for="NameSurname" class="form-control" type="text" />
+                        <br />
+                        Meslek:  <input asp-for="Job" class="form-control" type="text" />
+                        <br />
+                        Email:  <input asp-for="Email" class="form-control" type="text" />
+                    </div>
+                    <div class="col-lg-3">
+                        Doğum Tarihi:  <input asp-for="Birthday" class="form-control" type="text" />
+                        <br />
+                        Telefon 1:  <input asp-for="MobilePhone1" class="form-control" type="text" />
+                        <br />
+                        Telefon 2:  <input asp-for="MobilePhone2" class="form-control" type="text" />
+                    </div>
+                    <div class="col-lg-3">
+                        Ehliyet:  <input asp-for="DrivingLicense" class="form-control" type="text" />
+                        <br />
+                        Askerlik Durumu:  <input asp-for="Military" class="form-control" type="text" />
+                        <br />
+                        Evlilik Durumu:  <input asp-for="Marriage" class="form-control" type="text" />
+                    </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                        Hakkında:
+                        <textarea asp-for="About" class="form-control"></textarea>
+                </div>
+              
+            </div>
+                <div class="col-lg-12" style="text-align: center; align-content:center; margin-top:20px;">
+                    <button type="submit" class="btn btn-primary">Güncelle</button>
+                </div>
+           
+        </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const profilePicture = document.getElementById("profilePicture");
+            const fileUpload = document.getElementById("fileUpload");
+            const uploadMessage = document.getElementById("uploadMessage");
+
+            // Resme tıklanınca dosya seçim penceresi açılsın
+            profilePicture.addEventListener("click", () => {
+                fileUpload.click();
+            });
+
+            // Dosya seçildikten sonra upload başlasın
+            fileUpload.addEventListener("change", async function () {
+                if (fileUpload.files.length > 0) {
+                    const formData = new FormData();
+                    formData.append("formFile", fileUpload.files[0]);
+                    formData.append("UserID", "@Model.Id"); // ViewModel içinde UserID varsa
+
+                    try {
+                        const response = await fetch("/Profile/PictureUpload", {
+                            method: "POST",
+                            body: formData
+                        });
+
+                        if (response.ok) {
+                            const newFileName = await response.text();
+
+                            // Profil fotoğrafını güncelle
+                            profilePicture.src = `/Profiles/@Model.Id/Images/${newFileName}`;
+
+                            // Başarılı mesajı göster
+                            uploadMessage.textContent = "Kullanıcı görseli başarılı bir şekilde yüklendi.";
+                            uploadMessage.className = "alert alert-success mt-3";
+                            uploadMessage.classList.remove("d-none");
+                        } else {
+                            // Hata mesajı göster
+                            uploadMessage.textContent = "Yükleme başarısız.";
+                            uploadMessage.className = "alert alert-danger mt-3";
+                            uploadMessage.classList.remove("d-none");
+                        }
+                    } catch (e) {
+                        console.error("Upload hatası:", e);
+                        uploadMessage.textContent = "Yükleme sırasında bir hata oluştu.";
+                        uploadMessage.className = "alert alert-danger mt-3";
+                        uploadMessage.classList.remove("d-none");
+                    }
+                }
+            });
+        });
+    </script>
+}

@@ -110,6 +110,9 @@ namespace ProfileProject.Models
         [Display(Name = "Ziyaretçiler")]
         public virtual List<UserVisit> Visitors { get; set; } = new List<UserVisit>();
 
+        [Display(Name = "Sosyal Ağlar")]
+        public virtual List<Social> Socials { get; set; } = new List<Social>();
+
         public User()
         {
             IsDeleted = false;

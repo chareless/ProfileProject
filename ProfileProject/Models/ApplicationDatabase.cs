@@ -14,6 +14,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Skill> Skills { get; set; }
     public DbSet<Language> Languages { get; set; }
     public DbSet<Reference> References { get; set; }
+    public DbSet<Social> Socials { get; set; }
     public DbSet<Project> Projects { get; set; }
     public DbSet<Certificate> Certificates { get; set; }
     public DbSet<LoginControl> LoginControls { get; set; }
