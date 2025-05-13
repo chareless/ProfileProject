@@ -57,5 +57,16 @@ namespace ProfileProject.Models
             public List<User> randomlyUsers { get; set; }
         }
 
+        public class EducationDto
+        {
+            public string Title { get; set; }
+            public string Name { get; set; }
+            public string? GradePoint { get; set; }
+            public string? Information { get; set; }
+            public string StartWhen { get; set; } // ISO-8601 (yyyy-MM-dd)
+            public string? EndWhen { get; set; }
+        }
+
+
     }
 }

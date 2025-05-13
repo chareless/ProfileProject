@@ -12,13 +12,13 @@
 
 <div class="container">
     <div class="card">
-         <form id="editProfileForm" asp-controller="Profile" asp-action="Edit" method="post">
-        <div id="uploadMessage" class="alert d-none" role="alert"></div>
-            <input asp-for="Username" class="form-control" type="text" hidden/>
-            <input asp-for="Password" class="form-control" type="text" hidden/>
+        <form id="editProfileForm" asp-controller="Profile" asp-action="Edit" method="post">
+            <div id="uploadMessage" class="alert d-none" role="alert"></div>
+            <input asp-for="Username" class="form-control" type="text" hidden />
+            <input asp-for="Password" class="form-control" type="text" hidden />
 
-        <div class="card-body">
-            <div class="row">
+            <div class="card-body">
+                <div class="row">
                     <div class="col-lg-3">
                         <div class="flex-shrink-0">
                             <img src="@(string.IsNullOrEmpty(Model.Picture) ? "/assets/images/no-photo.png" : Model.Picture)"
@@ -54,19 +54,121 @@
                         <br />
                         Evlilik Durumu:  <input asp-for="Marriage" class="form-control" type="text" />
                     </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
                         Hakkında:
                         <textarea asp-for="About" class="form-control"></textarea>
+                    </div>
                 </div>
-              
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                        <button type="submit" class="btn btn-primary">Güncelle</button>
+                    </div>
+                </div>
+                <br />
+
+                <div class="row mt-5" id="education">
+                    <h3>Eğitim Bilgileri</h3>
+                    <table class="table" id="educationList">
+                        <thead>
+                            <tr>
+                                <th>Okul</th>
+                                <th>Derece</th>
+                                <th>Başlangıç</th>
+                                <th>Bitiş</th>
+                                <th>Not</th>
+                                <th>Açıklama</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Educations)
+                            {
+                                <tr>
+                                    <td>@item.Title</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.StartWhen</td>
+                                    <td>@item.EndWhen</td>
+                                    <td>@item.GradePoint</td>
+                                    <td>@item.Information</td>
+                                    <td>
+                                        <form asp-action="DeleteEducation" asp-controller="Profile" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Silmek istediğinize emin misiniz?');">
+                                            <button type="submit" class="btn btn-link p-0 border-0">
+                                                <i class="fa fa-trash" style="color:red"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <br />
+                <br />
+                <br />
+                <div>
+                    <form id="csrf-form">@Html.AntiForgeryToken()</form>
+
+                    <div class="container mt-4">
+                        <h4>Eğitim Bilgisi Ekle</h4>
+                        <div class="row mt-5">
+                            <div class="col-lg-2">
+                                <label for="educationTitle">Eğitim Derecesi</label>
+                                <input type="text" id="educationTitle" class="form-control" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label for="educationName">Okul Adı</label>
+                                <input type="text" id="educationName" class="form-control" />
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="gradePoint">Diploma Notu</label>
+                                <input type="text" id="gradePoint" class="form-control" />
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="startWhen">Başlangıç Tarihi</label>
+                                <input type="date" id="startWhen" class="form-control" />
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="endWhen">Bitiş Tarihi</label>
+                                <input type="date" id="endWhen" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="information">Açıklama</label>
+                                <textarea id="information" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                                <button type="button" class="btn btn-primary" onclick="AddEducation()">Ekle</button>
+                            </div>
+                        </div>
+                        <br />
+
+                        <h5>Eklenen Eğitimler</h5>
+                        <table class="table" id="educationTable">
+                            <thead>
+                                <tr>
+                                    <th>Okul</th>
+                                    <th>Derece</th>
+                                    <th>Başlangıç</th>
+                                    <th>Bitiş</th>
+                                    <th>Not</th>
+                                    <th>Açıklama</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+
+                        <button type="button" class="btn btn-primary" onclick="SaveEducations()">Kaydet</button>
+                        <hr />
+                    </div>
+                </div>
             </div>
-                <div class="col-lg-12" style="text-align: center; align-content:center; margin-top:20px;">
-                    <button type="submit" class="btn btn-primary">Güncelle</button>
-                </div>
-           
-        </div>
         </form>
     </div>
 </div>
@@ -123,4 +225,90 @@
             });
         });
     </script>
+
+    <script>
+             let educationList = [];
+
+             function AddEducation() {
+                 const title = $("#educationTitle").val();
+                 const name = $("#educationName").val();
+                 const grade = $("#gradePoint").val();
+                 const info = $("#information").val();
+                 const start = $("#startWhen").val();
+                 const end = $("#endWhen").val();
+
+                 if (!title || !name || !start) {
+                     alert("Derece, Okul Adı ve Başlangıç Tarihi zorunludur.");
+                     return;
+                 }
+
+                 const education = {
+                     Title: title,
+                     Name: name,
+                     GradePoint: grade,
+                     Information: info,
+                     StartWhen: start,
+                     EndWhen: end
+                 };
+
+                 educationList.push(education);
+                 updateEducationTable();
+                 clearEducationForm();
+             }
+
+             function clearEducationForm() {
+                 $("#educationTitle").val('');
+                 $("#educationName").val('');
+                 $("#gradePoint").val('');
+                 $("#information").val('');
+                 $("#startWhen").val('');
+                 $("#endWhen").val('');
+             }
+
+             function updateEducationTable() {
+             let html = '';
+            educationList.forEach((edu, index) => {
+                html += `<tr>
+                    <td>${edu.Name}</td>
+                    <td>${edu.Title}</td>
+                    <td>${edu.StartWhen}</td>
+                    <td>${edu.EndWhen}</td>
+                    <td>${edu.GradePoint || ''}</td>
+                    <td>${edu.Information || ''}</td>
+                    <td><button class="btn btn-sm btn-danger" onclick="deleteEducation(${index})">Sil</button></td>
+                </tr>`;
+            });
+            $("#educationTable tbody").html(html);
+        }
+
+             function deleteEducation(index) {
+                 if (confirm("Bu kaydı silmek istediğinize emin misiniz?")) {
+                     educationList.splice(index, 1);
+                   updateEducationTable();
+                 }
+             }
+
+             function SaveEducations() {
+                 const token = $('input[name="__RequestVerificationToken"]').val();
+
+                 $.ajax({
+                     type: "POST",
+                     url: "/Profile/SaveEducations",
+                     data: {
+                         __RequestVerificationToken: token,
+                         educationsJson: JSON.stringify(educationList)
+                     },
+                success: function (data) {
+                      educationList = [];
+                      window.location.href = data.redirectUrl;
+                     },
+                     error: function () {
+                         alert("Eğitim bilgileri kaydedilemedi.");
+                     }
+                 });
+             }
+    </script>
+
+
+
 }

@@ -187,8 +187,7 @@ namespace ProfileProject.Controllers
             return null;
         }
 
-
-
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(User model)
@@ -197,18 +196,18 @@ namespace ProfileProject.Controllers
                 return View(model);
 
             var user = _context.Users
-                .Include(a => a.Projects)
-                .Include(a => a.Certificates)
-                .Include(a => a.WorkExperiences)
-                .Include(a => a.Educations)
-                .Include(a => a.References)
-                .Include(a => a.Languages)
-                .Include(a => a.Skills)
-                .Include(a => a.Socials)
                 .FirstOrDefault(a => a.Id == model.Id);
 
             if (user == null)
+            {
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "success",
+                    Title = "Baþarýlý",
+                    Message = "Kullanýcý bilgileriniz baþarýlý bir þekilde güncellenmiþtir."
+                });
                 return NotFound();
+            }
 
             user.NameSurname = model.NameSurname;
             user.Email = model.Email;
@@ -224,39 +223,122 @@ namespace ProfileProject.Controllers
             user.IsActive = model.IsActive;
             user.UpdateWhen = GeneralService.GetCurrentDateStatic();
 
-            _context.Educations.RemoveRange(user.Educations);
-            _context.WorkExperiences.RemoveRange(user.WorkExperiences);
-            _context.Projects.RemoveRange(user.Projects);
-            _context.Certificates.RemoveRange(user.Certificates);
-            _context.References.RemoveRange(user.References);
-            _context.Languages.RemoveRange(user.Languages);
-            _context.Skills.RemoveRange(user.Skills);
-            _context.Socials.RemoveRange(user.Socials);
+            var id = HttpContext.Session.GetInt32("UserId");
+            if (id == model.Id)
+            {
+                _context.SaveChanges();
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "success",
+                    Title = "Baþarýlý",
+                    Message = "Kullanýcý bilgileriniz baþarýlý bir þekilde güncellenmiþtir."
+                });
+                return View(user);
+            }
+            else
+            {
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "warning",
+                    Title = "Hata",
+                    Message = "Kullanýcý bilgisi hatalý."
+                });
+                return NoContent();
+            }
+               
+        }
 
-            user.Educations = model.Educations;
-            user.WorkExperiences = model.WorkExperiences;
-            user.Projects = model.Projects;
-            user.Certificates = model.Certificates;
-            user.References = model.References;
-            user.Languages = model.Languages;
-            user.Skills = model.Skills;
-            user.Socials = model.Socials;
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SaveEducations(string educationsJson)
+        {
+            var dtoList = JsonConvert.DeserializeObject<List<EducationDto>>(educationsJson);
+
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "warning",
+                    Title = "Hata",
+                    Message = "Kullanýcý bulunamadý."
+                });
+                return NoContent();
+            }
+
+            var educationList = dtoList.Select(e => new Education
+            {
+                Title = e.Title,
+                Name = e.Name,
+                GradePoint = e.GradePoint,
+                Information = e.Information,
+                StartWhen = DateOnly.Parse(e.StartWhen),
+                EndWhen = string.IsNullOrEmpty(e.EndWhen) ? default : DateOnly.Parse(e.EndWhen),
+                UserId = userId.Value,
+                CreateWhen = DateTime.Now,
+                UpdateWhen = DateTime.Now,
+                IsDeleted = false
+            }).ToList();
+
+            _context.Educations.AddRange(educationList);
             _context.SaveChanges();
 
             TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
             {
                 AlertType = "success",
                 Title = "Baþarýlý",
-                Message = "Kullanýcý bilgileriniz baþarýlý bir þekilde güncellenmiþtir."
+                Message = "Eðitim bilgileriniz baþarýlý bir þekilde güncellenmiþtir."
             });
 
-            var id = HttpContext.Session.GetInt32("UserId");
-            if(id == model.Id)
-                return RedirectToAction("Index", "Profile");
-            else
-                return RedirectToAction($"User/{id}", "Profile");
+            return Json(new { redirectUrl = Url.Action("Edit", "Profile", new { id = userId }) });
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteEducation(int id)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "warning",
+                    Title = "Hata",
+                    Message = "Kullanýcý bulunamadý."
+                });
+                return NoContent();
+            }
+
+            var eduData = _context.Educations.FirstOrDefault(a => a.Id == id);
+            if (eduData != null)
+            {
+                _context.Educations.Remove(eduData);
+                _context.SaveChanges();
+
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "success",
+                    Title = "Baþarýlý",
+                    Message = "Eðitim bilgisi baþarýlý bir þekilde silinmiþtir."
+                });
+            }
+            else
+            {
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "warning",
+                    Title = "Hata",
+                    Message = "Eðitim bilgisi bulunamadý."
+                });
+            }
+
+            return RedirectToAction("Edit", "Profile", new { id = userId });
+        }
+
+
+
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
