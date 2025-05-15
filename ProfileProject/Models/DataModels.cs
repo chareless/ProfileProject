@@ -63,7 +63,16 @@ namespace ProfileProject.Models
             public string Name { get; set; }
             public string? GradePoint { get; set; }
             public string? Information { get; set; }
-            public string StartWhen { get; set; } // ISO-8601 (yyyy-MM-dd)
+            public string StartWhen { get; set; }
+            public string? EndWhen { get; set; }
+        }
+
+        public class WorkDto
+        {
+            public string Position { get; set; }
+            public string Company { get; set; }
+            public string? Information { get; set; }
+            public string StartWhen { get; set; }
             public string? EndWhen { get; set; }
         }
 

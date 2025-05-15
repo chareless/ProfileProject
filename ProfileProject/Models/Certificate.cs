@@ -24,7 +24,7 @@ namespace ProfileProject.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Bitiş Tarihi")]
-        public DateOnly EndWhen { get; set; }
+        public DateOnly? EndWhen { get; set; }
 
         [Display(Name = "Silindi")]
         public bool IsDeleted { get; set; } = false;

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ProfileProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250514131848_endwhen")]
+    partial class endwhen
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,7 +40,7 @@ namespace ProfileProject.Migrations
                     b.Property<DateTime>("CreateWhen")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateOnly?>("EndWhen")
+                    b.Property<DateOnly>("EndWhen")
                         .HasColumnType("date");
 
                     b.Property<string>("Information")
@@ -178,7 +181,7 @@ namespace ProfileProject.Migrations
                     b.Property<DateTime>("CreateWhen")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateOnly?>("EndWhen")
+                    b.Property<DateOnly>("EndWhen")
                         .HasColumnType("date");
 
                     b.Property<string>("Information")
@@ -192,7 +195,7 @@ namespace ProfileProject.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<DateOnly?>("StartWhen")
+                    b.Property<DateOnly>("StartWhen")
                         .HasColumnType("date");
 
                     b.Property<DateTime>("UpdateWhen")
@@ -536,7 +539,7 @@ namespace ProfileProject.Migrations
                     b.Property<DateTime>("CreateWhen")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateOnly?>("EndWhen")
+                    b.Property<DateOnly>("EndWhen")
                         .HasColumnType("date");
 
                     b.Property<string>("Information")

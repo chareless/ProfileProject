@@ -2,6 +2,7 @@
 
 @{
     var user = HttpContextAccessor.HttpContext.Session.GetString("Username");
+    var picture = HttpContextAccessor.HttpContext.Session.GetString("Picture");
     var email = HttpContextAccessor.HttpContext.Session.GetString("Email");
     var id = HttpContextAccessor.HttpContext.Session.GetInt32("UserId");
     var admin = HttpContextAccessor.HttpContext.Session.GetInt32("IsAdmin");
@@ -242,7 +243,12 @@
                    aria-haspopup="false"
                    data-bs-auto-close="outside"
                    aria-expanded="false">
-                    <img src="/assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
+                    <img src="@(string.IsNullOrEmpty(picture) ? "/assets/images/user/avatar-1.jpg": picture)"
+                         alt="User Picture"
+                         width="50px"
+                         height="50px"
+                         class="user-avtar rounded-circle"
+                         style="cursor:pointer; object-fit: cover;" />
                 </a>
                 <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                     <div class="dropdown-header d-flex align-items-center justify-content-between">
@@ -252,10 +258,15 @@
                         <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 225px)">
                             <div class="d-flex mb-1">
                                 <div class="flex-shrink-0">
-                                    <img src="/assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar wid-35" />
+                                    <img src="@(string.IsNullOrEmpty(picture) ? "/assets/images/user/avatar-1.jpg": picture)"
+                                         alt="User Picture"
+                                         width="50px"
+                                         height="50px"
+                                         class="user-avtar rounded-circle"
+                                         style="cursor:pointer; object-fit: cover;" />
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <a asp-action="Index" asp-controller="Profile"><h6 class="mb-1">@user 🖖</h6></a>
+                                 <h6 class="mb-1">   <a asp-action="Index" asp-controller="Profile">@user 🖖</a></h6>
                                     <span>@email</span>
                                 </div>
                             </div>

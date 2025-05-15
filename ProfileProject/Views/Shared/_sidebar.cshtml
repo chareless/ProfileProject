@@ -2,6 +2,7 @@
 
 @{
     var user = HttpContextAccessor.HttpContext.Session.GetString("Username");
+    var picture = HttpContextAccessor.HttpContext.Session.GetString("Picture");
     var admin = HttpContextAccessor.HttpContext.Session.GetInt32("IsAdmin");
 }
 <!-- [ Sidebar Menu ] start -->
@@ -23,7 +24,12 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
-                                <img src="/assets/images/user/avatar-1.jpg" alt="user-image" class="user-avtar wid-45 rounded-circle" />
+                                <img src="@(string.IsNullOrEmpty(picture) ? "/assets/images/user/avatar-1.jpg": picture)"
+                                     alt="User Picture"
+                                     width="50px"
+                                     height="50px"
+                                     class="user-avtar rounded-circle"
+                                     style="cursor:pointer; object-fit: cover;" />
                             </div>
                             <div class="flex-grow-1 ms-3 me-2">
                                 <a asp-action="Index" asp-controller="Profile"><h6 class="mb-0">@user</h6></a>

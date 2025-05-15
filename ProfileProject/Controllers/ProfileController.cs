@@ -29,6 +29,17 @@ namespace ProfileProject.Controllers
                 .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a => a.Socials).FirstOrDefault(a => a.Id == id);
             if (user != null)
             {
+                user.Educations = user.Educations.OrderBy(a => a.StartWhen).ToList();
+
+                user.Educations = user.Educations.Where(a => !a.IsDeleted).ToList();
+                user.Projects = user.Projects.Where(a => !a.IsDeleted).ToList();
+                user.Certificates = user.Certificates.Where(a => !a.IsDeleted).ToList();
+                user.WorkExperiences = user.WorkExperiences.Where(a => !a.IsDeleted).ToList();
+                user.References = user.References.Where(a => !a.IsDeleted).ToList();
+                user.Languages = user.Languages.Where(a => !a.IsDeleted).ToList();
+                user.Skills = user.Skills.Where(a => !a.IsDeleted).ToList();
+                user.Socials = user.Socials.Where(a => !a.IsDeleted).ToList();
+
                 return View(user);
             }
             else
@@ -98,6 +109,17 @@ namespace ProfileProject.Controllers
                  .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a => a.Socials).FirstOrDefault(a => a.Id == id);
             if (user != null)
             {
+                user.Educations = user.Educations.OrderBy(a => a.StartWhen).ToList();
+
+                user.Educations = user.Educations.Where(a => !a.IsDeleted).ToList();
+                user.Projects = user.Projects.Where(a => !a.IsDeleted).ToList();
+                user.Certificates = user.Certificates.Where(a => !a.IsDeleted).ToList();
+                user.WorkExperiences = user.WorkExperiences.Where(a => !a.IsDeleted).ToList();
+                user.References = user.References.Where(a => !a.IsDeleted).ToList();
+                user.Languages = user.Languages.Where(a => !a.IsDeleted).ToList();
+                user.Skills = user.Skills.Where(a => !a.IsDeleted).ToList();
+                user.Socials = user.Socials.Where(a => !a.IsDeleted).ToList();
+
                 var visitor = new UserVisit(user.Id);
                 _context.UserVisits.Add(visitor);
                 _context.SaveChanges();
@@ -117,6 +139,17 @@ namespace ProfileProject.Controllers
                  .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a => a.Socials).FirstOrDefault(a => a.Id == id);
             if (user != null)
             {
+                user.Educations = user.Educations.OrderBy(a => a.StartWhen).ToList();
+
+                user.Educations = user.Educations.Where(a => !a.IsDeleted).ToList();
+                user.Projects = user.Projects.Where(a => !a.IsDeleted).ToList();
+                user.Certificates = user.Certificates.Where(a => !a.IsDeleted).ToList();
+                user.WorkExperiences = user.WorkExperiences.Where(a => !a.IsDeleted).ToList();
+                user.References = user.References.Where(a => !a.IsDeleted).ToList();
+                user.Languages = user.Languages.Where(a => !a.IsDeleted).ToList();
+                user.Skills = user.Skills.Where(a => !a.IsDeleted).ToList();
+                user.Socials = user.Socials.Where(a => !a.IsDeleted).ToList();
+
                 return View(user);
             }
 
@@ -245,7 +278,6 @@ namespace ProfileProject.Controllers
                 });
                 return NoContent();
             }
-               
         }
 
 
@@ -267,29 +299,42 @@ namespace ProfileProject.Controllers
                 return NoContent();
             }
 
-            var educationList = dtoList.Select(e => new Education
+            var educationList = dtoList?.Select(e => new Education
             {
                 Title = e.Title,
                 Name = e.Name,
                 GradePoint = e.GradePoint,
                 Information = e.Information,
                 StartWhen = DateOnly.Parse(e.StartWhen),
-                EndWhen = string.IsNullOrEmpty(e.EndWhen) ? default : DateOnly.Parse(e.EndWhen),
+                EndWhen = string.IsNullOrEmpty(e.EndWhen) ? null : DateOnly.Parse(e.EndWhen),
                 UserId = userId.Value,
                 CreateWhen = DateTime.Now,
                 UpdateWhen = DateTime.Now,
                 IsDeleted = false
             }).ToList();
 
-            _context.Educations.AddRange(educationList);
-            _context.SaveChanges();
-
-            TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+            if(educationList != null)
             {
-                AlertType = "success",
-                Title = "Baþarýlý",
-                Message = "Eðitim bilgileriniz baþarýlý bir þekilde güncellenmiþtir."
-            });
+                _context.Educations.AddRange(educationList);
+                _context.SaveChanges();
+
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "success",
+                    Title = "Baþarýlý",
+                    Message = "Eðitim bilgileriniz baþarýlý bir þekilde güncellenmiþtir."
+                });
+            }
+            else
+            {
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "success",
+                    Title = "Hata",
+                    Message = "Eðitim bilgisi bulunamadý."
+                });
+            }
+          
 
             return Json(new { redirectUrl = Url.Action("Edit", "Profile", new { id = userId }) });
         }
@@ -310,10 +355,12 @@ namespace ProfileProject.Controllers
                 return NoContent();
             }
 
-            var eduData = _context.Educations.FirstOrDefault(a => a.Id == id);
-            if (eduData != null)
+            var data = _context.Educations.FirstOrDefault(a => a.Id == id);
+            if (data != null)
             {
-                _context.Educations.Remove(eduData);
+                data.IsDeleted = true;
+                data.UpdateWhen = GeneralService.GetCurrentDateStatic();
+                _context.Educations.Update(data);
                 _context.SaveChanges();
 
                 TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
@@ -336,10 +383,106 @@ namespace ProfileProject.Controllers
             return RedirectToAction("Edit", "Profile", new { id = userId });
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SaveWorks(string worksJson)
+        {
+            var dtoList = JsonConvert.DeserializeObject<List<WorkDto>>(worksJson);
+
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "warning",
+                    Title = "Hata",
+                    Message = "Kullanýcý bulunamadý."
+                });
+                return NoContent();
+            }
+
+            var workList = dtoList?.Select(e => new WorkExperience
+            {
+                Title = e.Position,
+                CompanyName = e.Company,
+                Information = e.Information,
+                StartWhen = DateOnly.Parse(e.StartWhen),
+                EndWhen = string.IsNullOrEmpty(e.EndWhen) ? null : DateOnly.Parse(e.EndWhen),
+                UserId = userId.Value,
+                CreateWhen = DateTime.Now,
+                UpdateWhen = DateTime.Now,
+                IsDeleted = false
+            }).ToList();
+
+            if (workList != null)
+            {
+                _context.WorkExperiences.AddRange(workList);
+                _context.SaveChanges();
+
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "success",
+                    Title = "Baþarýlý",
+                    Message = "Çalýþma bilgileriniz baþarýlý bir þekilde güncellenmiþtir."
+                });
+            }
+            else
+            {
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "success",
+                    Title = "Hata",
+                    Message = "Çalýþma bilgisi bulunamadý."
+                });
+            }
 
 
+            return Json(new { redirectUrl = Url.Action("Edit", "Profile", new { id = userId }) });
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteWork(int id)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "warning",
+                    Title = "Hata",
+                    Message = "Kullanýcý bulunamadý."
+                });
+                return NoContent();
+            }
 
+            var data = _context.WorkExperiences.FirstOrDefault(a => a.Id == id);
+            if (data != null)
+            {
+                data.IsDeleted = true;
+                data.UpdateWhen = GeneralService.GetCurrentDateStatic();
+                _context.WorkExperiences.Update(data);
+                _context.SaveChanges();
+
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "success",
+                    Title = "Baþarýlý",
+                    Message = "Çalýþma bilgisi baþarýlý bir þekilde silinmiþtir."
+                });
+            }
+            else
+            {
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "warning",
+                    Title = "Hata",
+                    Message = "Çalýþma bilgisi bulunamadý."
+                });
+            }
+
+            return RedirectToAction("Edit", "Profile", new { id = userId });
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

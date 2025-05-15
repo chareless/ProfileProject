@@ -12,12 +12,12 @@
 
 <div class="container">
     <div class="card">
-        <form id="editProfileForm" asp-controller="Profile" asp-action="Edit" method="post">
-            <div id="uploadMessage" class="alert d-none" role="alert"></div>
-            <input asp-for="Username" class="form-control" type="text" hidden />
-            <input asp-for="Password" class="form-control" type="text" hidden />
+        <div class="card-body">
+            <form id="editProfileForm" asp-controller="Profile" asp-action="Edit" method="post">
+                <div id="uploadMessage" class="alert d-none" role="alert"></div>
+                <input asp-for="Username" class="form-control" type="text" hidden />
+                <input asp-for="Password" class="form-control" type="text" hidden />
 
-            <div class="card-body">
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="flex-shrink-0">
@@ -67,10 +67,406 @@
                     </div>
                 </div>
                 <br />
+            </form>
+            <div class="row mt-5" id="links">
+                <h3>Bağlantılar</h3>
+                @for (int i = 0; i < Model.Socials.Count; i += 6)
+                {
+                    <div class="row mb-4">
+                        @for (int j = i; j < i + 6 && j < Model.Socials.Count; j++)
+                        {
+                            var link = Model.Socials[j];
+                            <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                                <div class="card shadow-sm h-100 text-center position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
+                                    <div class="card-body d-flex align-items-center justify-content-center" style="height: 100px;">
+                                        <h6 class="mb-0 fw-semibold text-dark">@link.Name</h6>
+                                    </div>
+                                    <form asp-action="DeleteLink" method="post" class="position-absolute top-0 end-0 m-2">
+                                        <input type="hidden" name="id" value="@link.Id" />
+                                        <button type="submit" class="btn btn-sm btn-danger" title="Sil">
+                                            &times;
+                                        </button>
+                                    </form>
+                                    <a href="@link.Link" target="_blank" class="stretched-link"></a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="row mt-5" id="skills">
+                <h3>Teknik Beceriler</h3>
+                @for (int i = 0; i < Model.Skills.Count; i += 2)
+                {
+                    <div class="row mb-4">
+                        <div class="col-lg-6">
+                            <div class="card shadow-sm h-100 position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
+                                <!-- Silme Butonu -->
+                                <form asp-action="DeleteSkill"
+                                      asp-controller="Profile"
+                                      asp-route-id="@Model.Skills[i].Id"
+                                      method="post"
+                                      class="delete-form"
+                                      data-form-id="@Model.Skills[i].Id"
+                                      style="position: absolute; top: 10px; right: 10px;">
+                                    <button type="submit"
+                                            class="btn btn-link p-0 border-0"
+                                            style="color: red;">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </form>
 
-                <div class="row mt-5" id="education">
-                    <h3>Eğitim Bilgileri</h3>
-                    <table class="table" id="educationList">
+                                <div class="card-body">
+                                    <h5 class="card-title">@Model.Skills[i].Title</h5>
+                                    <p class="card-text text-secondary">
+                                        @Model.Skills[i].Information
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        @if (i + 1 < Model.Skills.Count)
+                        {
+                            <div class="col-lg-6">
+                                <div class="card shadow-sm h-100 position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
+                                    <!-- Silme Butonu -->
+                                    <form asp-action="DeleteSkill"
+                                          asp-controller="Profile"
+                                          asp-route-id="@Model.Skills[i + 1].Id"
+                                          method="post"
+                                          class="delete-form"
+                                          data-form-id="@Model.Skills[i + 1].Id"
+                                          style="position: absolute; top: 10px; right: 10px;">
+                                        <button type="submit"
+                                                class="btn btn-link p-0 border-0"
+                                                style="color: red;">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+
+                                    <div class="card-body">
+                                        <h5 class="card-title">@Model.Skills[i + 1].Title</h5>
+                                        <p class="card-text text-secondary">
+                                            @Model.Skills[i + 1].Information
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="row mt-5" id="work">
+                <h3>İş Tecrübeleri</h3>
+                @foreach (var item in Model.WorkExperiences)
+                {
+                    <div class="card shadow-sm mb-4" style="border: 2px solid #ccc; border-radius: 10px; position: relative;">
+
+                        <!-- Silme Butonu - Sağ üst köşeye konumlandırılmış -->
+                        <form asp-action="DeleteWork"
+                              asp-controller="Profile"
+                              asp-route-id="@item.Id"
+                              method="post"
+                              class="delete-form"
+                              data-form-id="@item.Id"
+                              style="position: absolute; top: 10px; right: 10px;">
+                            <button type="button"
+                                    class="btn btn-link p-0 border-0 delete-btn"
+                                    data-form-id="@item.Id"
+                                    style="color: red;">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+
+                        <div class="row g-0 p-4 align-items-center">
+                            <!-- Sol blok: Tarih ve Başlık -->
+                            <div class="col-lg-3 text-center border-end">
+                                <div class="text-muted mb-2">
+                                    <i class="fa fa-calendar"></i>
+                                    <strong>@item.StartWhen.ToString("dd.MM.yyyy") - @item.EndWhen?.ToString("dd.MM.yyyy")</strong>
+                                </div>
+                                <div class="fw-semibold" style="font-size: 1.1rem;">
+                                    @item.CompanyName
+                                </div>
+                            </div>
+
+                            <!-- Sağ blok: Title ve açıklama -->
+                            <div class="col-lg-9 ps-4">
+                                <h4 class="mb-1">@item.Title</h4>
+                                <strong class="text-secondary mb-0">@item.Information</strong>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="row mt-5" id="education">
+                <h3>Eğitim Bilgileri</h3>
+
+                @foreach (var item in Model.Educations)
+                {
+                    <div class="card shadow-sm mb-4" style="border: 2px solid #ccc; border-radius: 10px; position: relative;">
+
+                        <!-- Silme Butonu - Sağ üst köşeye konumlandırılmış -->
+                        <form asp-action="DeleteEducation"
+                              asp-controller="Profile"
+                              asp-route-id="@item.Id"
+                              method="post"
+                              class="delete-form"
+                              data-form-id="@item.Id"
+                              style="position: absolute; top: 10px; right: 10px;">
+                            <button type="button"
+                                    class="btn btn-link p-0 border-0 delete-btn"
+                                    data-form-id="@item.Id"
+                                    style="color: red;">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+
+                        <div class="row g-0 p-4 align-items-center">
+                            <!-- Sol blok: Tarih ve Başlık -->
+                            <div class="col-lg-3 text-center border-end">
+                                <div class="text-muted mb-2">
+                                    <i class="fa fa-calendar"></i>
+                                    <strong>@item.StartWhen.ToString("dd.MM.yyyy") - @item.EndWhen?.ToString("dd.MM.yyyy")</strong>
+                                </div>
+                                <div class="fw-semibold" style="font-size: 1.1rem;">
+                                    @item.Title
+                                </div>
+                            </div>
+
+                            <!-- Sağ blok: Okul adı ve açıklama -->
+                            <div class="col-lg-9 ps-4">
+                                <h4 class="mb-1">@item.Name</h4>
+                                <strong class="text-secondary mb-0">@item.Information - @item.GradePoint</strong>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="row mt-5" id="references">
+                <h3>Referanslar</h3>
+                @for (int i = 0; i < Model.References.Count; i += 6)
+                {
+                    <div class="row mb-4">
+                        @for (int j = i; j < i + 6 && j < Model.References.Count; j++)
+                        {
+                            var reference = Model.References[j];
+                            <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                                <div class="card shadow-sm h-100 position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
+
+                                    <!-- Silme Butonu -->
+                                    <form asp-action="DeleteReference"
+                                          asp-controller="Profile"
+                                          asp-route-id="@reference.Id"
+                                          method="post"
+                                          class="delete-form"
+                                          data-form-id="@reference.Id"
+                                          style="position: absolute; top: 10px; right: 10px;">
+                                        <button type="submit"
+                                                class="btn btn-link p-0 border-0"
+                                                style="color: red;">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+
+                                    <div class="card-body p-3">
+                                        <h6 class="fw-bold mb-1">@reference.Name</h6>
+                                        <div class="text-muted mb-1">@reference.CompanyName</div>
+                                        <div class="mb-2">@reference.Title</div>
+
+                                        @if (!string.IsNullOrEmpty(reference.Email))
+                                        {
+                                            <div>
+                                                <i class="fa fa-envelope me-1"></i>
+                                                <a href="mailto:@reference.Email">@reference.Email</a>
+                                            </div>
+                                        }
+                                        @if (!string.IsNullOrEmpty(reference.MobilePhone))
+                                        {
+                                            <div>
+                                                <i class="fa fa-phone me-1"></i>
+                                                @reference.MobilePhone
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="row mt-5" id="languages">
+                <h3>Diller</h3>
+                @for (int i = 0; i < Model.Languages.Count; i += 4)
+                {
+                    <div class="row mb-4">
+                        @for (int j = i; j < i + 4 && j < Model.Languages.Count; j++)
+                        {
+                            var lang = Model.Languages[j];
+                            <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+                                <div class="card shadow-sm h-100 text-center position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
+
+                                    <!-- Silme Butonu -->
+                                    <form asp-action="DeleteLanguage"
+                                          asp-controller="Profile"
+                                          asp-route-id="@lang.Id"
+                                          method="post"
+                                          class="delete-form"
+                                          data-form-id="@lang.Id"
+                                          style="position: absolute; top: 10px; right: 10px;">
+                                        <button type="submit"
+                                                class="btn btn-link p-0 border-0"
+                                                style="color: red;">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+
+                                    <div class="card-body py-4">
+                                        <h5 class="card-title mb-0">
+                                            @lang.Name
+                                            @if (!string.IsNullOrWhiteSpace(lang.Information))
+                                            {
+                                                <span class="text-muted">(@lang.Information)</span>
+                                            }
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="row mt-5" id="certificates">
+                <h3>Sertifikalar</h3>
+                @for (int i = 0; i < Model.Certificates.Count; i += 2)
+                {
+                    <div class="row mb-4">
+                        @for (int j = i; j < i + 2 && j < Model.Certificates.Count; j++)
+                        {
+                            var cert = Model.Certificates[j];
+                            <div class="col-lg-6 col-md-12 mb-3">
+                                <div class="card shadow-sm h-100 position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
+
+                                    <!-- Silme Butonu -->
+                                    <form asp-action="DeleteCertificate"
+                                          asp-controller="Profile"
+                                          asp-route-id="@cert.Id"
+                                          method="post"
+                                          class="delete-form"
+                                          data-form-id="@cert.Id"
+                                          style="position: absolute; top: 10px; right: 10px;">
+                                        <button type="submit"
+                                                class="btn btn-link p-0 border-0"
+                                                style="color: red;">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+
+                                    <div class="card-body p-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h5 class="mb-0 fw-bold">@cert.CompanyName</h5>
+                                            <small class="text-muted">
+                                                <i class="fa fa-calendar"></i>
+                                                @cert.StartWhen.ToString("MM.yyyy")
+                                                -
+                                                @(cert.EndWhen.HasValue ? cert.EndWhen.Value.ToString("MM.yyyy") : "Devam ediyor")
+                                            </small>
+                                        </div>
+                                        <p class="mb-0 text-secondary">@cert.Information</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="row mt-5" id="projects">
+                <h3>Projeler</h3>
+                @foreach (var project in Model.Projects)
+                {
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm h-100 position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
+
+                                <!-- Silme Butonu -->
+                                <form asp-action="DeleteProject"
+                                      asp-controller="Profile"
+                                      asp-route-id="@project.Id"
+                                      method="post"
+                                      class="delete-form"
+                                      data-form-id="@project.Id"
+                                      style="position: absolute; top: 10px; right: 10px;">
+                                    <button type="submit"
+                                            class="btn btn-link p-0 border-0"
+                                            style="color: red;">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </form>
+
+                                <div class="card-body p-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h5 class="fw-bold mb-0">@project.Name</h5>
+                                        <small class="text-muted">
+                                            <i class="fa fa-calendar"></i>
+                                            @project.StartWhen?.ToString("MM.yyyy") - @project.EndWhen?.ToString("MM.yyyy")
+                                        </small>
+                                    </div>
+                                    @if (!string.IsNullOrWhiteSpace(project.Information))
+                                    {
+                                        <p class="text-secondary mb-0">@project.Information</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <br />
+            <br />
+            <br />
+            <hr />
+
+            <form id="csrf-form">@Html.AntiForgeryToken()</form>
+
+            <div id="addEducation">
+                <div class="container mt-4">
+                    <h4>Eğitim Bilgisi Ekle</h4>
+                    <div class="row mt-5">
+                        <div class="col-lg-2">
+                            <label for="educationTitle">Eğitim Derecesi</label>
+                            <input type="text" id="educationTitle" class="form-control" />
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="educationName">Okul Adı</label>
+                            <input type="text" id="educationName" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="gradePoint">Diploma Notu</label>
+                            <input type="text" id="gradePoint" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="startWhen">Başlangıç Tarihi</label>
+                            <input type="date" id="startWhen" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="endWhen">Bitiş Tarihi</label>
+                            <input type="date" id="endWhen" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="information">Açıklama</label>
+                            <textarea id="information" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddEducation()">Ekle</button>
+                        </div>
+                    </div>
+                    <br />
+                    <h5>Eklenen Eğitimler</h5>
+                    <table class="table" id="educationTable">
                         <thead>
                             <tr>
                                 <th>Okul</th>
@@ -79,119 +475,116 @@
                                 <th>Bitiş</th>
                                 <th>Not</th>
                                 <th>Açıklama</th>
-                                <th>İşlemler</th>
+                                <th></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach (var item in Model.Educations)
-                            {
-                                <tr>
-                                    <td>@item.Title</td>
-                                    <td>@item.Name</td>
-                                    <td>@item.StartWhen</td>
-                                    <td>@item.EndWhen</td>
-                                    <td>@item.GradePoint</td>
-                                    <td>@item.Information</td>
-                                    <td>
-                                        <form asp-action="DeleteEducation" asp-controller="Profile" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Silmek istediğinize emin misiniz?');">
-                                            <button type="submit" class="btn btn-link p-0 border-0">
-                                                <i class="fa fa-trash" style="color:red"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
+                        <tbody></tbody>
                     </table>
+                    <button type="button" class="btn btn-primary" onclick="SaveEducations()">Kaydet</button>
+                    <hr />
                 </div>
-
-                <br />
-                <br />
-                <br />
-                <div>
-                    <form id="csrf-form">@Html.AntiForgeryToken()</form>
-
-                    <div class="container mt-4">
-                        <h4>Eğitim Bilgisi Ekle</h4>
-                        <div class="row mt-5">
-                            <div class="col-lg-2">
-                                <label for="educationTitle">Eğitim Derecesi</label>
-                                <input type="text" id="educationTitle" class="form-control" />
-                            </div>
-                            <div class="col-lg-4">
-                                <label for="educationName">Okul Adı</label>
-                                <input type="text" id="educationName" class="form-control" />
-                            </div>
-                            <div class="col-lg-2">
-                                <label for="gradePoint">Diploma Notu</label>
-                                <input type="text" id="gradePoint" class="form-control" />
-                            </div>
-                            <div class="col-lg-2">
-                                <label for="startWhen">Başlangıç Tarihi</label>
-                                <input type="date" id="startWhen" class="form-control" />
-                            </div>
-                            <div class="col-lg-2">
-                                <label for="endWhen">Bitiş Tarihi</label>
-                                <input type="date" id="endWhen" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <label for="information">Açıklama</label>
-                                <textarea id="information" class="form-control"></textarea>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
-                                <button type="button" class="btn btn-primary" onclick="AddEducation()">Ekle</button>
-                            </div>
-                        </div>
-                        <br />
-
-                        <h5>Eklenen Eğitimler</h5>
-                        <table class="table" id="educationTable">
-                            <thead>
-                                <tr>
-                                    <th>Okul</th>
-                                    <th>Derece</th>
-                                    <th>Başlangıç</th>
-                                    <th>Bitiş</th>
-                                    <th>Not</th>
-                                    <th>Açıklama</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-
-                        <button type="button" class="btn btn-primary" onclick="SaveEducations()">Kaydet</button>
-                        <hr />
-                    </div>
-                </div>
+                <hr />
             </div>
-        </form>
+            <div id="addWork">
+                <div class="container mt-4">
+                    <h4>Çalışma Bilgisi Ekle</h4>
+                    <div class="row mt-5">
+                        <div class="col-lg-2">
+                            <label for="workCompany">Şirket Adı</label>
+                            <input type="text" id="workCompany" class="form-control" />
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="workPosition">Pozisyon</label>
+                            <input type="text" id="workPosition" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="workStartWhen">Başlangıç Tarihi</label>
+                            <input type="date" id="workStartWhen" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="workEndWhen">Bitiş Tarihi</label>
+                            <input type="date" id="workEndWhen" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="workInformation">Açıklama</label>
+                            <textarea id="workInformation" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddWork()">Ekle</button>
+                        </div>
+                    </div>
+                    <br />
+                    <h5>Eklenen Çalışma Bilgileri</h5>
+                    <table class="table" id="workTable">
+                        <thead>
+                            <tr>
+                                <th>Şirket Adı</th>
+                                <th>Pozisyon</th>
+                                <th>Başlangıç</th>
+                                <th>Bitiş</th>
+                                <th>Açıklama</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <button type="button" class="btn btn-primary" onclick="SaveWorks()">Kaydet</button>
+                    <hr />
+                </div>
+                <hr />
+            </div>
+           
+
+
+
+
+
+
+
+
+        </div>
     </div>
 </div>
+</div>
 
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Silme Onayı</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body">Bu kaydı silmek istediğinize emin misiniz?</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Sil</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const profilePicture = document.getElementById("profilePicture");
             const fileUpload = document.getElementById("fileUpload");
-            const uploadMessage = document.getElementById("uploadMessage");
 
-            // Resme tıklanınca dosya seçim penceresi açılsın
+            // Profil fotoğrafı tıklanırsa dosya inputu açılsın
             profilePicture.addEventListener("click", () => {
                 fileUpload.click();
             });
 
-            // Dosya seçildikten sonra upload başlasın
+            // Dosya seçildiğinde upload işlemi başlasın
             fileUpload.addEventListener("change", async function () {
                 if (fileUpload.files.length > 0) {
                     const formData = new FormData();
                     formData.append("formFile", fileUpload.files[0]);
-                    formData.append("UserID", "@Model.Id"); // ViewModel içinde UserID varsa
+                    formData.append("UserID", "@Model.Id");
 
                     try {
                         const response = await fetch("/Profile/PictureUpload", {
@@ -201,114 +594,235 @@
 
                         if (response.ok) {
                             const newFileName = await response.text();
-
-                            // Profil fotoğrafını güncelle
                             profilePicture.src = `/Profiles/@Model.Id/Images/${newFileName}`;
-
-                            // Başarılı mesajı göster
-                            uploadMessage.textContent = "Kullanıcı görseli başarılı bir şekilde yüklendi.";
-                            uploadMessage.className = "alert alert-success mt-3";
-                            uploadMessage.classList.remove("d-none");
+                            showAlertModal("Kullanıcı görseli başarılı bir şekilde yüklendi.", "Başarılı", "success");
                         } else {
-                            // Hata mesajı göster
-                            uploadMessage.textContent = "Yükleme başarısız.";
-                            uploadMessage.className = "alert alert-danger mt-3";
-                            uploadMessage.classList.remove("d-none");
+                            showAlertModal("Yükleme başarısız.", "Hata", "danger");
                         }
                     } catch (e) {
                         console.error("Upload hatası:", e);
-                        uploadMessage.textContent = "Yükleme sırasında bir hata oluştu.";
-                        uploadMessage.className = "alert alert-danger mt-3";
-                        uploadMessage.classList.remove("d-none");
+                        showAlertModal("Yükleme sırasında bir hata oluştu.", "Hata", "danger");
                     }
                 }
             });
+
+            // Form silme butonları için dinleyici
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const formId = this.getAttribute('data-form-id');
+                    formToDelete = document.querySelector(`form[data-form-id='${formId}']`);
+                    educationDeleteIndex = null;
+                    const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+                    modal.show();
+                });
+            });
         });
-    </script>
 
-    <script>
-             let educationList = [];
+        // Global değişkenler
+        let educationList = [];
+        let workList = [];
 
-             function AddEducation() {
-                 const title = $("#educationTitle").val();
-                 const name = $("#educationName").val();
-                 const grade = $("#gradePoint").val();
-                 const info = $("#information").val();
-                 const start = $("#startWhen").val();
-                 const end = $("#endWhen").val();
 
-                 if (!title || !name || !start) {
-                     alert("Derece, Okul Adı ve Başlangıç Tarihi zorunludur.");
-                     return;
-                 }
 
-                 const education = {
-                     Title: title,
-                     Name: name,
-                     GradePoint: grade,
-                     Information: info,
-                     StartWhen: start,
-                     EndWhen: end
-                 };
 
-                 educationList.push(education);
-                 updateEducationTable();
-                 clearEducationForm();
-             }
 
-             function clearEducationForm() {
-                 $("#educationTitle").val('');
-                 $("#educationName").val('');
-                 $("#gradePoint").val('');
-                 $("#information").val('');
-                 $("#startWhen").val('');
-                 $("#endWhen").val('');
-             }
+        let formToDelete = null;
+        let educationDeleteIndex = null;
+        let workDeleteIndex = null;
 
-             function updateEducationTable() {
-             let html = '';
+
+        // Alert modalı gösterme fonksiyonu
+        function showAlertModal(message, title, type = "danger") {
+            document.getElementById('generalAlertModalTitle').textContent = title;
+            document.getElementById('generalAlertModalBody').innerHTML = `<div class="alert alert-${type} m-0">${message}</div>`;
+            const modal = new bootstrap.Modal(document.getElementById('generalAlertModal'));
+            modal.show();
+        }
+
+        // Eğitim ekleme
+        function AddEducation() {
+            const title = $("#educationTitle").val();
+            const name = $("#educationName").val();
+            const grade = $("#gradePoint").val();
+            const info = $("#information").val();
+            const start = $("#startWhen").val();
+            const end = $("#endWhen").val();
+
+            if (!title || !name || !start) {
+                showAlertModal("Derece, Okul Adı ve Başlangıç Tarihi zorunludur.","Uyarı");
+                return;
+            }
+
+            const education = {
+                Title: title,
+                Name: name,
+                GradePoint: grade,
+                Information: info,
+                StartWhen: start,
+                EndWhen: end
+            };
+
+            educationList.push(education);
+            updateEducationTable();
+            clearEducationForm();
+        }
+
+        // Form alanlarını temizle
+        function clearEducationForm() {
+            $("#educationTitle").val('');
+            $("#educationName").val('');
+            $("#gradePoint").val('');
+            $("#information").val('');
+            $("#startWhen").val('');
+            $("#endWhen").val('');
+        }
+
+        // Eğitim listesini tabloya yazdır
+        function updateEducationTable() {
+            let html = '';
             educationList.forEach((edu, index) => {
                 html += `<tr>
-                    <td>${edu.Name}</td>
-                    <td>${edu.Title}</td>
-                    <td>${edu.StartWhen}</td>
-                    <td>${edu.EndWhen}</td>
+                    <td>${edu.Name || ''}</td>
+                    <td>${edu.Title || ''}</td>
+                    <td>${edu.StartWhen || ''}</td>
+                    <td>${edu.EndWhen || ''}</td>
                     <td>${edu.GradePoint || ''}</td>
                     <td>${edu.Information || ''}</td>
-                    <td><button class="btn btn-sm btn-danger" onclick="deleteEducation(${index})">Sil</button></td>
+                    <td><button class="btn btn-sm btn-danger" onclick="deleteEducation(event,${index})">Sil</button></td>
                 </tr>`;
             });
             $("#educationTable tbody").html(html);
         }
 
-             function deleteEducation(index) {
-                 if (confirm("Bu kaydı silmek istediğinize emin misiniz?")) {
-                     educationList.splice(index, 1);
-                   updateEducationTable();
-                 }
-             }
+        // Eğitim silme işlemi için modal göster
+        function deleteEducation(e,index) {
+             e.preventDefault();
+            educationDeleteIndex = index;
+            formToDelete = null;
+            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            modal.show();
+        }
 
-             function SaveEducations() {
-                 const token = $('input[name="__RequestVerificationToken"]').val();
+        // Silme onayı modal butonuna tıklanınca işlem yap
+        document.getElementById('confirmDeleteBtn').onclick = function () {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal'));
 
-                 $.ajax({
-                     type: "POST",
-                     url: "/Profile/SaveEducations",
-                     data: {
-                         __RequestVerificationToken: token,
-                         educationsJson: JSON.stringify(educationList)
-                     },
+            if (formToDelete) {
+                formToDelete.submit();
+                formToDelete = null;
+            } else if (educationDeleteIndex !== null) {
+                educationList.splice(educationDeleteIndex, 1);
+                updateEducationTable();
+                educationDeleteIndex = null;
+            }
+            else if (workDeleteIndex !== null) {
+                workList.splice(workDeleteIndex, 1);
+                updateWorkTable();
+                workDeleteIndex = null;
+            }
+
+            modal.hide();
+        };
+
+        // Eğitim listesini kaydet
+        function SaveEducations() {
+            const token = $('input[name="__RequestVerificationToken"]').val();
+            $.ajax({
+                type: "POST",
+                url: "/Profile/SaveEducations",
+                data: {
+                    __RequestVerificationToken: token,
+                    educationsJson: JSON.stringify(educationList)
+                },
                 success: function (data) {
-                      educationList = [];
-                      window.location.href = data.redirectUrl;
-                     },
-                     error: function () {
-                         alert("Eğitim bilgileri kaydedilemedi.");
-                     }
-                 });
-             }
+                    educationList = [];
+                    window.location.href = data.redirectUrl;
+                },
+                error: function () {
+                    showAlertModal("Eğitim bilgileri kaydedilemedi.", "Hata", "danger");
+                }
+            });
+        }
+
+
+
+        // İş ekleme
+        function AddWork() {
+            const company = $("#workCompany").val();
+            const title = $("#workPosition").val();
+            const info = $("#workInformation").val();
+            const start = $("#workStartWhen").val();
+            const end = $("#workEndWhen").val();
+
+            if (!company || !title || !start) {
+                showAlertModal("Şirket Adı, Pozisyon ve Başlangıç Tarihi zorunludur.","Uyarı");
+                return;
+            }
+
+            const work = {
+                Position: title,
+                Company: company,
+                Information: info,
+                StartWhen: start,
+                EndWhen: end
+            };
+
+            workList.push(work);
+            updateWorkTable();
+            clearWorkForm();
+        }
+
+        // Form alanlarını temizle
+        function clearWorkForm() {
+            $("#workCompany").val('');
+            $("#workPosition").val('');
+            $("#workInformation").val('');
+            $("#workStartWhen").val('');
+            $("#workEndWhen").val('');
+        }
+
+        // İş listesini tabloya yazdır
+        function updateWorkTable() {
+            let html = '';
+            workList.forEach((work, index) => {
+                html += `<tr>
+                    <td>${work.Company || ''}</td>
+                    <td>${work.Position || ''}</td>
+                    <td>${work.StartWhen || ''}</td>
+                    <td>${work.EndWhen || ''}</td>
+                    <td>${work.Information || ''}</td>
+                    <td><button class="btn btn-sm btn-danger" onclick="deleteWork(event,${index})">Sil</button></td>
+                </tr>`;
+            });
+            $("#workTable tbody").html(html);
+        }
+
+        // Eğitim silme işlemi için modal göster
+        function deleteWork(e,index) {
+             e.preventDefault();
+            workDeleteIndex = index;
+            formToDelete = null;
+            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            modal.show();
+        }
+
+         function SaveWorks() {
+            const token = $('input[name="__RequestVerificationToken"]').val();
+            $.ajax({
+                type: "POST",
+                url: "/Profile/SaveWorks",
+                data: {
+                    __RequestVerificationToken: token,
+                    worksJson: JSON.stringify(workList)
+                },
+                success: function (data) {
+                    workList = [];
+                    window.location.href = data.redirectUrl;
+                },
+                error: function () {
+                    showAlertModal("Çalışma bilgileri kaydedilemedi.", "Hata", "danger");
+                }
+            });
+        }
     </script>
-
-
-
 }

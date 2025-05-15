@@ -50,6 +50,7 @@ namespace ProfileProject.Controllers
                 var theme = loginService.GetUserTheme(user.Id);
 
                 HttpContext.Session.SetString("Username", user.Username);
+                HttpContext.Session.SetString("Picture", user.Picture);
                 HttpContext.Session.SetString("Email", user.Email);
                 HttpContext.Session.SetInt32("UserId", user.Id);
                 HttpContext.Session.SetString("SessionStartTime", date.ToString());
@@ -90,6 +91,7 @@ namespace ProfileProject.Controllers
         public IActionResult Logout()
         {
             HttpContext?.Session?.Remove("Username");
+            HttpContext?.Session?.Remove("Picture");
             HttpContext?.Session?.Remove("Email");
             HttpContext?.Session?.Remove("UserId");
             HttpContext?.Session?.Remove("SessionStartTime");
