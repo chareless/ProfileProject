@@ -76,6 +76,12 @@ namespace ProfileProject.Models
             public string? EndWhen { get; set; }
         }
 
+        public class SkillDto
+        {
+            public string Title { get; set; }
+            public string? Information { get; set; }
+        }
 
+        //EKLENECEKLER
     }
 }

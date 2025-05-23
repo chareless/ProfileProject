@@ -9,10 +9,9 @@ namespace ProfileProject.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Şirket Adı girmek zorunludur.")]
         [StringLength(250, ErrorMessage = "Şirket Adı 250 karakterden uzun olamaz!")]
         [Display(Name = "Şirket Adı")]
-        public string CompanyName { get; set; } = "";
+        public string? CompanyName { get; set; }
 
         [Required(ErrorMessage = "İsim Soyisim girmek zorunludur.")]
         [StringLength(100, ErrorMessage = "İsim Soyisim 100 karakterden uzun olamaz!")]

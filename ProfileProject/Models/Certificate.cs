@@ -14,6 +14,7 @@ namespace ProfileProject.Models
         [Display(Name = "Şirket Adı")]
         public string CompanyName { get; set; } = "";
 
+        [Required(ErrorMessage = "Açıklama girmek zorunludur.")]
         [Display(Name = "Açıklama")]
         public string Information { get; set; } = "";
 

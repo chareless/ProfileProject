@@ -283,6 +283,153 @@ namespace ProfileProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public IActionResult DeleteInformation(int id, string Type)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (Type == "Education")
+            {
+                if (userId == null)
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Kullanýcý bulunamadý."
+                    });
+                    return NoContent();
+                }
+
+                var data = _context.Educations.FirstOrDefault(a => a.Id == id);
+                if (data != null)
+                {
+                    data.IsDeleted = true;
+                    data.UpdateWhen = GeneralService.GetCurrentDateStatic();
+                    _context.Educations.Update(data);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Eðitim bilgisi baþarýlý bir þekilde silinmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Eðitim bilgisi bulunamadý."
+                    });
+                }
+            }
+            else if (Type == "Work")
+            {
+                if (userId == null)
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Kullanýcý bulunamadý."
+                    });
+                    return NoContent();
+                }
+
+                var data = _context.WorkExperiences.FirstOrDefault(a => a.Id == id);
+                if (data != null)
+                {
+                    data.IsDeleted = true;
+                    data.UpdateWhen = GeneralService.GetCurrentDateStatic();
+                    _context.WorkExperiences.Update(data);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Çalýþma bilgisi baþarýlý bir þekilde silinmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Çalýþma bilgisi bulunamadý."
+                    });
+                }
+            }
+            else if (Type == "Skill")
+            {
+                if (userId == null)
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Kullanýcý bulunamadý."
+                    });
+                    return NoContent();
+                }
+
+                var data = _context.Skills.FirstOrDefault(a => a.Id == id);
+                if (data != null)
+                {
+                    data.IsDeleted = true;
+                    data.UpdateWhen = GeneralService.GetCurrentDateStatic();
+                    _context.Skills.Update(data);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Teknik beceri baþarýlý bir þekilde silinmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Teknik beceri bulunamadý."
+                    });
+                }
+            }
+            else if (Type == "Social")
+            {
+                //EKLENECEKLER
+            }
+            else if (Type == "Reference")
+            {
+                //EKLENECEKLER
+            }
+            else if (Type == "Language")
+            {
+                //EKLENECEKLER
+            }
+            else if (Type == "Certificate")
+            {
+                //EKLENECEKLER
+            }
+            else if (Type == "Project")
+            {
+                //EKLENECEKLER
+            }
+            else
+            {
+
+            }
+            return RedirectToAction("Edit", "Profile", new { id = userId });
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult SaveEducations(string educationsJson)
         {
             var dtoList = JsonConvert.DeserializeObject<List<EducationDto>>(educationsJson);
@@ -338,50 +485,7 @@ namespace ProfileProject.Controllers
 
             return Json(new { redirectUrl = Url.Action("Edit", "Profile", new { id = userId }) });
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteEducation(int id)
-        {
-            var userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
-            {
-                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
-                {
-                    AlertType = "warning",
-                    Title = "Hata",
-                    Message = "Kullanýcý bulunamadý."
-                });
-                return NoContent();
-            }
-
-            var data = _context.Educations.FirstOrDefault(a => a.Id == id);
-            if (data != null)
-            {
-                data.IsDeleted = true;
-                data.UpdateWhen = GeneralService.GetCurrentDateStatic();
-                _context.Educations.Update(data);
-                _context.SaveChanges();
-
-                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
-                {
-                    AlertType = "success",
-                    Title = "Baþarýlý",
-                    Message = "Eðitim bilgisi baþarýlý bir þekilde silinmiþtir."
-                });
-            }
-            else
-            {
-                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
-                {
-                    AlertType = "warning",
-                    Title = "Hata",
-                    Message = "Eðitim bilgisi bulunamadý."
-                });
-            }
-
-            return RedirectToAction("Edit", "Profile", new { id = userId });
-        }
+      
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -442,8 +546,10 @@ namespace ProfileProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteWork(int id)
+        public IActionResult SaveSkills(string skillsJson)
         {
+            var dtoList = JsonConvert.DeserializeObject<List<SkillDto>>(skillsJson);
+
             var userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
             {
@@ -456,33 +562,43 @@ namespace ProfileProject.Controllers
                 return NoContent();
             }
 
-            var data = _context.WorkExperiences.FirstOrDefault(a => a.Id == id);
-            if (data != null)
+            var skillList = dtoList?.Select(e => new Skill
             {
-                data.IsDeleted = true;
-                data.UpdateWhen = GeneralService.GetCurrentDateStatic();
-                _context.WorkExperiences.Update(data);
+                Title = e.Title,
+                Information = e.Information,
+                UserId = userId.Value,
+                CreateWhen = DateTime.Now,
+                UpdateWhen = DateTime.Now,
+                IsDeleted = false
+            }).ToList();
+
+            if (skillList != null)
+            {
+                _context.Skills.AddRange(skillList);
                 _context.SaveChanges();
 
                 TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
                 {
                     AlertType = "success",
                     Title = "Baþarýlý",
-                    Message = "Çalýþma bilgisi baþarýlý bir þekilde silinmiþtir."
+                    Message = "Teknik becerileriniz baþarýlý bir þekilde güncellenmiþtir."
                 });
             }
             else
             {
                 TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
                 {
-                    AlertType = "warning",
+                    AlertType = "success",
                     Title = "Hata",
-                    Message = "Çalýþma bilgisi bulunamadý."
+                    Message = "Teknik beceri bulunamadý."
                 });
             }
 
-            return RedirectToAction("Edit", "Profile", new { id = userId });
+
+            return Json(new { redirectUrl = Url.Action("Edit", "Profile", new { id = userId }) });
         }
+
+        //EKLENECEKLER
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

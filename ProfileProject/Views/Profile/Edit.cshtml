@@ -81,10 +81,18 @@
                                     <div class="card-body d-flex align-items-center justify-content-center" style="height: 100px;">
                                         <h6 class="mb-0 fw-semibold text-dark">@link.Name</h6>
                                     </div>
-                                    <form asp-action="DeleteLink" method="post" class="position-absolute top-0 end-0 m-2">
-                                        <input type="hidden" name="id" value="@link.Id" />
-                                        <button type="submit" class="btn btn-sm btn-danger" title="Sil">
-                                            &times;
+                                    <form asp-action="DeleteInformation"
+                                          asp-controller="Profile"
+                                          asp-route-Type="Social"
+                                          asp-route-id="@Model.Socials[i].Id"
+                                          method="post"
+                                          class="delete-form"
+                                          data-form-id="@Model.Socials[i].Id"
+                                          style="position: absolute; top: 10px; right: 10px;">
+                                        <button type="submit"
+                                                class="btn btn-link p-0 border-0"
+                                                style="color: red;">
+                                            <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
                                     <a href="@link.Link" target="_blank" class="stretched-link"></a>
@@ -102,15 +110,17 @@
                         <div class="col-lg-6">
                             <div class="card shadow-sm h-100 position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
                                 <!-- Silme Butonu -->
-                                <form asp-action="DeleteSkill"
+                                <form asp-action="DeleteInformation"
                                       asp-controller="Profile"
+                                      asp-route-Type="Skill"
                                       asp-route-id="@Model.Skills[i].Id"
                                       method="post"
                                       class="delete-form"
                                       data-form-id="@Model.Skills[i].Id"
                                       style="position: absolute; top: 10px; right: 10px;">
-                                    <button type="submit"
-                                            class="btn btn-link p-0 border-0"
+                                    <button type="button"
+                                            class="btn btn-link p-0 border-0 delete-btn"
+                                            data-form-id="@Model.Skills[i].Id"
                                             style="color: red;">
                                         <i class="fa fa-trash"></i>
                                     </button>
@@ -129,15 +139,17 @@
                             <div class="col-lg-6">
                                 <div class="card shadow-sm h-100 position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
                                     <!-- Silme Butonu -->
-                                    <form asp-action="DeleteSkill"
+                                    <form asp-action="DeleteInformation"
                                           asp-controller="Profile"
+                                          asp-route-Type="Skill"
                                           asp-route-id="@Model.Skills[i + 1].Id"
                                           method="post"
                                           class="delete-form"
                                           data-form-id="@Model.Skills[i + 1].Id"
                                           style="position: absolute; top: 10px; right: 10px;">
-                                        <button type="submit"
-                                                class="btn btn-link p-0 border-0"
+                                        <button type="button"
+                                                class="btn btn-link p-0 border-0 delete-btn"
+                                                data-form-id="@Model.Skills[i + 1].Id"
                                                 style="color: red;">
                                             <i class="fa fa-trash"></i>
                                         </button>
@@ -162,8 +174,9 @@
                     <div class="card shadow-sm mb-4" style="border: 2px solid #ccc; border-radius: 10px; position: relative;">
 
                         <!-- Silme Butonu - Sağ üst köşeye konumlandırılmış -->
-                        <form asp-action="DeleteWork"
+                        <form asp-action="DeleteInformation"
                               asp-controller="Profile"
+                              asp-route-Type="Work"
                               asp-route-id="@item.Id"
                               method="post"
                               class="delete-form"
@@ -206,8 +219,9 @@
                     <div class="card shadow-sm mb-4" style="border: 2px solid #ccc; border-radius: 10px; position: relative;">
 
                         <!-- Silme Butonu - Sağ üst köşeye konumlandırılmış -->
-                        <form asp-action="DeleteEducation"
+                        <form asp-action="DeleteInformation"
                               asp-controller="Profile"
+                              asp-route-Type="Education"
                               asp-route-id="@item.Id"
                               method="post"
                               class="delete-form"
@@ -254,8 +268,9 @@
                                 <div class="card shadow-sm h-100 position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
 
                                     <!-- Silme Butonu -->
-                                    <form asp-action="DeleteReference"
+                                    <form asp-action="DeleteInformation"
                                           asp-controller="Profile"
+                                          asp-route-Type="Reference"
                                           asp-route-id="@reference.Id"
                                           method="post"
                                           class="delete-form"
@@ -306,8 +321,9 @@
                                 <div class="card shadow-sm h-100 text-center position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
 
                                     <!-- Silme Butonu -->
-                                    <form asp-action="DeleteLanguage"
+                                    <form asp-action="DeleteInformation"
                                           asp-controller="Profile"
+                                          asp-route-Type="Language"
                                           asp-route-id="@lang.Id"
                                           method="post"
                                           class="delete-form"
@@ -347,8 +363,9 @@
                                 <div class="card shadow-sm h-100 position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
 
                                     <!-- Silme Butonu -->
-                                    <form asp-action="DeleteCertificate"
+                                    <form asp-action="DeleteInformation"
                                           asp-controller="Profile"
+                                          asp-route-Type="Certificate"
                                           asp-route-id="@cert.Id"
                                           method="post"
                                           class="delete-form"
@@ -388,8 +405,9 @@
                             <div class="card shadow-sm h-100 position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
 
                                 <!-- Silme Butonu -->
-                                <form asp-action="DeleteProject"
+                                <form asp-action="DeleteInformation"
                                       asp-controller="Profile"
+                                      asp-route-Type="Project"
                                       asp-route-id="@project.Id"
                                       method="post"
                                       class="delete-form"
@@ -441,27 +459,27 @@
                             <input type="text" id="educationName" class="form-control" />
                         </div>
                         <div class="col-lg-2">
-                            <label for="gradePoint">Diploma Notu</label>
-                            <input type="text" id="gradePoint" class="form-control" />
+                            <label for="educationGradePoint">Diploma Notu</label>
+                            <input type="text" id="educationGradePoint" class="form-control" />
                         </div>
                         <div class="col-lg-2">
-                            <label for="startWhen">Başlangıç Tarihi</label>
-                            <input type="date" id="startWhen" class="form-control" />
+                            <label for="educationStartWhen">Başlangıç Tarihi</label>
+                            <input type="date" id="educationStartWhen" class="form-control" />
                         </div>
                         <div class="col-lg-2">
-                            <label for="endWhen">Bitiş Tarihi</label>
-                            <input type="date" id="endWhen" class="form-control" />
+                            <label for="educationEndWhen">Bitiş Tarihi</label>
+                            <input type="date" id="educationEndWhen" class="form-control" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <label for="information">Açıklama</label>
-                            <textarea id="information" class="form-control"></textarea>
+                            <label for="educationInformation">Açıklama</label>
+                            <textarea id="educationInformation" class="form-control"></textarea>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
-                            <button type="button" class="btn btn-primary" onclick="AddEducation()">Ekle</button>
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Education')">Ekle</button>
                         </div>
                     </div>
                     <br />
@@ -481,7 +499,6 @@
                         <tbody></tbody>
                     </table>
                     <button type="button" class="btn btn-primary" onclick="SaveEducations()">Kaydet</button>
-                    <hr />
                 </div>
                 <hr />
             </div>
@@ -514,7 +531,7 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
-                            <button type="button" class="btn btn-primary" onclick="AddWork()">Ekle</button>
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Work')">Ekle</button>
                         </div>
                     </div>
                     <br />
@@ -533,16 +550,48 @@
                         <tbody></tbody>
                     </table>
                     <button type="button" class="btn btn-primary" onclick="SaveWorks()">Kaydet</button>
-                    <hr />
                 </div>
                 <hr />
             </div>
-           
+            <div id="addSkills">
+                <div class="container mt-4">
+                    <h4>Teknik Beceri Ekle</h4>
+                    <div class="row mt-5">
+                        <div class="col-lg-3">
+                            <label for="skillName">Beceri Adı</label>
+                            <input type="text" id="skillName" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="skillInformation">Açıklama</label>
+                            <textarea id="skillInformation" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Skill')">Ekle</button>
+                        </div>
+                    </div>
+                    <br />
+                    <h5>Eklenen Teknik Beceriler</h5>
+                    <table class="table" id="skillTable">
+                        <thead>
+                            <tr>
+                                <th>Beceri Adı</th>
+                                <th>Açıklama</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <button type="button" class="btn btn-primary" onclick="SaveSkills()">Kaydet</button>
+                </div>
+                <hr />
+            </div>
 
 
-
-
-
+            @* //EKLENECEKLER *@
 
 
 
@@ -611,25 +660,12 @@
                 btn.addEventListener('click', function () {
                     const formId = this.getAttribute('data-form-id');
                     formToDelete = document.querySelector(`form[data-form-id='${formId}']`);
-                    educationDeleteIndex = null;
+                    deleteIndex = null;
                     const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
                     modal.show();
                 });
             });
         });
-
-        // Global değişkenler
-        let educationList = [];
-        let workList = [];
-
-
-
-
-
-        let formToDelete = null;
-        let educationDeleteIndex = null;
-        let workDeleteIndex = null;
-
 
         // Alert modalı gösterme fonksiyonu
         function showAlertModal(message, title, type = "danger") {
@@ -639,48 +675,269 @@
             modal.show();
         }
 
-        // Eğitim ekleme
-        function AddEducation() {
-            const title = $("#educationTitle").val();
-            const name = $("#educationName").val();
-            const grade = $("#gradePoint").val();
-            const info = $("#information").val();
-            const start = $("#startWhen").val();
-            const end = $("#endWhen").val();
+        // Silme işlemi için modal göster
+        function deleteInformation(e,index,type) {
+            e.preventDefault();
+            deleteIndex = index;
+            deleteType = type;
+            formToDelete = null;
+            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            modal.show();
+        }
 
-            if (!title || !name || !start) {
-                showAlertModal("Derece, Okul Adı ve Başlangıç Tarihi zorunludur.","Uyarı");
-                return;
+        // Global değişkenler
+        let educationList = [];
+        let workList = [];
+        let skillList = [];
+        let referenceList = [];
+        let languageList = [];
+        let socialList = [];
+        let projectList = [];
+        let certificateList = [];
+
+        let formToDelete = null;
+        let deleteIndex = null;
+        let deleteType = null;
+
+        // Ekleme
+        function AddInformation(type) {
+            if(type === "Education"){
+                const title = $("#educationTitle").val();
+                const name = $("#educationName").val();
+                const grade = $("#educationGradePoint").val();
+                const info = $("#educationInformation").val();
+                const start = $("#educationStartWhen").val();
+                const end = $("#educationEndWhen").val();
+
+                if (!title || !name || !start) {
+                    showAlertModal("Derece, Okul Adı ve Başlangıç Tarihi zorunludur.","Uyarı");
+                    return;
+                }
+
+                const education = {
+                    Title: title,
+                    Name: name,
+                    GradePoint: grade,
+                    Information: info,
+                    StartWhen: start,
+                    EndWhen: end
+                };
+
+                educationList.push(education);
+               
             }
+            else if(type === "Work"){
+                const company = $("#workCompany").val();
+                const title = $("#workPosition").val();
+                const info = $("#workInformation").val();
+                const start = $("#workStartWhen").val();
+                const end = $("#workEndWhen").val();
 
-            const education = {
-                Title: title,
-                Name: name,
-                GradePoint: grade,
-                Information: info,
-                StartWhen: start,
-                EndWhen: end
-            };
+                if (!company || !title || !start) {
+                    showAlertModal("Şirket Adı, Pozisyon ve Başlangıç Tarihi zorunludur.","Uyarı");
+                    return;
+                }
 
-            educationList.push(education);
-            updateEducationTable();
-            clearEducationForm();
+                const work = {
+                    Position: title,
+                    Company: company,
+                    Information: info,
+                    StartWhen: start,
+                    EndWhen: end
+                };
+
+                workList.push(work);
+            }
+            else if(type === "Skill"){
+                const title = $("#skillName").val();
+                const info = $("#skillInfo").val();
+
+                if (!title) {
+                    showAlertModal("Beceri Adı zorunludur.","Uyarı");
+                    return;
+                }
+
+                const skill = {
+                    Title: title,
+                    Information: info,
+                };
+
+                skillList.push(skill);
+            }
+            else if (type == "Social")
+            {
+                const name = $("#socialName").val();
+                const link = $("#socialLink").val();
+
+                if (!name || !link ) {
+                    showAlertModal("Sosyal Ağ Adı ve Link zorunludur.","Uyarı");
+                    return;
+                }
+
+                const social = {
+                    Name: name,
+                    Link: link,
+                };
+
+                socialList.push(social);
+            }
+            else if (type == "Reference")
+            {
+                const company = $("#referenceCompany").val();
+                const name = $("#referenceName").val();
+                const title = $("#referenceTitle").val();
+                const info = $("#referenceInformation").val();
+                const mail = $("#referenceMail").val();
+                const phone = $("#referencePhone").val();
+
+                if (!name) {
+                    showAlertModal("İsim zorunludur.","Uyarı");
+                    return;
+                }
+
+                const reference = {
+                    Company: company,
+                    Name: name,
+                    Title: title,
+                    Info: info,
+                    Mail: mail,
+                    Phone: phone
+                };
+
+                referenceList.push(reference);
+            }
+            else if (type == "Language")
+            {
+                const name = $("#languageName").val();
+                const info = $("#languageInfo").val();
+
+                if (!name) {
+                    showAlertModal("Dil zorunludur.","Uyarı");
+                    return;
+                }
+
+                const language = {
+                    Name: name,
+                    Info: info
+                };
+
+                languageList.push(language);
+            }
+            else if (type == "Certificate")
+            {
+                const company = $("#certificateName").val();
+                const info = $("#certificateInformation").val();
+                const start = $("#certificateStartWhen").val();
+                const end = $("#certificateEndWhen").val();
+
+                if (!company || !info || !start) {
+                    showAlertModal("İsim, Açıklama ve Başlangıç Tarihi zorunludur.","Uyarı");
+                    return;
+                }
+
+                const certificate = {
+                    Company: company,
+                    Info: info,
+                    StartWhen: start,
+                    EndWhen: end
+                };
+
+                certificateList.push(certificate);
+            }
+            else if (type == "Project")
+            {
+                const name = $("#projectName").val();
+                const info = $("#projectInfo").val();
+                const start = $("#projectStart").val();
+                const end = $("#projectEnd").val();
+
+                if (!name) {
+                    showAlertModal("Proje Adı zorunludur.","Uyarı");
+                    return;
+                }
+
+                const project = {
+                    Name: name,
+                    Info: info,
+                    StartWhen: start,
+                    EndWhen: end
+                };
+
+                projectList.push(project);
+            }
+            else{
+
+            }
+             updateTable(type);
+             clearForm(type);
         }
 
         // Form alanlarını temizle
-        function clearEducationForm() {
-            $("#educationTitle").val('');
-            $("#educationName").val('');
-            $("#gradePoint").val('');
-            $("#information").val('');
-            $("#startWhen").val('');
-            $("#endWhen").val('');
+        function clearForm(type) {
+            if(type === "Education"){
+                $("#educationTitle").val('');
+                $("#educationName").val('');
+                $("#educationGradePoint").val('');
+                $("#educationInformation").val('');
+                $("#educationStartWhen").val('');
+                $("#educationEndWhen").val('');
+            }
+            else if(type === "Work"){
+                $("#workCompany").val('');
+                $("#workPosition").val('');
+                $("#workInformation").val('');
+                $("#workStartWhen").val('');
+                $("#workEndWhen").val('');
+            }
+            else if(type === "Skill"){
+                $("#skillName").val('');
+                $("#skillInfo").val('');
+            }
+             else if (type == "Social")
+            {
+                $("#socialName").val('');
+                $("#socialLink").val('');
+            }
+            else if (type == "Reference")
+            {
+                $("#referenceCompany").val('');
+                $("#referenceName").val('');
+                $("#referenceTitle").val('');
+                $("#referenceInformation").val('');
+                $("#referencePhone").val('');
+                $("#referenceMail").val('');
+            }
+            else if (type == "Language")
+            {
+                $("#languageName").val('');
+                $("#languageInfo").val('');
+            }
+            else if (type == "Certificate")
+            {
+                $("#certificateName").val('');
+                $("#certificateInformation").val('');
+                $("#certificateStartWhen").val('');
+                $("#certificateEndWhen").val('');
+            }
+            else if (type == "Project")
+            {
+                $("#projectName").val('');
+                $("#projectInfo").val('');
+                $("#projectStart").val('');
+                $("#projectEnd").val('');
+            }
+            else
+            {
+
+            }
+          
         }
 
-        // Eğitim listesini tabloya yazdır
-        function updateEducationTable() {
-            let html = '';
-            educationList.forEach((edu, index) => {
+        // Listesini tabloya yazdır
+        function updateTable(type) {
+            if(type === "Education"){
+                let html = '';
+                educationList.forEach((edu, index) => {
                 html += `<tr>
                     <td>${edu.Name || ''}</td>
                     <td>${edu.Title || ''}</td>
@@ -688,19 +945,68 @@
                     <td>${edu.EndWhen || ''}</td>
                     <td>${edu.GradePoint || ''}</td>
                     <td>${edu.Information || ''}</td>
-                    <td><button class="btn btn-sm btn-danger" onclick="deleteEducation(event,${index})">Sil</button></td>
+                    <td><button class="btn btn-sm btn-danger" onclick="deleteInformation(event,${index},'Education')">Sil</button></td>
                 </tr>`;
-            });
-            $("#educationTable tbody").html(html);
-        }
+                });
+                $("#educationTable tbody").html(html);
+            }
+            else if(type === "Work"){
+                let html = '';
+                workList.forEach((work, index) => {
+                html += `<tr>
+                    <td>${work.Company || ''}</td>
+                    <td>${work.Position || ''}</td>
+                    <td>${work.StartWhen || ''}</td>
+                    <td>${work.EndWhen || ''}</td>
+                    <td>${work.Information || ''}</td>
+                    <td><button class="btn btn-sm btn-danger" onclick="deleteInformation(event,${index},'Work')">Sil</button></td>
+                </tr>`;
+                });
+                $("#workTable tbody").html(html);
+            }
+            else if(type === "Skill"){
+                let html = '';
+                skillList.forEach((skill, index) => {
+                html += `<tr>
+                    <td>${skill.Title || ''}</td>
+                    <td>${skill.Information || ''}</td>
+                    <td><button class="btn btn-sm btn-danger" onclick="deleteInformation(event,${index},'Skill')">Sil</button></td>
+                </tr>`;
+                });
+                $("#skillTable tbody").html(html);
+            }
+            else if (type == "Social")
+            {
+                  let html = '';
+                socialList.forEach((social, index) => {
+                html += `<tr>
+                    <td>${social.Name|| ''}</td>
+                    <td>${social.Link || ''}</td>
+                    <td><button class="btn btn-sm btn-danger" onclick="deleteInformation(event,${index},'Social')">Sil</button></td>
+                </tr>`;
+                });
+                $("#socialTable tbody").html(html);
+            }
+            else if (type == "Reference")
+            {
+                //EKLENECEKLER
+            }
+            else if (type == "Language")
+            {
+                //EKLENECEKLER
+            }
+            else if (type == "Certificate")
+            {
+                //EKLENECEKLER
+            }
+            else if (type == "Project")
+            {
+                //EKLENECEKLER
+            }
+            else
+            {
 
-        // Eğitim silme işlemi için modal göster
-        function deleteEducation(e,index) {
-             e.preventDefault();
-            educationDeleteIndex = index;
-            formToDelete = null;
-            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-            modal.show();
+            }
         }
 
         // Silme onayı modal butonuna tıklanınca işlem yap
@@ -710,21 +1016,51 @@
             if (formToDelete) {
                 formToDelete.submit();
                 formToDelete = null;
-            } else if (educationDeleteIndex !== null) {
-                educationList.splice(educationDeleteIndex, 1);
-                updateEducationTable();
-                educationDeleteIndex = null;
+            } 
+            else if(deleteIndex != null){
+                if (deleteType === "Education") {
+                    educationList.splice(deleteIndex, 1);
+                }
+                else if (deleteType === "Work") {
+                    workList.splice(deleteIndex, 1);
+                }
+                else if (deleteType === "Skill") {
+                    skillList.splice(deleteIndex, 1);
+                }
+                else if (deleteType == "Social")
+                {
+                    socialList.splice(deleteIndex, 1);
+                }
+                else if (deleteType == "Reference")
+                {
+                    referenceList.splice(deleteIndex, 1);
+                }
+                else if (deleteType == "Language")
+                {
+                    languageList.splice(deleteIndex, 1);
+                }
+                else if (deleteType == "Certificate")
+                {
+                    certificateList.splice(deleteIndex, 1);
+                }
+                else if (deleteType == "Project")
+                {
+                    projectList.splice(deleteIndex, 1);
+                }
+                else{
+
+                }
+                  updateTable(deleteType);
+                  deleteIndex = null;
             }
-            else if (workDeleteIndex !== null) {
-                workList.splice(workDeleteIndex, 1);
-                updateWorkTable();
-                workDeleteIndex = null;
+            else{
+
             }
 
             modal.hide();
         };
 
-        // Eğitim listesini kaydet
+        // Listesini kaydet
         function SaveEducations() {
             const token = $('input[name="__RequestVerificationToken"]').val();
             $.ajax({
@@ -744,69 +1080,7 @@
             });
         }
 
-
-
-        // İş ekleme
-        function AddWork() {
-            const company = $("#workCompany").val();
-            const title = $("#workPosition").val();
-            const info = $("#workInformation").val();
-            const start = $("#workStartWhen").val();
-            const end = $("#workEndWhen").val();
-
-            if (!company || !title || !start) {
-                showAlertModal("Şirket Adı, Pozisyon ve Başlangıç Tarihi zorunludur.","Uyarı");
-                return;
-            }
-
-            const work = {
-                Position: title,
-                Company: company,
-                Information: info,
-                StartWhen: start,
-                EndWhen: end
-            };
-
-            workList.push(work);
-            updateWorkTable();
-            clearWorkForm();
-        }
-
-        // Form alanlarını temizle
-        function clearWorkForm() {
-            $("#workCompany").val('');
-            $("#workPosition").val('');
-            $("#workInformation").val('');
-            $("#workStartWhen").val('');
-            $("#workEndWhen").val('');
-        }
-
-        // İş listesini tabloya yazdır
-        function updateWorkTable() {
-            let html = '';
-            workList.forEach((work, index) => {
-                html += `<tr>
-                    <td>${work.Company || ''}</td>
-                    <td>${work.Position || ''}</td>
-                    <td>${work.StartWhen || ''}</td>
-                    <td>${work.EndWhen || ''}</td>
-                    <td>${work.Information || ''}</td>
-                    <td><button class="btn btn-sm btn-danger" onclick="deleteWork(event,${index})">Sil</button></td>
-                </tr>`;
-            });
-            $("#workTable tbody").html(html);
-        }
-
-        // Eğitim silme işlemi için modal göster
-        function deleteWork(e,index) {
-             e.preventDefault();
-            workDeleteIndex = index;
-            formToDelete = null;
-            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-            modal.show();
-        }
-
-         function SaveWorks() {
+        function SaveWorks() {
             const token = $('input[name="__RequestVerificationToken"]').val();
             $.ajax({
                 type: "POST",
@@ -821,6 +1095,120 @@
                 },
                 error: function () {
                     showAlertModal("Çalışma bilgileri kaydedilemedi.", "Hata", "danger");
+                }
+            });
+        }
+
+        function SaveSkills() {
+            const token = $('input[name="__RequestVerificationToken"]').val();
+            $.ajax({
+                type: "POST",
+                url: "/Profile/SaveSkills",
+                data: {
+                    __RequestVerificationToken: token,
+                    skillsJson: JSON.stringify(skillList)
+                },
+                success: function (data) {
+                    skillList = [];
+                    window.location.href = data.redirectUrl;
+                },
+                error: function () {
+                    showAlertModal("Teknik beceriler kaydedilemedi.", "Hata", "danger");
+                }
+            });
+        }
+
+        function SaveSocials() {
+            const token = $('input[name="__RequestVerificationToken"]').val();
+            $.ajax({
+                type: "POST",
+                url: "/Profile/SaveSocials",
+                data: {
+                    __RequestVerificationToken: token,
+                    socialsJson: JSON.stringify(socialList)
+                },
+                success: function (data) {
+                    socialList = [];
+                    window.location.href = data.redirectUrl;
+                },
+                error: function () {
+                    showAlertModal("Sosyal ağlar kaydedilemedi.", "Hata", "danger");
+                }
+            });
+        }
+
+        function SaveLanguages() {
+            const token = $('input[name="__RequestVerificationToken"]').val();
+            $.ajax({
+                type: "POST",
+                url: "/Profile/SaveLanguages",
+                data: {
+                    __RequestVerificationToken: token,
+                    languagesJson: JSON.stringify(languageList)
+                },
+                success: function (data) {
+                    languageList = [];
+                    window.location.href = data.redirectUrl;
+                },
+                error: function () {
+                    showAlertModal("Diller kaydedilemedi.", "Hata", "danger");
+                }
+            });
+        }
+
+        function SaveReferences() {
+            const token = $('input[name="__RequestVerificationToken"]').val();
+            $.ajax({
+                type: "POST",
+                url: "/Profile/SaveReferences",
+                data: {
+                    __RequestVerificationToken: token,
+                    referencesJson: JSON.stringify(referenceList)
+                },
+                success: function (data) {
+                    referenceList = [];
+                    window.location.href = data.redirectUrl;
+                },
+                error: function () {
+                    showAlertModal("Referans bilgileri kaydedilemedi.", "Hata", "danger");
+                }
+            });
+        }
+
+        function SaveCertificates() {
+            const token = $('input[name="__RequestVerificationToken"]').val();
+            $.ajax({
+                type: "POST",
+                url: "/Profile/SaveCertificates",
+                data: {
+                    __RequestVerificationToken: token,
+                    certificatesJson: JSON.stringify(certificateList)
+                },
+                success: function (data) {
+                    certificateList = [];
+                    window.location.href = data.redirectUrl;
+                },
+                error: function () {
+                    showAlertModal("Sertifika bilgileri kaydedilemedi.", "Hata", "danger");
+                }
+            });
+        }
+
+        function SaveProjects() {
+            const token = $('input[name="__RequestVerificationToken"]').val();
+            $.ajax({
+                type: "POST",
+                url: "/Profile/SaveProjects",
+                data: {
+                    __RequestVerificationToken: token,
+                    projectsJson: JSON.stringify(projectList)
+                },
+                success: function (data) {
+                    projectList = [];
+                    window.location.href = data.redirectUrl;
+                },
+                error: function () {
+                    showAlertModal("Projeler kaydedilemedi.", "Hata", "danger");
                 }
             });
         }
