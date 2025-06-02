@@ -50,7 +50,7 @@ namespace ProfileProject.Controllers
                 var theme = loginService.GetUserTheme(user.Id);
 
                 HttpContext.Session.SetString("Username", user.Username);
-                HttpContext.Session.SetString("Picture", user.Picture);
+                HttpContext.Session.SetString("Picture", user.Picture ?? "");
                 HttpContext.Session.SetString("Email", user.Email);
                 HttpContext.Session.SetInt32("UserId", user.Id);
                 HttpContext.Session.SetString("SessionStartTime", date.ToString());

@@ -129,7 +129,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">@Model.Skills[i].Title</h5>
                                     <p class="card-text text-secondary">
-                                        @Model.Skills[i].Information
+                                        @Html.Raw(Model.Skills[i].Information)
                                     </p>
                                 </div>
                             </div>
@@ -158,7 +158,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title">@Model.Skills[i + 1].Title</h5>
                                         <p class="card-text text-secondary">
-                                            @Model.Skills[i + 1].Information
+                                            @Html.Raw(Model.Skills[i + 1].Information)
                                         </p>
                                     </div>
                                 </div>
@@ -205,7 +205,7 @@
                             <!-- Sağ blok: Title ve açıklama -->
                             <div class="col-lg-9 ps-4">
                                 <h4 class="mb-1">@item.Title</h4>
-                                <strong class="text-secondary mb-0">@item.Information</strong>
+                                <strong class="text-secondary mb-0">@Html.Raw(item.Information)</strong>
                             </div>
                         </div>
                     </div>
@@ -300,6 +300,12 @@
                                             <div>
                                                 <i class="fa fa-phone me-1"></i>
                                                 @reference.MobilePhone
+                                            </div>
+                                        }
+                                        @if (!string.IsNullOrEmpty(reference.Information))
+                                        {
+                                            <div>
+                                                <p class="mb-0 text-secondary">   @reference.Information</p>
                                             </div>
                                         }
                                     </div>
@@ -430,7 +436,7 @@
                                     </div>
                                     @if (!string.IsNullOrWhiteSpace(project.Information))
                                     {
-                                        <p class="text-secondary mb-0">@project.Information</p>
+                                        <p class="text-secondary mb-0">@Html.Raw(project.Information)</p>
                                     }
                                 </div>
                             </div>
@@ -443,6 +449,21 @@
             <br />
             <br />
             <hr />
+
+            <div class="card-body pc-component align-self-center" id="buttons-container">
+                <div class="d-flex justify-content-between align-items-center flex-wrap" style="justify-self: center">
+                    <div class="btn-group btn-group-responsive d-flex flex-wrap" role="group">
+                        <button type="button" class="btn btn-outline-secondary mb-2 me-1" data-table="addEducation">Eğitim Bilgisi Ekle</button>
+                        <button type="button" class="btn btn-outline-secondary mb-2 me-1" data-table="addWork">Çalışma Bilgisi Ekle</button>
+                        <button type="button" class="btn btn-outline-secondary mb-2 me-1" data-table="addSkill">Teknik Beceri Ekle</button>
+                        <button type="button" class="btn btn-outline-secondary mb-2 me-1" data-table="addSocial">Sosyal Ağ Ekle</button>
+                        <button type="button" class="btn btn-outline-secondary mb-2 me-1" data-table="addReference">Referans Ekle</button>
+                        <button type="button" class="btn btn-outline-secondary mb-2 me-1" data-table="addLanguage">Dil Ekle</button>
+                        <button type="button" class="btn btn-outline-secondary mb-2 me-1" data-table="addCertificate">Sertifika Ekle</button>
+                        <button type="button" class="btn btn-outline-secondary mb-2 me-1" data-table="addProject">Proje Ekle</button>
+                    </div>
+                </div>
+            </div>
 
             <form id="csrf-form">@Html.AntiForgeryToken()</form>
 
@@ -474,7 +495,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <label for="educationInformation">Açıklama</label>
-                            <textarea id="educationInformation" class="form-control"></textarea>
+                            <input type="text" id="educationInformation" class="form-control" />
                         </div>
                     </div>
                     <div class="row">
@@ -498,15 +519,17 @@
                         </thead>
                         <tbody></tbody>
                     </table>
-                    <button type="button" class="btn btn-primary" onclick="SaveEducations()">Kaydet</button>
+                    <button type="button" class="btn btn-primary" onclick="SaveInformation('Education')">Kaydet</button>
                 </div>
+                <br />
                 <hr />
+                <br />
             </div>
             <div id="addWork">
                 <div class="container mt-4">
                     <h4>Çalışma Bilgisi Ekle</h4>
                     <div class="row mt-5">
-                        <div class="col-lg-2">
+                        <div class="col-lg-4">
                             <label for="workCompany">Şirket Adı</label>
                             <input type="text" id="workCompany" class="form-control" />
                         </div>
@@ -549,23 +572,25 @@
                         </thead>
                         <tbody></tbody>
                     </table>
-                    <button type="button" class="btn btn-primary" onclick="SaveWorks()">Kaydet</button>
+                    <button type="button" class="btn btn-primary" onclick="SaveInformation('Work')">Kaydet</button>
                 </div>
+                <br />
                 <hr />
+                <br />
             </div>
-            <div id="addSkills">
+            <div id="addSkill">
                 <div class="container mt-4">
                     <h4>Teknik Beceri Ekle</h4>
                     <div class="row mt-5">
-                        <div class="col-lg-3">
+                        <div class="col-lg-6">
                             <label for="skillName">Beceri Adı</label>
                             <input type="text" id="skillName" class="form-control" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <label for="skillInformation">Açıklama</label>
-                            <textarea id="skillInformation" class="form-control"></textarea>
+                            <label for="skillInfo">Açıklama</label>
+                            <textarea id="skillInfo" class="form-control"></textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -585,16 +610,240 @@
                         </thead>
                         <tbody></tbody>
                     </table>
-                    <button type="button" class="btn btn-primary" onclick="SaveSkills()">Kaydet</button>
+                    <button type="button" class="btn btn-primary" onclick="SaveInformation('Skill')">Kaydet</button>
                 </div>
+                <br />
                 <hr />
+                <br />
             </div>
+            <div id="addSocial">
+                <div class="container mt-4">
+                    <h4>Sosyal Ağ Ekle</h4>
+                    <div class="row mt-5">
+                        <div class="col-lg-4">
+                            <label for="socialName">Açıklama</label>
+                            <input type="text" id="socialName" class="form-control" />
+                        </div>
+                        <div class="col-lg-8">
+                            <label for="socialLink">Link</label>
+                            <input type="text" id="socialLink" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Social')">Ekle</button>
+                        </div>
+                    </div>
+                    <br />
+                    <h5>Eklenen Sosyal Ağlar</h5>
+                    <table class="table" id="socialTable">
+                        <thead>
+                            <tr>
+                                <th>Açıklama</th>
+                                <th>Link</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <button type="button" class="btn btn-primary" onclick="SaveInformation('Social')">Kaydet</button>
+                </div>
+                <br />
+                <hr />
+                <br />
+            </div>
+            <div id="addReference">
+                <div class="container mt-4">
+                    <h4>Referans Ekle</h4>
+                    <div class="row mt-5">
+                        <div class="col-lg-6">
+                            <label for="referenceCompany">Şirket Adı</label>
+                            <input type="text" id="referenceCompany" class="form-control" />
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="referenceTitle">Pozisyon</label>
+                            <input type="text" id="referenceTitle" class="form-control" />
+                        </div>
 
-
-            @* //EKLENECEKLER *@
-
-
-
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="referenceName">İsim</label>
+                            <input type="text" id="referenceName" class="form-control" />
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="referenceMail">E-Mail</label>
+                            <input type="text" id="referenceMail" class="form-control" />
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="referencePhone">Telefon</label>
+                            <input type="text" id="referencePhone" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="referenceInformation">Açıklama</label>
+                            <textarea id="referenceInformation" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Reference')">Ekle</button>
+                        </div>
+                    </div>
+                    <br />
+                    <h5>Eklenen Referanslar</h5>
+                    <table class="table" id="referenceTable">
+                        <thead>
+                            <tr>
+                                <th>Şirket Adı</th>
+                                <th>İsim</th>
+                                <th>Pozisyon</th>
+                                <th>Açıklama</th>
+                                <th>Mail</th>
+                                <th>Telefon</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <button type="button" class="btn btn-primary" onclick="SaveInformation('Reference')">Kaydet</button>
+                </div>
+                <br />
+                <hr />
+                <br />
+            </div>
+            <div id="addLanguage">
+                <div class="container mt-4">
+                    <h4>Dil Ekle</h4>
+                    <div class="row mt-5">
+                        <div class="col-lg-4">
+                            <label for="languageName">Dil</label>
+                            <input type="text" id="languageName" class="form-control" />
+                        </div>
+                        <div class="col-lg-8">
+                            <label for="languageInfo">Açıklama</label>
+                            <input type="text" id="languageInfo" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Language')">Ekle</button>
+                        </div>
+                    </div>
+                    <br />
+                    <h5>Eklenen Diller</h5>
+                    <table class="table" id="languageTable">
+                        <thead>
+                            <tr>
+                                <th>Dil</th>
+                                <th>Açıklama</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <button type="button" class="btn btn-primary" onclick="SaveInformation('Work')">Kaydet</button>
+                </div>
+                <br />
+                <hr />
+                <br />
+            </div>
+            <div id="addCertificate">
+                <div class="container mt-4">
+                    <h4>Sertifika Ekle</h4>
+                    <div class="row mt-5">
+                        <div class="col-lg-3">
+                            <label for="certificateName">Sertifika Adı</label>
+                            <input type="text" id="certificateName" class="form-control" />
+                        </div>
+                        <div class="col-lg-5">
+                            <label for="certificateInformation">Açıklama</label>
+                            <input type="text" id="certificateInformation" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="certificateStartWhen">Başlangıç Tarihi</label>
+                            <input type="date" id="certificateStartWhen" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="certificateEndWhen">Bitiş Tarihi</label>
+                            <input type="date" id="certificateEndWhen" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Certificate')">Ekle</button>
+                        </div>
+                    </div>
+                    <br />
+                    <h5>Eklenen Sertifika Bilgileri</h5>
+                    <table class="table" id="certificateTable">
+                        <thead>
+                            <tr>
+                                <th>Sertifika Adı</th>
+                                <th>Açıklama</th>
+                                <th>Başlangıç</th>
+                                <th>Bitiş</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <button type="button" class="btn btn-primary" onclick="SaveInformation('Certificate')">Kaydet</button>
+                </div>
+                <br />
+                <hr />
+                <br />
+            </div>
+            <div id="addProject">
+                <div class="container mt-4">
+                    <h4>Proje Ekle</h4>
+                    <div class="row mt-5">
+                        <div class="col-lg-8">
+                            <label for="projectName">Proje Adı</label>
+                            <input type="text" id="projectName" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="projectStart">Başlangıç Tarihi</label>
+                            <input type="date" id="projectStart" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="projectEnd">Bitiş Tarihi</label>
+                            <input type="date" id="projectEnd" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="projectInfo">Açıklama</label>
+                            <textarea id="projectInfo" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Project')">Ekle</button>
+                        </div>
+                    </div>
+                    <br />
+                    <h5>Eklenen Projeler</h5>
+                    <table class="table" id="projectTable">
+                        <thead>
+                            <tr>
+                                <th>Şirket Adı</th>
+                                <th>Pozisyon</th>
+                                <th>Başlangıç</th>
+                                <th>Bitiş</th>
+                                <th>Açıklama</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <button type="button" class="btn btn-primary" onclick="SaveInformation('Project')">Kaydet</button>
+                </div>
+                <br />
+                <hr />
+                <br />
+            </div>
         </div>
     </div>
 </div>
@@ -618,6 +867,45 @@
 </div>
 
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js"></script>
+
+
+    <script>
+        tinymce.init({
+            selector: '#skillInfo,#workInformation,#projectInfo,#referenceInformation',
+            menubar: false,
+            plugins: 'link lists code',
+            toolbar: 'undo redo | bold italic underline | bullist numlist | link | code',
+            height: 300
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const buttons = document.querySelectorAll("[data-table]");
+            const sections = document.querySelectorAll("#addEducation, #addWork, #addSkill, #addSocial, #addReference, #addLanguage, #addCertificate, #addProject");
+
+            // İlk başta hepsini gizle
+            sections.forEach(section => section.style.display = "none");
+
+            buttons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const targetId = this.getAttribute("data-table");
+
+                    // Hepsini gizle
+                    sections.forEach(section => section.style.display = "none");
+
+                    // Sadece ilgili bölümü göster
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.style.display = "block";
+                    }
+                });
+            });
+        });
+    </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const profilePicture = document.getElementById("profilePicture");
@@ -724,12 +1012,12 @@
                 };
 
                 educationList.push(education);
-               
+
             }
             else if(type === "Work"){
                 const company = $("#workCompany").val();
                 const title = $("#workPosition").val();
-                const info = $("#workInformation").val();
+                const info = tinymce.get("workInformation").getContent();
                 const start = $("#workStartWhen").val();
                 const end = $("#workEndWhen").val();
 
@@ -750,7 +1038,8 @@
             }
             else if(type === "Skill"){
                 const title = $("#skillName").val();
-                const info = $("#skillInfo").val();
+                const info = tinymce.get("skillInfo").getContent();
+
 
                 if (!title) {
                     showAlertModal("Beceri Adı zorunludur.","Uyarı");
@@ -786,7 +1075,7 @@
                 const company = $("#referenceCompany").val();
                 const name = $("#referenceName").val();
                 const title = $("#referenceTitle").val();
-                const info = $("#referenceInformation").val();
+                const info = tinymce.get("referenceInformation").getContent();
                 const mail = $("#referenceMail").val();
                 const phone = $("#referencePhone").val();
 
@@ -847,7 +1136,7 @@
             else if (type == "Project")
             {
                 const name = $("#projectName").val();
-                const info = $("#projectInfo").val();
+                const info = tinymce.get("projectInfo").getContent();
                 const start = $("#projectStart").val();
                 const end = $("#projectEnd").val();
 
@@ -930,7 +1219,7 @@
             {
 
             }
-          
+
         }
 
         // Listesini tabloya yazdır
@@ -977,7 +1266,7 @@
             }
             else if (type == "Social")
             {
-                  let html = '';
+                let html = '';
                 socialList.forEach((social, index) => {
                 html += `<tr>
                     <td>${social.Name|| ''}</td>
@@ -989,19 +1278,59 @@
             }
             else if (type == "Reference")
             {
-                //EKLENECEKLER
+                let html = '';
+                referenceList.forEach((reference, index) => {
+                html += `<tr>
+                    <td>${reference.Company || ''}</td>
+                    <td>${reference.Name || ''}</td>
+                    <td>${reference.Title || ''}</td>
+                    <td>${reference.Info || ''}</td>
+                    <td>${reference.Mail || ''}</td>
+                    <td>${reference.Phone || ''}</td>
+                    <td><button class="btn btn-sm btn-danger" onclick="deleteInformation(event,${index},'Reference')">Sil</button></td>
+                </tr>`;
+                });
+                $("#referenceTable tbody").html(html);
             }
             else if (type == "Language")
             {
-                //EKLENECEKLER
+                let html = '';
+                languageList.forEach((language, index) => {
+                html += `<tr>
+                    <td>${language.Name || ''}</td>
+                    <td>${language.Info || ''}</td>
+                    <td><button class="btn btn-sm btn-danger" onclick="deleteInformation(event,${index},'Language')">Sil</button></td>
+                </tr>`;
+                });
+                $("#languageTable tbody").html(html);
             }
             else if (type == "Certificate")
             {
-                //EKLENECEKLER
+                let html = '';
+                certificateList.forEach((certificate, index) => {
+                html += `<tr>
+                    <td>${certificate.Company || ''}</td>
+                    <td>${certificate.Info || ''}</td>
+                    <td>${certificate.StartWhen || ''}</td>
+                    <td>${certificate.EndWhen || ''}</td>
+                    <td><button class="btn btn-sm btn-danger" onclick="deleteInformation(event,${index},'Certificate')">Sil</button></td>
+                </tr>`;
+                });
+                $("#certificateTable tbody").html(html);
             }
             else if (type == "Project")
             {
-                //EKLENECEKLER
+                 let html = '';
+                projectList.forEach((project, index) => {
+                html += `<tr>
+                    <td>${project.Name || ''}</td>
+                    <td>${project.Info || ''}</td>
+                    <td>${project.StartWhen || ''}</td>
+                    <td>${project.EndWhen || ''}</td>
+                    <td><button class="btn btn-sm btn-danger" onclick="deleteInformation(event,${index},'Project')">Sil</button></td>
+                </tr>`;
+                });
+                $("#projectTable tbody").html(html);
             }
             else
             {
@@ -1016,7 +1345,7 @@
             if (formToDelete) {
                 formToDelete.submit();
                 formToDelete = null;
-            } 
+            }
             else if(deleteIndex != null){
                 if (deleteType === "Education") {
                     educationList.splice(deleteIndex, 1);
@@ -1061,8 +1390,11 @@
         };
 
         // Listesini kaydet
-        function SaveEducations() {
-            const token = $('input[name="__RequestVerificationToken"]').val();
+
+        function SaveInformation(type){
+             const token = $('input[name="__RequestVerificationToken"]').val();
+            if(type == "Education"){
+
             $.ajax({
                 type: "POST",
                 url: "/Profile/SaveEducations",
@@ -1078,10 +1410,8 @@
                     showAlertModal("Eğitim bilgileri kaydedilemedi.", "Hata", "danger");
                 }
             });
-        }
-
-        function SaveWorks() {
-            const token = $('input[name="__RequestVerificationToken"]').val();
+            }
+            else if(type === "Work"){
             $.ajax({
                 type: "POST",
                 url: "/Profile/SaveWorks",
@@ -1097,11 +1427,9 @@
                     showAlertModal("Çalışma bilgileri kaydedilemedi.", "Hata", "danger");
                 }
             });
-        }
-
-        function SaveSkills() {
-            const token = $('input[name="__RequestVerificationToken"]').val();
-            $.ajax({
+            }
+            else if(type==="Skill"){
+                  $.ajax({
                 type: "POST",
                 url: "/Profile/SaveSkills",
                 data: {
@@ -1116,11 +1444,9 @@
                     showAlertModal("Teknik beceriler kaydedilemedi.", "Hata", "danger");
                 }
             });
-        }
-
-        function SaveSocials() {
-            const token = $('input[name="__RequestVerificationToken"]').val();
-            $.ajax({
+            }
+            else if(type === "Social"){
+                  $.ajax({
                 type: "POST",
                 url: "/Profile/SaveSocials",
                 data: {
@@ -1135,11 +1461,9 @@
                     showAlertModal("Sosyal ağlar kaydedilemedi.", "Hata", "danger");
                 }
             });
-        }
-
-        function SaveLanguages() {
-            const token = $('input[name="__RequestVerificationToken"]').val();
-            $.ajax({
+            }
+            else if(type === "Language"){
+                   $.ajax({
                 type: "POST",
                 url: "/Profile/SaveLanguages",
                 data: {
@@ -1154,11 +1478,9 @@
                     showAlertModal("Diller kaydedilemedi.", "Hata", "danger");
                 }
             });
-        }
-
-        function SaveReferences() {
-            const token = $('input[name="__RequestVerificationToken"]').val();
-            $.ajax({
+            }
+            else if(type === "Reference"){
+                  $.ajax({
                 type: "POST",
                 url: "/Profile/SaveReferences",
                 data: {
@@ -1173,11 +1495,9 @@
                     showAlertModal("Referans bilgileri kaydedilemedi.", "Hata", "danger");
                 }
             });
-        }
-
-        function SaveCertificates() {
-            const token = $('input[name="__RequestVerificationToken"]').val();
-            $.ajax({
+            }
+            else if(type==="Certificate"){
+                 $.ajax({
                 type: "POST",
                 url: "/Profile/SaveCertificates",
                 data: {
@@ -1192,11 +1512,9 @@
                     showAlertModal("Sertifika bilgileri kaydedilemedi.", "Hata", "danger");
                 }
             });
-        }
-
-        function SaveProjects() {
-            const token = $('input[name="__RequestVerificationToken"]').val();
-            $.ajax({
+            }
+            else if(type === "Project"){
+                  $.ajax({
                 type: "POST",
                 url: "/Profile/SaveProjects",
                 data: {
@@ -1211,6 +1529,10 @@
                     showAlertModal("Projeler kaydedilemedi.", "Hata", "danger");
                 }
             });
-        }
+            }
+            else{
+            }
+        };
+
     </script>
 }

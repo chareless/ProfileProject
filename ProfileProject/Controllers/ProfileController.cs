@@ -402,23 +402,193 @@ namespace ProfileProject.Controllers
             }
             else if (Type == "Social")
             {
-                //EKLENECEKLER
+                if (userId == null)
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Kullanýcý bulunamadý."
+                    });
+                    return NoContent();
+                }
+
+                var data = _context.Socials.FirstOrDefault(a => a.Id == id);
+                if (data != null)
+                {
+                    data.IsDeleted = true;
+                    data.UpdateWhen = GeneralService.GetCurrentDateStatic();
+                    _context.Socials.Update(data);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Sosyal að baþarýlý bir þekilde silinmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Sosyal að bulunamadý."
+                    });
+                }
             }
             else if (Type == "Reference")
             {
-                //EKLENECEKLER
+                if (userId == null)
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Kullanýcý bulunamadý."
+                    });
+                    return NoContent();
+                }
+
+                var data = _context.References.FirstOrDefault(a => a.Id == id);
+                if (data != null)
+                {
+                    data.IsDeleted = true;
+                    data.UpdateWhen = GeneralService.GetCurrentDateStatic();
+                    _context.References.Update(data);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Referans bilgisi baþarýlý bir þekilde silinmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Referans bilgisi bulunamadý."
+                    });
+                }
             }
             else if (Type == "Language")
             {
-                //EKLENECEKLER
+                if (userId == null)
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Kullanýcý bulunamadý."
+                    });
+                    return NoContent();
+                }
+
+                var data = _context.Languages.FirstOrDefault(a => a.Id == id);
+                if (data != null)
+                {
+                    data.IsDeleted = true;
+                    data.UpdateWhen = GeneralService.GetCurrentDateStatic();
+                    _context.Languages.Update(data);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Dil baþarýlý bir þekilde silinmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Dil bulunamadý."
+                    });
+                }
             }
             else if (Type == "Certificate")
             {
-                //EKLENECEKLER
+                if (userId == null)
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Kullanýcý bulunamadý."
+                    });
+                    return NoContent();
+                }
+
+                var data = _context.Certificates.FirstOrDefault(a => a.Id == id);
+                if (data != null)
+                {
+                    data.IsDeleted = true;
+                    data.UpdateWhen = GeneralService.GetCurrentDateStatic();
+                    _context.Certificates.Update(data);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Sertifika baþarýlý bir þekilde silinmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Sertifika bulunamadý."
+                    });
+                }
             }
             else if (Type == "Project")
             {
-                //EKLENECEKLER
+                if (userId == null)
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Kullanýcý bulunamadý."
+                    });
+                    return NoContent();
+                }
+
+                var data = _context.Projects.FirstOrDefault(a => a.Id == id);
+                if (data != null)
+                {
+                    data.IsDeleted = true;
+                    data.UpdateWhen = GeneralService.GetCurrentDateStatic();
+                    _context.Projects.Update(data);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Proje baþarýlý bir þekilde silinmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "warning",
+                        Title = "Hata",
+                        Message = "Proje bulunamadý."
+                    });
+                }
             }
             else
             {
