@@ -480,7 +480,7 @@
                             <input type="text" id="educationName" class="form-control" />
                         </div>
                         <div class="col-lg-2">
-                            <label for="educationGradePoint">Diploma Notu</label>
+                            <label for="educationGradePoint">Diploma Notu / Azami Not</label>
                             <input type="text" id="educationGradePoint" class="form-control" />
                         </div>
                         <div class="col-lg-2">
@@ -1170,17 +1170,20 @@
                 $("#educationInformation").val('');
                 $("#educationStartWhen").val('');
                 $("#educationEndWhen").val('');
+
             }
             else if(type === "Work"){
                 $("#workCompany").val('');
                 $("#workPosition").val('');
-                $("#workInformation").val('');
                 $("#workStartWhen").val('');
                 $("#workEndWhen").val('');
+                tinymce.get("workInformation").setContent('');
+
             }
             else if(type === "Skill"){
                 $("#skillName").val('');
-                $("#skillInfo").val('');
+                tinymce.get("skillInfo").setContent('');
+
             }
              else if (type == "Social")
             {
@@ -1192,9 +1195,10 @@
                 $("#referenceCompany").val('');
                 $("#referenceName").val('');
                 $("#referenceTitle").val('');
-                $("#referenceInformation").val('');
                 $("#referencePhone").val('');
                 $("#referenceMail").val('');
+                tinymce.get("referenceInformation").setContent('');
+
             }
             else if (type == "Language")
             {
@@ -1211,9 +1215,10 @@
             else if (type == "Project")
             {
                 $("#projectName").val('');
-                $("#projectInfo").val('');
                 $("#projectStart").val('');
                 $("#projectEnd").val('');
+                tinymce.get("projectInfo").setContent('');
+
             }
             else
             {
@@ -1393,145 +1398,60 @@
 
         function SaveInformation(type){
              const token = $('input[name="__RequestVerificationToken"]').val();
-            if(type == "Education"){
+             var request = "";
+             var errorMsg="";
 
-            $.ajax({
-                type: "POST",
-                url: "/Profile/SaveEducations",
-                data: {
-                    __RequestVerificationToken: token,
-                    educationsJson: JSON.stringify(educationList)
-                },
-                success: function (data) {
-                    educationList = [];
-                    window.location.href = data.redirectUrl;
-                },
-                error: function () {
-                    showAlertModal("Eğitim bilgileri kaydedilemedi.", "Hata", "danger");
-                }
-            });
+            if(type == "Education"){
+                request = JSON.stringify(educationList);
+                errorMsg = "Eğitim bilgileri kaydedilemedi."
             }
             else if(type === "Work"){
-            $.ajax({
-                type: "POST",
-                url: "/Profile/SaveWorks",
-                data: {
-                    __RequestVerificationToken: token,
-                    worksJson: JSON.stringify(workList)
-                },
-                success: function (data) {
-                    workList = [];
-                    window.location.href = data.redirectUrl;
-                },
-                error: function () {
-                    showAlertModal("Çalışma bilgileri kaydedilemedi.", "Hata", "danger");
-                }
-            });
+                  request = JSON.stringify(workList);
+                   errorMsg = "Çalışma bilgileri kaydedilemedi."
             }
             else if(type==="Skill"){
-                  $.ajax({
-                type: "POST",
-                url: "/Profile/SaveSkills",
-                data: {
-                    __RequestVerificationToken: token,
-                    skillsJson: JSON.stringify(skillList)
-                },
-                success: function (data) {
-                    skillList = [];
-                    window.location.href = data.redirectUrl;
-                },
-                error: function () {
-                    showAlertModal("Teknik beceriler kaydedilemedi.", "Hata", "danger");
-                }
-            });
+                  request = JSON.stringify(skillList);
+                   errorMsg = "Teknik beceri bilgileri kaydedilemedi."
             }
             else if(type === "Social"){
-                  $.ajax({
-                type: "POST",
-                url: "/Profile/SaveSocials",
-                data: {
-                    __RequestVerificationToken: token,
-                    socialsJson: JSON.stringify(socialList)
-                },
-                success: function (data) {
-                    socialList = [];
-                    window.location.href = data.redirectUrl;
-                },
-                error: function () {
-                    showAlertModal("Sosyal ağlar kaydedilemedi.", "Hata", "danger");
-                }
-            });
+                  request = JSON.stringify(socialList);
+                   errorMsg = "Sosyal ağ bilgileri kaydedilemedi."
             }
             else if(type === "Language"){
-                   $.ajax({
-                type: "POST",
-                url: "/Profile/SaveLanguages",
-                data: {
-                    __RequestVerificationToken: token,
-                    languagesJson: JSON.stringify(languageList)
-                },
-                success: function (data) {
-                    languageList = [];
-                    window.location.href = data.redirectUrl;
-                },
-                error: function () {
-                    showAlertModal("Diller kaydedilemedi.", "Hata", "danger");
-                }
-            });
+                  request = JSON.stringify(languageList);
+                   errorMsg = "Dil bilgileri kaydedilemedi."
             }
             else if(type === "Reference"){
-                  $.ajax({
-                type: "POST",
-                url: "/Profile/SaveReferences",
-                data: {
-                    __RequestVerificationToken: token,
-                    referencesJson: JSON.stringify(referenceList)
-                },
-                success: function (data) {
-                    referenceList = [];
-                    window.location.href = data.redirectUrl;
-                },
-                error: function () {
-                    showAlertModal("Referans bilgileri kaydedilemedi.", "Hata", "danger");
-                }
-            });
+                  request = JSON.stringify(referenceList);
+                   errorMsg = "Referans bilgileri kaydedilemedi."
             }
             else if(type==="Certificate"){
-                 $.ajax({
-                type: "POST",
-                url: "/Profile/SaveCertificates",
-                data: {
-                    __RequestVerificationToken: token,
-                    certificatesJson: JSON.stringify(certificateList)
-                },
-                success: function (data) {
-                    certificateList = [];
-                    window.location.href = data.redirectUrl;
-                },
-                error: function () {
-                    showAlertModal("Sertifika bilgileri kaydedilemedi.", "Hata", "danger");
-                }
-            });
+                  request = JSON.stringify(certificateList);
+                   errorMsg = "Sertifika bilgileri kaydedilemedi."
             }
             else if(type === "Project"){
-                  $.ajax({
+                  request = JSON.stringify(projectList);
+                   errorMsg = "Proje bilgileri kaydedilemedi."
+            }
+            else{
+                 errorMsg = "Genel Hata!"
+            }
+
+             $.ajax({
                 type: "POST",
-                url: "/Profile/SaveProjects",
+                url: "/Profile/SaveInformation",
                 data: {
                     __RequestVerificationToken: token,
-                    projectsJson: JSON.stringify(projectList)
+                    data: request,
+                    dataType: type
                 },
                 success: function (data) {
-                    projectList = [];
                     window.location.href = data.redirectUrl;
                 },
                 error: function () {
-                    showAlertModal("Projeler kaydedilemedi.", "Hata", "danger");
+                    showAlertModal(errorMsg, "Hata", "danger");
                 }
             });
-            }
-            else{
-            }
         };
 
     </script>

@@ -82,6 +82,42 @@ namespace ProfileProject.Models
             public string? Information { get; set; }
         }
 
-        //EKLENECEKLER
+        public class SocialDto
+        {
+            public string Name { get; set; }
+            public string Link { get; set; }
+        }
+
+        public class ReferenceDto
+        {
+            public string Name { get; set; }
+            public string? Title { get; set; }
+            public string? Info { get; set; }
+            public string? Company { get; set; }
+            public string? Mail { get; set; }
+            public string? Phone { get; set; }
+        }
+
+        public class LanguageDto
+        {
+            public string Name { get; set; }
+            public string? Info { get; set; }
+        }
+
+        public class CertificateDto
+        {
+            public string Company { get; set; }
+            public string Info { get; set; }
+            public string StartWhen { get; set; }
+            public string? EndWhen { get; set; }
+        }
+
+        public class ProjectDto
+        {
+            public string Name { get; set; }
+            public string? Info { get; set; }
+            public string? StartWhen { get; set; }
+            public string? EndWhen { get; set; }
+        }
     }
 }

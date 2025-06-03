@@ -600,10 +600,8 @@ namespace ProfileProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SaveEducations(string educationsJson)
+        public IActionResult SaveInformation(string data,string dataType)
         {
-            var dtoList = JsonConvert.DeserializeObject<List<EducationDto>>(educationsJson);
-
             var userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
             {
@@ -616,31 +614,300 @@ namespace ProfileProject.Controllers
                 return NoContent();
             }
 
-            var educationList = dtoList?.Select(e => new Education
+            if(dataType == "Education")
             {
-                Title = e.Title,
-                Name = e.Name,
-                GradePoint = e.GradePoint,
-                Information = e.Information,
-                StartWhen = DateOnly.Parse(e.StartWhen),
-                EndWhen = string.IsNullOrEmpty(e.EndWhen) ? null : DateOnly.Parse(e.EndWhen),
-                UserId = userId.Value,
-                CreateWhen = DateTime.Now,
-                UpdateWhen = DateTime.Now,
-                IsDeleted = false
-            }).ToList();
-
-            if(educationList != null)
-            {
-                _context.Educations.AddRange(educationList);
-                _context.SaveChanges();
-
-                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                var dtoList = JsonConvert.DeserializeObject<List<EducationDto>>(data);
+                var educationList = dtoList?.Select(e => new Education
                 {
-                    AlertType = "success",
-                    Title = "Baþarýlý",
-                    Message = "Eðitim bilgileriniz baþarýlý bir þekilde güncellenmiþtir."
-                });
+                    Title = e.Title,
+                    Name = e.Name,
+                    GradePoint = e.GradePoint,
+                    Information = e.Information,
+                    StartWhen = DateOnly.Parse(e.StartWhen),
+                    EndWhen = string.IsNullOrEmpty(e.EndWhen) ? null : DateOnly.Parse(e.EndWhen),
+                    UserId = userId.Value,
+                    CreateWhen = DateTime.Now,
+                    UpdateWhen = DateTime.Now,
+                    IsDeleted = false
+                }).ToList();
+
+                if (educationList != null && educationList.Count != 0)
+                {
+                    _context.Educations.AddRange(educationList);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Eðitim bilgileriniz baþarýlý bir þekilde güncellenmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Hata",
+                        Message = "Eðitim bilgisi bulunamadý."
+                    });
+                }
+            }
+            else if (dataType == "Work")
+            {
+                var dtoList = JsonConvert.DeserializeObject<List<WorkDto>>(data);
+                var workList = dtoList?.Select(e => new WorkExperience
+                {
+                    Title = e.Position,
+                    CompanyName = e.Company,
+                    Information = e.Information,
+                    StartWhen = DateOnly.Parse(e.StartWhen),
+                    EndWhen = string.IsNullOrEmpty(e.EndWhen) ? null : DateOnly.Parse(e.EndWhen),
+                    UserId = userId.Value,
+                    CreateWhen = DateTime.Now,
+                    UpdateWhen = DateTime.Now,
+                    IsDeleted = false
+                }).ToList();
+
+                if (workList != null && workList.Count != 0)
+                {
+                    _context.WorkExperiences.AddRange(workList);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Çalýþma bilgileriniz baþarýlý bir þekilde güncellenmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Hata",
+                        Message = "Çalýþma bilgisi bulunamadý."
+                    });
+                }
+            }
+            else if(dataType == "Skill")
+            {
+                var dtoList = JsonConvert.DeserializeObject<List<SkillDto>>(data);
+                var skillList = dtoList?.Select(e => new Skill
+                {
+                    Title = e.Title,
+                    Information = e.Information,
+                    UserId = userId.Value,
+                    CreateWhen = DateTime.Now,
+                    UpdateWhen = DateTime.Now,
+                    IsDeleted = false
+                }).ToList();
+
+                if (skillList != null && skillList.Count != 0)
+                {
+                    _context.Skills.AddRange(skillList);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Teknik becerileriniz baþarýlý bir þekilde güncellenmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Hata",
+                        Message = "Teknik beceri bulunamadý."
+                    });
+                }
+            }
+            else if(dataType == "Social")
+            {
+                var dtoList = JsonConvert.DeserializeObject<List<SocialDto>>(data);
+                var socialList = dtoList?.Select(e => new Social
+                {
+                    Name = e.Name,
+                    Link = e.Link,
+                    UserId = userId.Value,
+                    CreateWhen = DateTime.Now,
+                    UpdateWhen = DateTime.Now,
+                    IsDeleted = false
+                }).ToList();
+
+                if (socialList != null)
+                {
+                    _context.Socials.AddRange(socialList);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Sosyal aðlar baþarýlý bir þekilde güncellenmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Hata",
+                        Message = "Sosyal að bulunamadý."
+                    });
+                }
+            }
+            else if(dataType == "Language")
+            {
+                var dtoList = JsonConvert.DeserializeObject<List<LanguageDto>>(data);
+                var languageList = dtoList?.Select(e => new Language
+                {
+                    Name = e.Name,
+                    Information = e.Info,
+                    UserId = userId.Value,
+                    CreateWhen = DateTime.Now,
+                    UpdateWhen = DateTime.Now,
+                    IsDeleted = false
+                }).ToList();
+
+                if (languageList != null && languageList.Count != 0)
+                {
+                    _context.Languages.AddRange(languageList);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Diller baþarýlý bir þekilde güncellenmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Hata",
+                        Message = "Dil bulunamadý."
+                    });
+                }
+            }
+            else if (dataType == "Reference")
+            {
+                var dtoList = JsonConvert.DeserializeObject<List<ReferenceDto>>(data);
+                var referenceList = dtoList?.Select(e => new Reference
+                {
+                    Name = e.Name,
+                    Information = e.Info,
+                    CompanyName = e.Company,
+                    Email = e.Mail,
+                    MobilePhone = e.Phone,
+                    Title = e.Title,
+                    UserId = userId.Value,
+                    CreateWhen = DateTime.Now,
+                    UpdateWhen = DateTime.Now,
+                    IsDeleted = false
+                }).ToList();
+
+                if (referenceList != null && referenceList.Count != 0)
+                {
+                    _context.References.AddRange(referenceList);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Referans bilgileri baþarýlý bir þekilde güncellenmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Hata",
+                        Message = "Referans bilgisi bulunamadý."
+                    });
+                }
+            }
+            else if (dataType == "Certificate")
+            {
+                var dtoList = JsonConvert.DeserializeObject<List<CertificateDto>>(data);
+                var certificateList = dtoList?.Select(e => new Certificate
+                {
+                    CompanyName = e.Company,
+                    StartWhen = DateOnly.Parse(e.StartWhen),
+                    EndWhen = string.IsNullOrEmpty(e.EndWhen) ? null : DateOnly.Parse(e.EndWhen),
+                    Information = e.Info,
+                    UserId = userId.Value,
+                    CreateWhen = DateTime.Now,
+                    UpdateWhen = DateTime.Now,
+                    IsDeleted = false
+                }).ToList();
+
+                if (certificateList != null && certificateList.Count != 0)
+                {
+                    _context.Certificates.AddRange(certificateList);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Sertifikalar baþarýlý bir þekilde güncellenmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Hata",
+                        Message = "Sertifika bilgisi bulunamadý."
+                    });
+                }
+            }
+            else if (dataType == "Project")
+            {
+                var dtoList = JsonConvert.DeserializeObject<List<ProjectDto>>(data);
+                var projectList = dtoList?.Select(e => new Project
+                {
+                    Name = e.Name,
+                    Information = e.Info,
+                    StartWhen = DateOnly.Parse(e.StartWhen),
+                    EndWhen = string.IsNullOrEmpty(e.EndWhen) ? null : DateOnly.Parse(e.EndWhen),
+                    UserId = userId.Value,
+                    CreateWhen = DateTime.Now,
+                    UpdateWhen = DateTime.Now,
+                    IsDeleted = false
+                }).ToList();
+
+                if (projectList != null && projectList.Count != 0)
+                {
+                    _context.Projects.AddRange(projectList);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Baþarýlý",
+                        Message = "Projeler baþarýlý bir þekilde güncellenmiþtir."
+                    });
+                }
+                else
+                {
+                    TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                    {
+                        AlertType = "success",
+                        Title = "Hata",
+                        Message = "Proje bulunamadý."
+                    });
+                }
             }
             else
             {
@@ -648,127 +915,12 @@ namespace ProfileProject.Controllers
                 {
                     AlertType = "success",
                     Title = "Hata",
-                    Message = "Eðitim bilgisi bulunamadý."
+                    Message = "Genel Hata!"
                 });
             }
-          
 
             return Json(new { redirectUrl = Url.Action("Edit", "Profile", new { id = userId }) });
         }
-      
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult SaveWorks(string worksJson)
-        {
-            var dtoList = JsonConvert.DeserializeObject<List<WorkDto>>(worksJson);
-
-            var userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
-            {
-                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
-                {
-                    AlertType = "warning",
-                    Title = "Hata",
-                    Message = "Kullanýcý bulunamadý."
-                });
-                return NoContent();
-            }
-
-            var workList = dtoList?.Select(e => new WorkExperience
-            {
-                Title = e.Position,
-                CompanyName = e.Company,
-                Information = e.Information,
-                StartWhen = DateOnly.Parse(e.StartWhen),
-                EndWhen = string.IsNullOrEmpty(e.EndWhen) ? null : DateOnly.Parse(e.EndWhen),
-                UserId = userId.Value,
-                CreateWhen = DateTime.Now,
-                UpdateWhen = DateTime.Now,
-                IsDeleted = false
-            }).ToList();
-
-            if (workList != null)
-            {
-                _context.WorkExperiences.AddRange(workList);
-                _context.SaveChanges();
-
-                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
-                {
-                    AlertType = "success",
-                    Title = "Baþarýlý",
-                    Message = "Çalýþma bilgileriniz baþarýlý bir þekilde güncellenmiþtir."
-                });
-            }
-            else
-            {
-                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
-                {
-                    AlertType = "success",
-                    Title = "Hata",
-                    Message = "Çalýþma bilgisi bulunamadý."
-                });
-            }
-
-
-            return Json(new { redirectUrl = Url.Action("Edit", "Profile", new { id = userId }) });
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult SaveSkills(string skillsJson)
-        {
-            var dtoList = JsonConvert.DeserializeObject<List<SkillDto>>(skillsJson);
-
-            var userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
-            {
-                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
-                {
-                    AlertType = "warning",
-                    Title = "Hata",
-                    Message = "Kullanýcý bulunamadý."
-                });
-                return NoContent();
-            }
-
-            var skillList = dtoList?.Select(e => new Skill
-            {
-                Title = e.Title,
-                Information = e.Information,
-                UserId = userId.Value,
-                CreateWhen = DateTime.Now,
-                UpdateWhen = DateTime.Now,
-                IsDeleted = false
-            }).ToList();
-
-            if (skillList != null)
-            {
-                _context.Skills.AddRange(skillList);
-                _context.SaveChanges();
-
-                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
-                {
-                    AlertType = "success",
-                    Title = "Baþarýlý",
-                    Message = "Teknik becerileriniz baþarýlý bir þekilde güncellenmiþtir."
-                });
-            }
-            else
-            {
-                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
-                {
-                    AlertType = "success",
-                    Title = "Hata",
-                    Message = "Teknik beceri bulunamadý."
-                });
-            }
-
-
-            return Json(new { redirectUrl = Url.Action("Edit", "Profile", new { id = userId }) });
-        }
-
-        //EKLENECEKLER
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
