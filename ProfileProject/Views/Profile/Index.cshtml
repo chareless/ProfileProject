@@ -9,36 +9,369 @@
 }
 
 <div class="container">
-    <div class="card">
+    <div class="card p-4">
         <div id="uploadMessage" class="alert d-none" role="alert"></div>
+        <div>
+            <div class="row">
+                <div class="col-lg-3 text-center">
+                    <img src="@(string.IsNullOrEmpty(Model.Picture) ? "/assets/images/no-photo.png" : Model.Picture)"
+                         alt="User Picture"
+                         width="200"
+                         height="200"
+                         class="rounded-circle border border-secondary"
+                         id="profilePicture"
+                         style="cursor:pointer; object-fit: cover;" />
+                    <input type="file" id="fileUpload" style="display:none;" accept="image/*" />
 
-        <div class="card-body">
-            <div class="flex-shrink-0">
-                <img src="@(string.IsNullOrEmpty(Model.Picture) ? "/assets/images/no-photo.png" : Model.Picture)"
-                     alt="User Picture"
-                     width="250px"
-                     height="250px"
-                     class="user-avtar rounded-circle"
-                     id="profilePicture"
-                     style="cursor:pointer; object-fit: cover;" />
-
-                <!-- Gizli dosya yükleme input'u -->
-                <input type="file" id="fileUpload" style="display:none;" accept="image/*" />
+                    <div class="mt-3 d-flex justify-content-center align-items-center">
+                        <h2 class="mb-0 me-2">@Model.NameSurname</h2>
+                        <a asp-action="Edit" asp-controller="Profile" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-primary">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                    </div>
+                    <div>
+                        <h4 class="text-muted">@Model.Job</h4>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <h6><strong>Adı Soyadı</strong></h6>
+                            <input asp-for="NameSurname" class="form-control" type="text" readonly />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6><strong>Meslek</strong></h6>
+                            <input asp-for="Job" class="form-control" type="text" readonly />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6><strong>Email</strong></h6>
+                            <input asp-for="Email" class="form-control" type="text" readonly />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6><strong>Doğum Tarihi</strong></h6>
+                            <input asp-for="Birthday" class="form-control" type="text" readonly />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6><strong>Telefon 1</strong></h6>
+                            <input asp-for="MobilePhone1" class="form-control" type="text" readonly />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6><strong>Telefon 2</strong></h6>
+                            <input asp-for="MobilePhone2" class="form-control" type="text" readonly />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6><strong>Ehliyet</strong></h6>
+                            <input asp-for="DrivingLicense" class="form-control" type="text" readonly />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6><strong>Askerlik Durumu</strong></h6>
+                            <input asp-for="Military" class="form-control" type="text" readonly />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6><strong>Evlilik Durumu</strong></h6>
+                            <input asp-for="Marriage" class="form-control" type="text" readonly />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    @if (!string.IsNullOrEmpty(Model.About))
+                    {
+                        <div class="mt-4">
+                            <div class="border rounded p-3 bg-light">
+                                @Model.About
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
-            <br />
-            <h1>@Model.NameSurname  &nbsp; &nbsp; &nbsp; <a asp-action="Edit" asp-controller="Profile" asp-route-id="@Model.Id"><i class="fa fa-edit"></i></a></h1>
         </div>
-        <div class="card-body">
-            <h3>@Model.Job</h3>
-      </div>
     </div>
     <div class="card">
         <div class="card-body">
-            <p>Diğer bilgiler</p>
+            <div class="row mt-3" id="links">
+                <h3>Bağlantılar</h3>
+                @for (int i = 0; i < Model.Socials.Count; i += 6)
+                {
+                    <div class="row mb-4">
+                        @for (int j = i; j < i + 6 && j < Model.Socials.Count; j++)
+                        {
+                            var link = Model.Socials[j];
+                            <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                                <div class="card shadow-sm h-100 text-center position-relative"
+                                     style="border: 2px solid #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; position: relative;">
+
+                                    <!-- Sadece yazı tıklanabilir olacak şekilde -->
+                                    <span style="font-size: 20px; z-index: 1;">
+                                        <a href="@link.Link" target="_blank" style="text-decoration: none;">
+                                            @link.Name
+                                        </a>
+                                    </span>
+
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                }
+            </div>
+            <div class="row mt-3" id="skills">
+                <h3>Teknik Beceriler</h3>
+                @for (int i = 0; i < Model.Skills.Count; i += 2)
+                {
+                    <div class="row mb-4">
+                        <div class="col-lg-6">
+                            <div class="card shadow-sm h-100 position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
+                                <div class="card-body">
+                                    <h5 class="card-title">@Model.Skills[i].Title</h5>
+                                    <p class="card-text text-secondary">
+                                        @Html.Raw(Model.Skills[i].Information)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        @if (i + 1 < Model.Skills.Count)
+                        {
+                            <div class="col-lg-6">
+                                <div class="card shadow-sm h-100 position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@Model.Skills[i + 1].Title</h5>
+                                        <p class="card-text text-secondary">
+                                            @Html.Raw(Model.Skills[i + 1].Information)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="row mt-3" id="work">
+                <h3>İş Tecrübeleri</h3>
+                @foreach (var item in Model.WorkExperiences)
+                {
+                    <div class="card shadow-sm mb-4" style="border: 2px solid #ccc; border-radius: 10px; position: relative;">
+                        <div class="row g-0 p-4 align-items-center">
+                            <!-- Sol blok: Tarih ve Başlık -->
+                            <div class="col-lg-3 text-center border-end">
+                                <div class="text-muted mb-2">
+                                    <i class="fa fa-calendar"></i>
+                                    @if (item.StartWhen != null && item.EndWhen != null)
+                                    {
+                                        <strong>@item.StartWhen.ToString("dd.MM.yyyy") - @item.EndWhen?.ToString("dd.MM.yyyy")</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong>@item.StartWhen.ToString("dd.MM.yyyy") - DEVAM EDİYOR</strong>
+                                    }
+                                </div>
+                                <div class="fw-semibold" style="font-size: 1.1rem;">
+                                    @item.CompanyName
+                                </div>
+                            </div>
+
+                            <!-- Sağ blok: Title ve açıklama -->
+                            <div class="col-lg-9 ps-4">
+                                <h4 class="mb-1">@item.Title</h4>
+                                <strong class="text-secondary mb-0">@Html.Raw(item.Information)</strong>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="row mt-3" id="education">
+                <h3>Eğitim Bilgileri</h3>
+
+                @foreach (var item in Model.Educations)
+                {
+                    <div class="card shadow-sm mb-4" style="border: 2px solid #ccc; border-radius: 10px; position: relative;">
+                        <div class="row g-0 p-4 align-items-center">
+                            <!-- Sol blok: Tarih ve Başlık -->
+                            <div class="col-lg-3 text-center border-end">
+                                <div class="text-muted mb-2">
+                                    <i class="fa fa-calendar"></i>
+                                    @if (item.StartWhen != null && item.EndWhen != null)
+                                    {
+                                        <strong>@item.StartWhen.ToString("dd.MM.yyyy") - @item.EndWhen?.ToString("dd.MM.yyyy")</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong>@item.StartWhen.ToString("dd.MM.yyyy") - DEVAM EDİYOR</strong>
+                                    }
+                                </div>
+                                <div class="fw-semibold" style="font-size: 1.1rem;">
+                                    @item.Title
+                                </div>
+                            </div>
+
+                            <!-- Sağ blok: Okul adı ve açıklama -->
+                            <div class="col-lg-9 ps-4">
+                                <h4 class="mb-1">@item.Name</h4>
+                                @if (!string.IsNullOrEmpty(item.Information) && item.GradePoint != null)
+                                {
+                                    <strong class="text-secondary mb-0">@item.Information - @item.GradePoint</strong>
+                                }
+                                else if (!string.IsNullOrEmpty(item.Information) && item.GradePoint == null)
+                                {
+                                    <strong class="text-secondary mb-0">@item.Information</strong>
+                                }
+                                else if (string.IsNullOrEmpty(item.Information) && item.GradePoint != null)
+                                {
+                                    <strong class="text-secondary mb-0">(@item.GradePoint)</strong>
+                                }
+                                else
+                                {
+
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="row mt-3" id="references">
+                <h3>Referanslar</h3>
+                @for (int i = 0; i < Model.References.Count; i += 4)
+                {
+                    <div class="row mb-4">
+                        @for (int j = i; j < i + 4 && j < Model.References.Count; j++)
+                        {
+                            var reference = Model.References[j];
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                                <div class="card shadow-sm  position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
+                                    <div class="card-body p-3">
+                                        <div class="mb-2">@reference.Title</div>
+                                        <h6 class="fw-bold mb-1">@reference.Name</h6>
+                                        <div class="text-muted mb-1">@reference.CompanyName</div>
+                                        @if (!string.IsNullOrEmpty(reference.Email))
+                                        {
+                                            <div>
+                                                <i class="fa fa-envelope me-1"></i>
+                                                <a href="mailto:@reference.Email">@reference.Email</a>
+                                            </div>
+                                        }
+                                        @if (!string.IsNullOrEmpty(reference.MobilePhone))
+                                        {
+                                            <div>
+                                                <i class="fa fa-phone me-1"></i>
+                                                @reference.MobilePhone
+                                            </div>
+                                        }
+                                        @if (!string.IsNullOrEmpty(reference.Information))
+                                        {
+                                            <div class="mt-2">
+                                                <p class="mb-0 text-secondary">@Html.Raw(reference.Information)</p>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="row mt-3" id="languages">
+                <h3>Diller</h3>
+                @for (int i = 0; i < Model.Languages.Count; i += 4)
+                {
+                    <div class="row mb-4">
+                        @for (int j = i; j < i + 4 && j < Model.Languages.Count; j++)
+                        {
+                            var lang = Model.Languages[j];
+                            <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+                                <div class="card shadow-sm text-center position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
+                                    <div class="card-body py-4">
+                                        <h5 class="card-title mb-0">
+                                            <span class="text-muted">@lang.Name</span>
+
+                                            @if (!string.IsNullOrWhiteSpace(lang.Information))
+                                            {
+                                                <span class="text-muted">(@lang.Information)</span>
+                                            }
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="row mt-3" id="certificates">
+                <h3>Sertifikalar</h3>
+                @for (int i = 0; i < Model.Certificates.Count; i += 2)
+                {
+                    <div class="row mb-4">
+                        @for (int j = i; j < i + 2 && j < Model.Certificates.Count; j++)
+                        {
+                            var cert = Model.Certificates[j];
+                            <div class="col-lg-6 col-md-12 mb-3">
+                                <div class="card shadow-sm h-100 position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h5 class="mb-0 fw-bold">@cert.CompanyName</h5>
+                                            <small class="text-muted m-2">
+                                                <i class="fa fa-calendar"></i>
+                                                @if (cert.StartWhen != null && cert.EndWhen != null)
+                                                {
+                                                    <strong>@cert.StartWhen.ToString("dd.MM.yyyy") - @cert.EndWhen?.ToString("dd.MM.yyyy")</strong>
+                                                }
+                                                else
+                                                {
+                                                    <strong>@cert.StartWhen.ToString("dd.MM.yyyy")</strong>
+                                                }
+                                            </small>
+                                        </div>
+                                        <p class="mb-0 text-secondary">@cert.Information</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="row mt-3" id="projects">
+                <h3>Projeler</h3>
+                @foreach (var project in Model.Projects)
+                {
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm h-100 position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
+                                <div class="card-body p-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h5 class="fw-bold mb-0">@project.Name</h5>
+
+                                        @if (project.StartWhen != null && project.EndWhen != null)
+                                        {
+                                            <small class="text-muted m-2">
+                                                <i class="fa fa-calendar"></i>
+                                                <strong>@project.StartWhen?.ToString("dd.MM.yyyy") - @project.EndWhen?.ToString("dd.MM.yyyy")</strong>
+                                            </small>
+                                        }
+                                        else if (project.StartWhen != null && project.EndWhen == null)
+                                        {
+                                            <small class="text-muted m-2">
+                                                <i class="fa fa-calendar"></i>
+                                                <strong>@project.StartWhen?.ToString("dd.MM.yyyy") - DEVAM EDİYOR</strong>
+                                            </small>
+                                        }
+                                        else
+                                        {
+
+                                        }
+
+                                    </div>
+                                    @if (!string.IsNullOrWhiteSpace(project.Information))
+                                    {
+                                        <p class="text-secondary mb-0">@Html.Raw(project.Information)</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
-       
     </div>
-   
+    <hr />
+
 </div>
 
 @section Scripts {

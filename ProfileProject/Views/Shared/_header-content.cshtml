@@ -258,12 +258,14 @@
                         <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 225px)">
                             <div class="d-flex mb-1">
                                 <div class="flex-shrink-0">
+                                      <a href="~/Profile">
                                     <img src="@(string.IsNullOrEmpty(picture) ? "/assets/images/user/avatar-1.jpg": picture)"
                                          alt="User Picture"
                                          width="50px"
                                          height="50px"
                                          class="user-avtar rounded-circle"
                                          style="cursor:pointer; object-fit: cover;" />
+                                         </a>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                  <h6 class="mb-1">   <a asp-action="Index" asp-controller="Profile">@user 🖖</a></h6>

@@ -29,12 +29,10 @@ namespace ProfileProject.Controllers
                 .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a => a.Socials).FirstOrDefault(a => a.Id == id);
             if (user != null)
             {
-                user.Educations = user.Educations.OrderBy(a => a.StartWhen).ToList();
-
-                user.Educations = user.Educations.Where(a => !a.IsDeleted).ToList();
-                user.Projects = user.Projects.Where(a => !a.IsDeleted).ToList();
-                user.Certificates = user.Certificates.Where(a => !a.IsDeleted).ToList();
-                user.WorkExperiences = user.WorkExperiences.Where(a => !a.IsDeleted).ToList();
+                user.Educations = user.Educations.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
+                user.Projects = user.Projects.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
+                user.Certificates = user.Certificates.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
+                user.WorkExperiences = user.WorkExperiences.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
                 user.References = user.References.Where(a => !a.IsDeleted).ToList();
                 user.Languages = user.Languages.Where(a => !a.IsDeleted).ToList();
                 user.Skills = user.Skills.Where(a => !a.IsDeleted).ToList();
@@ -109,12 +107,10 @@ namespace ProfileProject.Controllers
                  .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a => a.Socials).FirstOrDefault(a => a.Id == id);
             if (user != null)
             {
-                user.Educations = user.Educations.OrderBy(a => a.StartWhen).ToList();
-
-                user.Educations = user.Educations.Where(a => !a.IsDeleted).ToList();
-                user.Projects = user.Projects.Where(a => !a.IsDeleted).ToList();
-                user.Certificates = user.Certificates.Where(a => !a.IsDeleted).ToList();
-                user.WorkExperiences = user.WorkExperiences.Where(a => !a.IsDeleted).ToList();
+                user.Educations = user.Educations.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
+                user.Projects = user.Projects.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
+                user.Certificates = user.Certificates.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
+                user.WorkExperiences = user.WorkExperiences.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
                 user.References = user.References.Where(a => !a.IsDeleted).ToList();
                 user.Languages = user.Languages.Where(a => !a.IsDeleted).ToList();
                 user.Skills = user.Skills.Where(a => !a.IsDeleted).ToList();
@@ -141,10 +137,10 @@ namespace ProfileProject.Controllers
             {
                 user.Educations = user.Educations.OrderBy(a => a.StartWhen).ToList();
 
-                user.Educations = user.Educations.Where(a => !a.IsDeleted).ToList();
-                user.Projects = user.Projects.Where(a => !a.IsDeleted).ToList();
-                user.Certificates = user.Certificates.Where(a => !a.IsDeleted).ToList();
-                user.WorkExperiences = user.WorkExperiences.Where(a => !a.IsDeleted).ToList();
+                user.Educations = user.Educations.Where(a => !a.IsDeleted).OrderByDescending(a=>a.StartWhen).ToList();
+                user.Projects = user.Projects.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
+                user.Certificates = user.Certificates.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
+                user.WorkExperiences = user.WorkExperiences.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
                 user.References = user.References.Where(a => !a.IsDeleted).ToList();
                 user.Languages = user.Languages.Where(a => !a.IsDeleted).ToList();
                 user.Skills = user.Skills.Where(a => !a.IsDeleted).ToList();
@@ -647,7 +643,7 @@ namespace ProfileProject.Controllers
                 {
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
                     {
-                        AlertType = "success",
+                        AlertType = "warning",
                         Title = "Hata",
                         Message = "Eðitim bilgisi bulunamadý."
                     });
@@ -685,7 +681,7 @@ namespace ProfileProject.Controllers
                 {
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
                     {
-                        AlertType = "success",
+                        AlertType = "warning",
                         Title = "Hata",
                         Message = "Çalýþma bilgisi bulunamadý."
                     });
@@ -720,7 +716,7 @@ namespace ProfileProject.Controllers
                 {
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
                     {
-                        AlertType = "success",
+                        AlertType = "warning",
                         Title = "Hata",
                         Message = "Teknik beceri bulunamadý."
                     });
@@ -755,7 +751,7 @@ namespace ProfileProject.Controllers
                 {
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
                     {
-                        AlertType = "success",
+                        AlertType = "warning",
                         Title = "Hata",
                         Message = "Sosyal að bulunamadý."
                     });
@@ -790,7 +786,7 @@ namespace ProfileProject.Controllers
                 {
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
                     {
-                        AlertType = "success",
+                        AlertType = "warning",
                         Title = "Hata",
                         Message = "Dil bulunamadý."
                     });
@@ -829,7 +825,7 @@ namespace ProfileProject.Controllers
                 {
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
                     {
-                        AlertType = "success",
+                        AlertType = "warning",
                         Title = "Hata",
                         Message = "Referans bilgisi bulunamadý."
                     });
@@ -866,7 +862,7 @@ namespace ProfileProject.Controllers
                 {
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
                     {
-                        AlertType = "success",
+                        AlertType = "warning",
                         Title = "Hata",
                         Message = "Sertifika bilgisi bulunamadý."
                     });
@@ -903,7 +899,7 @@ namespace ProfileProject.Controllers
                 {
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
                     {
-                        AlertType = "success",
+                        AlertType = "warning",
                         Title = "Hata",
                         Message = "Proje bulunamadý."
                     });
@@ -913,7 +909,7 @@ namespace ProfileProject.Controllers
             {
                 TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
                 {
-                    AlertType = "success",
+                    AlertType = "warning",
                     Title = "Hata",
                     Message = "Genel Hata!"
                 });
