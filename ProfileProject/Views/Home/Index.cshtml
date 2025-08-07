@@ -58,7 +58,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Id" target="_blank">
+                                                    <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Username" target="_blank">
                                                         <img src="@(string.IsNullOrEmpty(item.user.Picture) ? "/assets/images/no-photo.png" : item.user.Picture)"
                                                              alt="User Picture"
                                                              width="150px"
@@ -80,7 +80,7 @@
                                                     }
                                                     else
                                                     {
-                                                        <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Id" target="_blank" style="text-decoration: none;">
+                                                        <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Username" target="_blank" style="text-decoration: none;">
                                                             @item.user.NameSurname
                                                         </a>
                                                     }
@@ -152,7 +152,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Id" target="_blank">
+                                                    <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Username" target="_blank">
                                                         <img src="@(string.IsNullOrEmpty(item.user.Picture) ? "/assets/images/no-photo.png" : item.user.Picture)"
                                                              alt="User Picture"
                                                              width="150px"
@@ -174,7 +174,7 @@
                                                     }
                                                     else
                                                     {
-                                                        <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Id" target="_blank" style="text-decoration: none;">
+                                                        <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Username" target="_blank" style="text-decoration: none;">
                                                             @item.user.NameSurname
                                                         </a>
                                                     }
@@ -245,7 +245,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Id" target="_blank">
+                                                    <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Username" target="_blank">
                                                         <img src="@(string.IsNullOrEmpty(item.user.Picture) ? "/assets/images/no-photo.png" : item.user.Picture)"
                                                              alt="User Picture"
                                                              width="150px"
@@ -266,7 +266,7 @@
                                                     }
                                                     else
                                                     {
-                                                        <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Id" target="_blank"
+                                                        <a asp-action="User" asp-controller="Profile" asp-route-id="@item.user.Username" target="_blank"
                                                            style="text-decoration: none;">@item.user.NameSurname</a>
                                                     }
                                                 </h5>

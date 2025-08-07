@@ -76,11 +76,11 @@
                                     <td class="text-center">
                                         <ul class="list-inline me-auto mb-0">
                                             <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Düzenle">
-                                                <a asp-action="UserEdit" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
+                                                <a asp-action="UserEdit" asp-route-id="@item.Username"><i class="fa fa-edit"></i></a>
                                             </li>
                                         </ul>
                                     </td>
-                                    <td>  <a asp-action="User" asp-route-id="@item.Id" target="_blank">@item.Id</a></td>
+                                    <td>  <a asp-action="User" asp-route-id="@item.Username" target="_blank">@item.Id</a></td>
                                 </tr>
                             }
                         </tbody>

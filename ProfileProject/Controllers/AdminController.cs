@@ -27,10 +27,11 @@ namespace ProfileProject.Controllers
             return View();
         }
 
-        public IActionResult User(int id)
+        [Route("Admin/User/{username}")]
+        public IActionResult User(string username)
         {
             var user = _context.Users.Include(a => a.Projects).Include(a => a.Certificates).Include(a => a.WorkExperiences).Include(a => a.Educations)
-                 .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a=>a.Socials).FirstOrDefault(a => a.Id == id);
+                 .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a=>a.Socials).FirstOrDefault(a => a.Username == username);
             if (user != null)
             {
                 user.Educations = user.Educations.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
@@ -68,9 +69,10 @@ namespace ProfileProject.Controllers
                 return NotFound();
         }
 
-        public IActionResult UserEdit(int id)
+        [Route("Admin/UserEdit/{username}")]
+        public IActionResult UserEdit(string username)
         {
-            var user = _context.Users.FirstOrDefault(a => a.Id == id);
+            var user = _context.Users.FirstOrDefault(a => a.Username == username);
             if (user != null)
             {
                 user.Educations = user.Educations.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();

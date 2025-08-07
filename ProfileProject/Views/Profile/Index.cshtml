@@ -2,12 +2,6 @@
 
 @inject IHttpContextAccessor HttpContextAccessor
 
-@{
-    var session = HttpContextAccessor.HttpContext.Session;
-
-    var id = session?.GetInt32("UserId");
-}
-
 <div class="container">
     <div class="card p-4">
         <div id="uploadMessage" class="alert d-none" role="alert"></div>
@@ -25,7 +19,7 @@
 
                     <div class="mt-3 d-flex justify-content-center align-items-center">
                         <h2 class="mb-0 me-2">@Model.NameSurname</h2>
-                        <a asp-action="Edit" asp-controller="Profile" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-primary">
+                        <a asp-action="Edit" asp-controller="Profile" asp-route-id="@Model.Username" class="btn btn-sm btn-outline-primary">
                             <i class="fa fa-edit"></i>
                         </a>
                     </div>
@@ -71,6 +65,25 @@
                         </div>
                     }
                 </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-lg-6">
+                    <h4 class="text-start">
+                        <a href="@Url.Action("User", "Profile", new { id = Model.Username })"
+                           target="_blank">Profili Görüntüle</a>
+                    </h4>
+                </div>
+                <div class="col-lg-6">
+                    <h4 class="text-end">
+                        <small id="copyMessage" style="margin-left:10px; color:green; display:none;">Kopyalandı!</small>
+                        <a href="javascript:void(0);" class="copy-link"
+                              onclick="copyLinkToClipboard('@Url.Action("User", "Profile", new { id = Model.Username }, HttpContextAccessor?.HttpContext?.Request.Scheme)')"
+                              title="Linki kopyala">
+                            Profili Paylaş
+                        </a>
+                      
+                    </h4>
+                </div>   
             </div>
         </div>
     </div>
@@ -412,5 +425,17 @@
                 }
             });
         });
+
+          function copyLinkToClipboard(link) {
+            navigator.clipboard.writeText(link).then(function() {
+                const msg = document.getElementById('copyMessage');
+                msg.style.display = 'inline';
+                setTimeout(() => {
+                    msg.style.display = 'none';
+                }, 1500);
+            }).catch(function(err) {
+                alert('Kopyalama işlemi başarısız oldu.');
+            });
+        }
     </script>
 }

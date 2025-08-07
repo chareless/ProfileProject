@@ -101,10 +101,11 @@ namespace ProfileProject.Controllers
             return View(model);
         }
 
-        public IActionResult User(int id)
+        [Route("Profile/User/{username}")]
+        public IActionResult User(string username)
         {
             var user = _context.Users.Include(a => a.Projects).Include(a => a.Certificates).Include(a => a.WorkExperiences).Include(a => a.Educations)
-                 .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a => a.Socials).FirstOrDefault(a => a.Id == id);
+                 .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a => a.Socials).FirstOrDefault(a => a.Username == username);
             if (user != null)
             {
                 user.Educations = user.Educations.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
@@ -116,12 +117,16 @@ namespace ProfileProject.Controllers
                 user.Skills = user.Skills.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
                 user.Socials = user.Socials.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
 
-                var visitor = new UserVisit(user.Id);
-                _context.UserVisits.Add(visitor);
-                _context.SaveChanges();
-                user.VisitorCount = _context.UserVisits.Where(a=>a.UserId == user.Id).Count();
-                _context.Update(user);
-                _context.SaveChanges();
+                if(user.Username != username)
+                {
+                    var visitor = new UserVisit(user.Id);
+                    _context.UserVisits.Add(visitor);
+                    _context.SaveChanges();
+                    user.VisitorCount = _context.UserVisits.Where(a => a.UserId == user.Id).Count();
+                    _context.Update(user);
+                    _context.SaveChanges();
+                }
+              
                 return View(user);
             }
                
@@ -129,12 +134,14 @@ namespace ProfileProject.Controllers
                 return NotFound();
         }
 
-        public IActionResult Edit(int id)
+        [Route("Profile/Edit/{username}")]
+        public IActionResult Edit(string username)
         {
             var userID = HttpContext.Session.GetInt32("UserId");
+            var userName = HttpContext.Session.GetString("Username");
 
             var userCheck = _context.Users
-                .FirstOrDefault(a => a.Id == id && userID == id);
+                .FirstOrDefault(a => a.Username == userName && userID == a.Id);
 
             if (userCheck == null)
             {
@@ -148,7 +155,7 @@ namespace ProfileProject.Controllers
             }
 
             var user = _context.Users.Include(a => a.Projects).Include(a => a.Certificates).Include(a => a.WorkExperiences).Include(a => a.Educations)
-                 .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a => a.Socials).FirstOrDefault(a => a.Id == id);
+                 .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a => a.Socials).FirstOrDefault(a => a.Username == username);
             if (user != null)
             {
                 user.Educations = user.Educations.OrderBy(a => a.StartWhen).ToList();
