@@ -34,13 +34,13 @@ namespace ProfileProject.Controllers
             if (user != null)
             {
                 user.Educations = user.Educations.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
-                user.Projects = user.Projects.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
+                user.Projects = user.Projects.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
                 user.Certificates = user.Certificates.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
                 user.WorkExperiences = user.WorkExperiences.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
-                user.References = user.References.Where(a => !a.IsDeleted).ToList();
-                user.Languages = user.Languages.Where(a => !a.IsDeleted).ToList();
-                user.Skills = user.Skills.Where(a => !a.IsDeleted).ToList();
-                user.Socials = user.Socials.Where(a => !a.IsDeleted).ToList();
+                user.References = user.References.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
+                user.Languages = user.Languages.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
+                user.Skills = user.Skills.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
+                user.Socials = user.Socials.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
 
                 ViewData["User"] = user.NameSurname;
                 return View(user);
@@ -74,13 +74,13 @@ namespace ProfileProject.Controllers
             if (user != null)
             {
                 user.Educations = user.Educations.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
-                user.Projects = user.Projects.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
+                user.Projects = user.Projects.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
                 user.Certificates = user.Certificates.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
                 user.WorkExperiences = user.WorkExperiences.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
-                user.References = user.References.Where(a => !a.IsDeleted).ToList();
-                user.Languages = user.Languages.Where(a => !a.IsDeleted).ToList();
-                user.Skills = user.Skills.Where(a => !a.IsDeleted).ToList();
-                user.Socials = user.Socials.Where(a => !a.IsDeleted).ToList();
+                user.References = user.References.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
+                user.Languages = user.Languages.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
+                user.Skills = user.Skills.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
+                user.Socials = user.Socials.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
 
                 return View(user);
             }

@@ -30,13 +30,13 @@ namespace ProfileProject.Controllers
             if (user != null)
             {
                 user.Educations = user.Educations.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
-                user.Projects = user.Projects.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
+                user.Projects = user.Projects.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
                 user.Certificates = user.Certificates.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
                 user.WorkExperiences = user.WorkExperiences.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
-                user.References = user.References.Where(a => !a.IsDeleted).ToList();
-                user.Languages = user.Languages.Where(a => !a.IsDeleted).ToList();
-                user.Skills = user.Skills.Where(a => !a.IsDeleted).ToList();
-                user.Socials = user.Socials.Where(a => !a.IsDeleted).ToList();
+                user.References = user.References.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
+                user.Languages = user.Languages.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
+                user.Skills = user.Skills.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
+                user.Socials = user.Socials.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
 
                 return View(user);
             }
@@ -108,13 +108,13 @@ namespace ProfileProject.Controllers
             if (user != null)
             {
                 user.Educations = user.Educations.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
-                user.Projects = user.Projects.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
+                user.Projects = user.Projects.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
                 user.Certificates = user.Certificates.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
                 user.WorkExperiences = user.WorkExperiences.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
-                user.References = user.References.Where(a => !a.IsDeleted).ToList();
-                user.Languages = user.Languages.Where(a => !a.IsDeleted).ToList();
-                user.Skills = user.Skills.Where(a => !a.IsDeleted).ToList();
-                user.Socials = user.Socials.Where(a => !a.IsDeleted).ToList();
+                user.References = user.References.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
+                user.Languages = user.Languages.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
+                user.Skills = user.Skills.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
+                user.Socials = user.Socials.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
 
                 var visitor = new UserVisit(user.Id);
                 _context.UserVisits.Add(visitor);
@@ -131,6 +131,22 @@ namespace ProfileProject.Controllers
 
         public IActionResult Edit(int id)
         {
+            var userID = HttpContext.Session.GetInt32("UserId");
+
+            var userCheck = _context.Users
+                .FirstOrDefault(a => a.Id == id && userID == id);
+
+            if (userCheck == null)
+            {
+                TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
+                {
+                    AlertType = "warning",
+                    Title = "Hata",
+                    Message = "Kullanýcý bilgisi hatalý."
+                });
+                return RedirectToAction("Index", "Profile");
+            }
+
             var user = _context.Users.Include(a => a.Projects).Include(a => a.Certificates).Include(a => a.WorkExperiences).Include(a => a.Educations)
                  .Include(a => a.References).Include(a => a.Languages).Include(a => a.Skills).Include(a => a.Socials).FirstOrDefault(a => a.Id == id);
             if (user != null)
@@ -138,13 +154,13 @@ namespace ProfileProject.Controllers
                 user.Educations = user.Educations.OrderBy(a => a.StartWhen).ToList();
 
                 user.Educations = user.Educations.Where(a => !a.IsDeleted).OrderByDescending(a=>a.StartWhen).ToList();
-                user.Projects = user.Projects.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
+                user.Projects = user.Projects.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
                 user.Certificates = user.Certificates.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
                 user.WorkExperiences = user.WorkExperiences.Where(a => !a.IsDeleted).OrderByDescending(a => a.StartWhen).ToList();
-                user.References = user.References.Where(a => !a.IsDeleted).ToList();
-                user.Languages = user.Languages.Where(a => !a.IsDeleted).ToList();
-                user.Skills = user.Skills.Where(a => !a.IsDeleted).ToList();
-                user.Socials = user.Socials.Where(a => !a.IsDeleted).ToList();
+                user.References = user.References.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
+                user.Languages = user.Languages.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
+                user.Skills = user.Skills.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
+                user.Socials = user.Socials.Where(a => !a.IsDeleted).OrderBy(a => a.Order).ToList();
 
                 return View(user);
             }
@@ -224,16 +240,18 @@ namespace ProfileProject.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
+            var id = HttpContext.Session.GetInt32("UserId");
+
             var user = _context.Users
-                .FirstOrDefault(a => a.Id == model.Id);
+                .FirstOrDefault(a => a.Id == model.Id && a.Id == id);
 
             if (user == null)
             {
                 TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
                 {
-                    AlertType = "success",
-                    Title = "Baþarýlý",
-                    Message = "Kullanýcý bilgileriniz baþarýlý bir þekilde güncellenmiþtir."
+                    AlertType = "warning",
+                    Title = "Hata",
+                    Message = "Kullanýcý bilgisi hatalý."
                 });
                 return NotFound();
             }
@@ -250,9 +268,11 @@ namespace ProfileProject.Controllers
             user.Military = model.Military;
             user.Hobbies = model.Hobbies;
             user.IsActive = model.IsActive;
+            user.Country = model.Country;
+            user.City = model.City;
+            user.District = model.District;
             user.UpdateWhen = GeneralService.GetCurrentDateStatic();
 
-            var id = HttpContext.Session.GetInt32("UserId");
             if (id == model.Id)
             {
                 _context.SaveChanges();
@@ -295,7 +315,7 @@ namespace ProfileProject.Controllers
                     return NoContent();
                 }
 
-                var data = _context.Educations.FirstOrDefault(a => a.Id == id);
+                var data = _context.Educations.FirstOrDefault(a => a.Id == id && a.UserId == userId);
                 if (data != null)
                 {
                     data.IsDeleted = true;
@@ -333,7 +353,7 @@ namespace ProfileProject.Controllers
                     return NoContent();
                 }
 
-                var data = _context.WorkExperiences.FirstOrDefault(a => a.Id == id);
+                var data = _context.WorkExperiences.FirstOrDefault(a => a.Id == id && a.UserId == userId);
                 if (data != null)
                 {
                     data.IsDeleted = true;
@@ -371,7 +391,7 @@ namespace ProfileProject.Controllers
                     return NoContent();
                 }
 
-                var data = _context.Skills.FirstOrDefault(a => a.Id == id);
+                var data = _context.Skills.FirstOrDefault(a => a.Id == id && a.UserId == userId);
                 if (data != null)
                 {
                     data.IsDeleted = true;
@@ -409,7 +429,7 @@ namespace ProfileProject.Controllers
                     return NoContent();
                 }
 
-                var data = _context.Socials.FirstOrDefault(a => a.Id == id);
+                var data = _context.Socials.FirstOrDefault(a => a.Id == id && a.UserId == userId);
                 if (data != null)
                 {
                     data.IsDeleted = true;
@@ -447,7 +467,7 @@ namespace ProfileProject.Controllers
                     return NoContent();
                 }
 
-                var data = _context.References.FirstOrDefault(a => a.Id == id);
+                var data = _context.References.FirstOrDefault(a => a.Id == id && a.UserId == userId);
                 if (data != null)
                 {
                     data.IsDeleted = true;
@@ -485,7 +505,7 @@ namespace ProfileProject.Controllers
                     return NoContent();
                 }
 
-                var data = _context.Languages.FirstOrDefault(a => a.Id == id);
+                var data = _context.Languages.FirstOrDefault(a => a.Id == id && a.UserId == userId);
                 if (data != null)
                 {
                     data.IsDeleted = true;
@@ -523,7 +543,7 @@ namespace ProfileProject.Controllers
                     return NoContent();
                 }
 
-                var data = _context.Certificates.FirstOrDefault(a => a.Id == id);
+                var data = _context.Certificates.FirstOrDefault(a => a.Id == id && a.UserId == userId);
                 if (data != null)
                 {
                     data.IsDeleted = true;
@@ -561,7 +581,7 @@ namespace ProfileProject.Controllers
                     return NoContent();
                 }
 
-                var data = _context.Projects.FirstOrDefault(a => a.Id == id);
+                var data = _context.Projects.FirstOrDefault(a => a.Id == id && a.UserId == userId);
                 if (data != null)
                 {
                     data.IsDeleted = true;
@@ -591,7 +611,6 @@ namespace ProfileProject.Controllers
 
             }
             return RedirectToAction("Edit", "Profile", new { id = userId });
-
         }
 
         [HttpPost]
@@ -615,6 +634,7 @@ namespace ProfileProject.Controllers
                 var dtoList = JsonConvert.DeserializeObject<List<EducationDto>>(data);
                 var educationList = dtoList?.Select(e => new Education
                 {
+                    Id = e.Id,
                     Title = e.Title,
                     Name = e.Name,
                     GradePoint = e.GradePoint,
@@ -629,7 +649,10 @@ namespace ProfileProject.Controllers
 
                 if (educationList != null && educationList.Count != 0)
                 {
-                    _context.Educations.AddRange(educationList);
+                    if(educationList.Any(a=>a.Id != 0) && educationList[0].UserId == userId)
+                        _context.Educations.Update(educationList[0]);
+                    else
+                        _context.Educations.AddRange(educationList);
                     _context.SaveChanges();
 
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
@@ -654,6 +677,7 @@ namespace ProfileProject.Controllers
                 var dtoList = JsonConvert.DeserializeObject<List<WorkDto>>(data);
                 var workList = dtoList?.Select(e => new WorkExperience
                 {
+                    Id = e.Id,
                     Title = e.Position,
                     CompanyName = e.Company,
                     Information = e.Information,
@@ -667,7 +691,10 @@ namespace ProfileProject.Controllers
 
                 if (workList != null && workList.Count != 0)
                 {
-                    _context.WorkExperiences.AddRange(workList);
+                    if (workList.Any(a => a.Id != 0) && workList[0].UserId == userId)
+                        _context.WorkExperiences.Update(workList[0]);
+                    else
+                        _context.WorkExperiences.AddRange(workList);
                     _context.SaveChanges();
 
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
@@ -692,6 +719,7 @@ namespace ProfileProject.Controllers
                 var dtoList = JsonConvert.DeserializeObject<List<SkillDto>>(data);
                 var skillList = dtoList?.Select(e => new Skill
                 {
+                    Id = e.Id,
                     Title = e.Title,
                     Information = e.Information,
                     UserId = userId.Value,
@@ -702,7 +730,10 @@ namespace ProfileProject.Controllers
 
                 if (skillList != null && skillList.Count != 0)
                 {
-                    _context.Skills.AddRange(skillList);
+                    if (skillList.Any(a => a.Id != 0) && skillList[0].UserId == userId)
+                        _context.Skills.Update(skillList[0]);
+                    else
+                        _context.Skills.AddRange(skillList);
                     _context.SaveChanges();
 
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
@@ -727,6 +758,7 @@ namespace ProfileProject.Controllers
                 var dtoList = JsonConvert.DeserializeObject<List<SocialDto>>(data);
                 var socialList = dtoList?.Select(e => new Social
                 {
+                    Id = e.Id,
                     Name = e.Name,
                     Link = e.Link,
                     UserId = userId.Value,
@@ -737,7 +769,10 @@ namespace ProfileProject.Controllers
 
                 if (socialList != null)
                 {
-                    _context.Socials.AddRange(socialList);
+                    if (socialList.Any(a => a.Id != 0) && socialList[0].UserId == userId)
+                        _context.Socials.Update(socialList[0]);
+                    else
+                        _context.Socials.AddRange(socialList);
                     _context.SaveChanges();
 
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
@@ -762,6 +797,7 @@ namespace ProfileProject.Controllers
                 var dtoList = JsonConvert.DeserializeObject<List<LanguageDto>>(data);
                 var languageList = dtoList?.Select(e => new Language
                 {
+                    Id = e.Id,
                     Name = e.Name,
                     Information = e.Info,
                     UserId = userId.Value,
@@ -772,7 +808,10 @@ namespace ProfileProject.Controllers
 
                 if (languageList != null && languageList.Count != 0)
                 {
-                    _context.Languages.AddRange(languageList);
+                    if (languageList.Any(a => a.Id != 0) && languageList[0].UserId == userId)
+                        _context.Languages.Update(languageList[0]);
+                    else
+                        _context.Languages.AddRange(languageList);
                     _context.SaveChanges();
 
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
@@ -797,6 +836,7 @@ namespace ProfileProject.Controllers
                 var dtoList = JsonConvert.DeserializeObject<List<ReferenceDto>>(data);
                 var referenceList = dtoList?.Select(e => new Reference
                 {
+                    Id = e.Id,
                     Name = e.Name,
                     Information = e.Info,
                     CompanyName = e.Company,
@@ -811,7 +851,10 @@ namespace ProfileProject.Controllers
 
                 if (referenceList != null && referenceList.Count != 0)
                 {
-                    _context.References.AddRange(referenceList);
+                    if (referenceList.Any(a => a.Id != 0) && referenceList[0].UserId == userId)
+                        _context.References.Update(referenceList[0]);
+                    else
+                        _context.References.AddRange(referenceList);
                     _context.SaveChanges();
 
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
@@ -836,6 +879,7 @@ namespace ProfileProject.Controllers
                 var dtoList = JsonConvert.DeserializeObject<List<CertificateDto>>(data);
                 var certificateList = dtoList?.Select(e => new Certificate
                 {
+                    Id = e.Id,
                     CompanyName = e.Company,
                     StartWhen = DateOnly.Parse(e.StartWhen),
                     EndWhen = string.IsNullOrEmpty(e.EndWhen) ? null : DateOnly.Parse(e.EndWhen),
@@ -848,7 +892,10 @@ namespace ProfileProject.Controllers
 
                 if (certificateList != null && certificateList.Count != 0)
                 {
-                    _context.Certificates.AddRange(certificateList);
+                    if (certificateList.Any(a => a.Id != 0) && certificateList[0].UserId == userId)
+                        _context.Certificates.Update(certificateList[0]);
+                    else
+                        _context.Certificates.AddRange(certificateList);
                     _context.SaveChanges();
 
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
@@ -873,9 +920,10 @@ namespace ProfileProject.Controllers
                 var dtoList = JsonConvert.DeserializeObject<List<ProjectDto>>(data);
                 var projectList = dtoList?.Select(e => new Project
                 {
+                    Id = e.Id,
                     Name = e.Name,
                     Information = e.Info,
-                    StartWhen = DateOnly.Parse(e.StartWhen),
+                    StartWhen = string.IsNullOrEmpty(e.StartWhen) ? null : DateOnly.Parse(e.StartWhen),
                     EndWhen = string.IsNullOrEmpty(e.EndWhen) ? null : DateOnly.Parse(e.EndWhen),
                     UserId = userId.Value,
                     CreateWhen = DateTime.Now,
@@ -885,7 +933,10 @@ namespace ProfileProject.Controllers
 
                 if (projectList != null && projectList.Count != 0)
                 {
-                    _context.Projects.AddRange(projectList);
+                    if (projectList.Any(a => a.Id != 0) && projectList[0].UserId == userId)
+                        _context.Projects.Update(projectList[0]);
+                    else
+                        _context.Projects.AddRange(projectList);
                     _context.SaveChanges();
 
                     TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage

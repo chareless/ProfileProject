@@ -40,14 +40,21 @@
                         <br />
                         Email:  <input asp-for="Email" class="form-control" type="text" />
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         Doğum Tarihi:  <input asp-for="Birthday" class="form-control" type="text" />
                         <br />
                         Telefon 1:  <input asp-for="MobilePhone1" class="form-control" type="text" />
                         <br />
                         Telefon 2:  <input asp-for="MobilePhone2" class="form-control" type="text" />
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
+                        Ülke:  <input asp-for="Country" class="form-control" type="text" />
+                        <br />
+                        Şehir:  <input asp-for="City" class="form-control" type="text" />
+                        <br />
+                        İlçe:  <input asp-for="District" class="form-control" type="text" />
+                    </div>
+                    <div class="col-lg-2">
                         Ehliyet:  <input asp-for="DrivingLicense" class="form-control" type="text" />
                         <br />
                         Askerlik Durumu:  <input asp-for="Military" class="form-control" type="text" />
@@ -97,6 +104,15 @@
                                         </button>
                                     </form>
 
+                                    <!-- Düzenleme Butonu -->
+                                    <button type="button"
+                                            class="btn btn-link p-0 border-0 edit-btn"
+                                            onclick="updateTable('Social','@link.Id')"
+                                            title="Düzenle"
+                                            style="position: absolute; top: 10px; right: 35px; color: #007bff;">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+
                                     <!-- Sadece yazı tıklanabilir olacak şekilde -->
                                     <span style="font-size: 20px; z-index: 1;">
                                         <a href="@link.Link" target="_blank" style="text-decoration: none;">
@@ -135,6 +151,15 @@
                                     </button>
                                 </form>
 
+                                <!-- Düzenleme Butonu -->
+                                <button type="button"
+                                        class="btn btn-link p-0 border-0 edit-btn"
+                                        onclick="updateTable('Skill','@Model.Skills[i].Id')"
+                                        title="Düzenle"
+                                        style="position: absolute; top: 10px; right: 45px; color: #007bff;">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+
                                 <div class="card-body">
                                     <h5 class="card-title">@Model.Skills[i].Title</h5>
                                     <p class="card-text text-secondary">
@@ -161,6 +186,15 @@
                                                 data-form-id="@Model.Skills[i + 1].Id"
                                                 style="color: red;">
                                             <i class="fa fa-trash"></i>
+                                        </button>
+
+                                        <!-- Düzenleme Butonu -->
+                                        <button type="button"
+                                                class="btn btn-link p-0 border-0 edit-btn"
+                                                onclick="updateTable('Skill','@Model.Skills[i + 1].Id')"
+                                                title="Düzenle"
+                                                style="position: absolute;  right: 35px; color: #007bff;">
+                                            <i class="fa fa-edit"></i>
                                         </button>
                                     </form>
 
@@ -198,6 +232,15 @@
                                 <i class="fa fa-trash"></i>
                             </button>
                         </form>
+
+                        <!-- Düzenleme Butonu -->
+                        <button type="button"
+                                class="btn btn-link p-0 border-0 edit-btn"
+                                onclick="updateTable('Work','@item.Id')"
+                                title="Düzenle"
+                                style="position: absolute; top: 10px; right: 45px; color: #007bff;">
+                            <i class="fa fa-edit"></i>
+                        </button>
 
                         <div class="row g-0 p-4 align-items-center">
                             <!-- Sol blok: Tarih ve Başlık -->
@@ -251,6 +294,15 @@
                             </button>
                         </form>
 
+                        <!-- Düzenleme Butonu -->
+                        <button type="button"
+                                class="btn btn-link p-0 border-0 edit-btn"
+                                onclick="updateTable('Education','@item.Id')"
+                                title="Düzenle"
+                                style="position: absolute; top: 10px; right: 45px; color: #007bff;">
+                            <i class="fa fa-edit"></i>
+                        </button>
+
                         <div class="row g-0 p-4 align-items-center">
                             <!-- Sol blok: Tarih ve Başlık -->
                             <div class="col-lg-3 text-center border-end">
@@ -273,7 +325,7 @@
                             <!-- Sağ blok: Okul adı ve açıklama -->
                             <div class="col-lg-9 ps-4">
                                 <h4 class="mb-1">@item.Name</h4>
-                                @if(!string.IsNullOrEmpty(item.Information) && item.GradePoint != null)
+                                @if (!string.IsNullOrEmpty(item.Information) && item.GradePoint != null)
                                 {
                                     <strong class="text-secondary mb-0">@item.Information - @item.GradePoint</strong>
                                 }
@@ -282,13 +334,13 @@
                                     <strong class="text-secondary mb-0">@item.Information</strong>
                                 }
                                 else if (string.IsNullOrEmpty(item.Information) && item.GradePoint != null)
-                               {
+                                {
                                     <strong class="text-secondary mb-0">(@item.GradePoint)</strong>
-                               }
-                               else
-                               {
+                                }
+                                else
+                                {
 
-                               }
+                                }
                             </div>
                         </div>
                     </div>
@@ -320,6 +372,15 @@
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
+
+                                    <!-- Düzenleme Butonu -->
+                                    <button type="button"
+                                            class="btn btn-link p-0 border-0 edit-btn"
+                                            onclick="updateTable('Reference','@reference.Id')"
+                                            title="Düzenle"
+                                            style="position: absolute; top: 10px; right: 45px; color: #007bff;">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
 
                                     <div class="card-body p-3">
                                         <div class="mb-2">@reference.Title</div>
@@ -379,6 +440,15 @@
                                         </button>
                                     </form>
 
+                                    <!-- Düzenleme Butonu -->
+                                    <button type="button"
+                                            class="btn btn-link p-0 border-0 edit-btn"
+                                            onclick="updateTable('Language','@lang.Id')"
+                                            title="Düzenle"
+                                            style="position: absolute; top: 10px; right: 45px; color: #007bff;">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+
                                     <div class="card-body py-4">
                                         <h5 class="card-title mb-0">
                                             <span class="text-muted">@lang.Name</span>
@@ -421,6 +491,15 @@
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
+
+                                    <!-- Düzenleme Butonu -->
+                                    <button type="button"
+                                            class="btn btn-link p-0 border-0 edit-btn"
+                                            onclick="updateTable('Certificate','@cert.Id')"
+                                            title="Düzenle"
+                                            style="position: absolute; top: 10px; right: 45px; color: #007bff;">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
 
                                     <div class="card-body p-4">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -468,6 +547,15 @@
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </form>
+
+                                <!-- Düzenleme Butonu -->
+                                <button type="button"
+                                        class="btn btn-link p-0 border-0 edit-btn"
+                                        onclick="updateTable('Project','@project.Id')"
+                                        title="Düzenle"
+                                        style="position: absolute; top: 10px; right: 45px; color: #007bff;">
+                                    <i class="fa fa-edit"></i>
+                                </button>
 
                                 <div class="card-body p-4">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -530,6 +618,10 @@
                 <div class="container mt-4">
                     <h4>Eğitim Bilgisi Ekle</h4>
                     <div class="row mt-5">
+                        <div class="col-lg-2" style="display:none">
+                            <label for="educationId">ID</label>
+                            <input type="text" id="educationId" class="form-control" />
+                        </div>
                         <div class="col-lg-2">
                             <label for="educationTitle">Eğitim Derecesi</label>
                             <input type="text" id="educationTitle" class="form-control" />
@@ -558,26 +650,33 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                        <div class="col-lg-6" style="text-align: start; align-content:start; margin-top:20px;">
                             <button type="button" class="btn btn-primary" onclick="AddInformation('Education')">Ekle</button>
+                        </div>
+                        <div class="col-lg-6" style="text-align: end; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Education',1)">Düzenlemeyi Kaydet</button>
                         </div>
                     </div>
                     <br />
                     <h5>Eklenen Eğitimler</h5>
-                    <table class="table" id="educationTable">
-                        <thead>
-                            <tr>
-                                <th>Okul</th>
-                                <th>Derece</th>
-                                <th>Başlangıç</th>
-                                <th>Bitiş</th>
-                                <th>Not</th>
-                                <th>Açıklama</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-wrapper mb-2">
+                        <div class="table-responsive">
+                            <table class="table" id="educationTable">
+                                <thead>
+                                    <tr>
+                                        <th>Okul</th>
+                                        <th>Derece</th>
+                                        <th>Başlangıç</th>
+                                        <th>Bitiş</th>
+                                        <th>Not</th>
+                                        <th>Açıklama</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
                     <button type="button" class="btn btn-primary" onclick="SaveInformation('Education')">Kaydet</button>
                 </div>
                 <br />
@@ -588,6 +687,10 @@
                 <div class="container mt-4">
                     <h4>Çalışma Bilgisi Ekle</h4>
                     <div class="row mt-5">
+                        <div class="col-lg-2" style="display:none">
+                            <label for="workId">ID</label>
+                            <input type="text" id="workId" class="form-control" />
+                        </div>
                         <div class="col-lg-4">
                             <label for="workCompany">Şirket Adı</label>
                             <input type="text" id="workCompany" class="form-control" />
@@ -618,19 +721,23 @@
                     </div>
                     <br />
                     <h5>Eklenen Çalışma Bilgileri</h5>
-                    <table class="table" id="workTable">
-                        <thead>
-                            <tr>
-                                <th>Şirket Adı</th>
-                                <th>Pozisyon</th>
-                                <th>Başlangıç</th>
-                                <th>Bitiş</th>
-                                <th>Açıklama</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-wrapper mb-2">
+                        <div class="table-responsive">
+                            <table class="table" id="workTable">
+                                <thead>
+                                    <tr>
+                                        <th>Şirket Adı</th>
+                                        <th>Pozisyon</th>
+                                        <th>Başlangıç</th>
+                                        <th>Bitiş</th>
+                                        <th>Açıklama</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
                     <button type="button" class="btn btn-primary" onclick="SaveInformation('Work')">Kaydet</button>
                 </div>
                 <br />
@@ -641,9 +748,17 @@
                 <div class="container mt-4">
                     <h4>Teknik Beceri Ekle</h4>
                     <div class="row mt-5">
+                        <div class="col-lg-6" style="display:none">
+                            <label for="skillId">ID</label>
+                            <input type="text" id="skillId" class="form-control" />
+                        </div>
                         <div class="col-lg-6">
                             <label for="skillName">Beceri Adı</label>
                             <input type="text" id="skillName" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="skillOrder">Beceri Sırası</label>
+                            <input type="number" id="skillOrder" class="form-control" />
                         </div>
                     </div>
                     <div class="row">
@@ -659,16 +774,21 @@
                     </div>
                     <br />
                     <h5>Eklenen Teknik Beceriler</h5>
-                    <table class="table" id="skillTable">
-                        <thead>
-                            <tr>
-                                <th>Beceri Adı</th>
-                                <th>Açıklama</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-wrapper mb-2">
+                        <div class="table-responsive">
+                            <table class="table" id="skillTable">
+                                <thead>
+                                    <tr>
+                                        <th>Beceri Adı</th>
+                                        <th>Beceri Sırası</th>
+                                        <th>Açıklama</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
                     <button type="button" class="btn btn-primary" onclick="SaveInformation('Skill')">Kaydet</button>
                 </div>
                 <br />
@@ -679,11 +799,19 @@
                 <div class="container mt-4">
                     <h4>Sosyal Ağ Ekle</h4>
                     <div class="row mt-5">
+                        <div class="col-lg-4" style="display:none">
+                            <label for="socialId">ID</label>
+                            <input type="text" id="socialId" class="form-control" />
+                        </div>
                         <div class="col-lg-4">
                             <label for="socialName">Açıklama</label>
                             <input type="text" id="socialName" class="form-control" />
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-lg-2">
+                            <label for="socialOrder">Sosyal Ağ Sırası</label>
+                            <input type="number" id="socialOrder" class="form-control" />
+                        </div>
+                        <div class="col-lg-6">
                             <label for="socialLink">Link</label>
                             <input type="text" id="socialLink" class="form-control" />
                         </div>
@@ -695,16 +823,21 @@
                     </div>
                     <br />
                     <h5>Eklenen Sosyal Ağlar</h5>
-                    <table class="table" id="socialTable">
-                        <thead>
-                            <tr>
-                                <th>Açıklama</th>
-                                <th>Link</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-wrapper mb-2">
+                        <div class="table-responsive">
+                            <table class="table" id="socialTable">
+                                <thead>
+                                    <tr>
+                                        <th>Açıklama</th>
+                                        <th>Link</th>
+                                        <th>Sosyal Ağ Sırası</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
                     <button type="button" class="btn btn-primary" onclick="SaveInformation('Social')">Kaydet</button>
                 </div>
                 <br />
@@ -715,13 +848,21 @@
                 <div class="container mt-4">
                     <h4>Referans Ekle</h4>
                     <div class="row mt-5">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6" style="display:none">
+                            <label for="referenceId">ID</label>
+                            <input type="text" id="referenceId" class="form-control" />
+                        </div>
+                        <div class="col-lg-5">
                             <label for="referenceCompany">Şirket Adı</label>
                             <input type="text" id="referenceCompany" class="form-control" />
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-5">
                             <label for="referenceTitle">Pozisyon</label>
                             <input type="text" id="referenceTitle" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="referenceOrder">Referans Sırası</label>
+                            <input type="number" id="referenceOrder" class="form-control" />
                         </div>
 
                     </div>
@@ -752,20 +893,25 @@
                     </div>
                     <br />
                     <h5>Eklenen Referanslar</h5>
-                    <table class="table" id="referenceTable">
-                        <thead>
-                            <tr>
-                                <th>Şirket Adı</th>
-                                <th>İsim</th>
-                                <th>Pozisyon</th>
-                                <th>Açıklama</th>
-                                <th>Mail</th>
-                                <th>Telefon</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-wrapper mb-2">
+                        <div class="table-responsive">
+                            <table class="table" id="referenceTable">
+                                <thead>
+                                    <tr>
+                                        <th>Şirket Adı</th>
+                                        <th>İsim</th>
+                                        <th>Pozisyon</th>
+                                        <th>Açıklama</th>
+                                        <th>Mail</th>
+                                        <th>Telefon</th>
+                                        <th>Referans Sırası</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
                     <button type="button" class="btn btn-primary" onclick="SaveInformation('Reference')">Kaydet</button>
                 </div>
                 <br />
@@ -776,11 +922,19 @@
                 <div class="container mt-4">
                     <h4>Dil Ekle</h4>
                     <div class="row mt-5">
-                        <div class="col-lg-4">
+                        <div class="col-lg-4" style="display:none">
+                            <label for="languageId">ID</label>
+                            <input type="text" id="languageId" class="form-control" />
+                        </div>
+                        <div class="col-lg-3">
                             <label for="languageName">Dil</label>
                             <input type="text" id="languageName" class="form-control" />
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-lg-2">
+                            <label for="languageOrder">Dil Sırası</label>
+                            <input type="number" id="languageOrder" class="form-control" />
+                        </div>
+                        <div class="col-lg-7">
                             <label for="languageInfo">Açıklama</label>
                             <input type="text" id="languageInfo" class="form-control" />
                         </div>
@@ -792,16 +946,21 @@
                     </div>
                     <br />
                     <h5>Eklenen Diller</h5>
-                    <table class="table" id="languageTable">
-                        <thead>
-                            <tr>
-                                <th>Dil</th>
-                                <th>Açıklama</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-wrapper mb-2">
+                        <div class="table-responsive">
+                            <table class="table" id="languageTable">
+                                <thead>
+                                    <tr>
+                                        <th>Dil</th>
+                                        <th>Dil Sırası</th>
+                                        <th>Açıklama</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
                     <button type="button" class="btn btn-primary" onclick="SaveInformation('Language')">Kaydet</button>
                 </div>
                 <br />
@@ -812,6 +971,10 @@
                 <div class="container mt-4">
                     <h4>Sertifika Ekle</h4>
                     <div class="row mt-5">
+                        <div class="col-lg-2" style="display:none">
+                            <label for="certificateId">ID</label>
+                            <input type="text" id="certificateId" class="form-control" />
+                        </div>
                         <div class="col-lg-3">
                             <label for="certificateName">Sertifika Adı</label>
                             <input type="text" id="certificateName" class="form-control" />
@@ -836,18 +999,22 @@
                     </div>
                     <br />
                     <h5>Eklenen Sertifika Bilgileri</h5>
-                    <table class="table" id="certificateTable">
-                        <thead>
-                            <tr>
-                                <th>Sertifika Adı</th>
-                                <th>Açıklama</th>
-                                <th>Başlangıç</th>
-                                <th>Bitiş</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-wrapper mb-2">
+                        <div class="table-responsive">
+                            <table class="table" id="certificateTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sertifika Adı</th>
+                                        <th>Açıklama</th>
+                                        <th>Başlangıç</th>
+                                        <th>Bitiş</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
                     <button type="button" class="btn btn-primary" onclick="SaveInformation('Certificate')">Kaydet</button>
                 </div>
                 <br />
@@ -858,7 +1025,11 @@
                 <div class="container mt-4">
                     <h4>Proje Ekle</h4>
                     <div class="row mt-5">
-                        <div class="col-lg-8">
+                        <div class="col-lg-2" style="display:none">
+                            <label for="projectId">ID</label>
+                            <input type="text" id="projectId" class="form-control" />
+                        </div>
+                        <div class="col-lg-6">
                             <label for="projectName">Proje Adı</label>
                             <input type="text" id="projectName" class="form-control" />
                         </div>
@@ -870,6 +1041,11 @@
                             <label for="projectEnd">Bitiş Tarihi</label>
                             <input type="date" id="projectEnd" class="form-control" />
                         </div>
+                        <div class="col-lg-2">
+                            <label for="projectOrder">Proje Sırası</label>
+                            <input type="number" id="projectOrder" class="form-control" />
+                        </div>
+
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
@@ -884,19 +1060,23 @@
                     </div>
                     <br />
                     <h5>Eklenen Projeler</h5>
-                    <table class="table" id="projectTable">
-                        <thead>
-                            <tr>
-                                <th>Şirket Adı</th>
-                                <th>Pozisyon</th>
-                                <th>Başlangıç</th>
-                                <th>Bitiş</th>
-                                <th>Açıklama</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-wrapper mb-2">
+                        <div class="table-responsive">
+                            <table class="table" id="projectTable">
+                                <thead>
+                                    <tr>
+                                        <th>Proje Adı</th>
+                                        <th>Başlangıç</th>
+                                        <th>Bitiş</th>
+                                        <th>Proje Sırası</th>
+                                        <th>Açıklama</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
                     <button type="button" class="btn btn-primary" onclick="SaveInformation('Project')">Kaydet</button>
                 </div>
                 <br />
@@ -905,7 +1085,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <!-- Delete Confirmation Modal -->
@@ -1047,8 +1226,9 @@
         let deleteType = null;
 
         // Ekleme
-        function AddInformation(type) {
+        function AddInformation(type, isEdit = null) {
             if(type === "Education"){
+                const id = $("#educationId").val() || 0;
                 const title = $("#educationTitle").val();
                 const name = $("#educationName").val();
                 const grade = $("#educationGradePoint").val();
@@ -1062,6 +1242,7 @@
                 }
 
                 const education = {
+                    Id: id,
                     Title: title,
                     Name: name,
                     GradePoint: grade,
@@ -1074,6 +1255,7 @@
 
             }
             else if(type === "Work"){
+                const id = $("#workId").val() || 0;
                 const company = $("#workCompany").val();
                 const title = $("#workPosition").val();
                 const info = tinymce.get("workInformation").getContent();
@@ -1086,6 +1268,7 @@
                 }
 
                 const work = {
+                    Id: id,
                     Position: title,
                     Company: company,
                     Information: info,
@@ -1096,7 +1279,9 @@
                 workList.push(work);
             }
             else if(type === "Skill"){
+                const id = $("#skillId").val() || 0;
                 const title = $("#skillName").val();
+                const order = $("#skillOrder").val();
                 const info = tinymce.get("skillInfo").getContent();
 
 
@@ -1106,16 +1291,20 @@
                 }
 
                 const skill = {
+                    Id: id,
                     Title: title,
                     Information: info,
+                    Order: order
                 };
 
                 skillList.push(skill);
             }
             else if (type == "Social")
             {
+                const id = $("#socialId").val() || 0;
                 const name = $("#socialName").val();
                 const link = $("#socialLink").val();
+                const order = $("#socialOrder").val();
 
                 if (!name || !link ) {
                     showAlertModal("Sosyal Ağ Adı ve Link zorunludur.","Uyarı");
@@ -1123,20 +1312,24 @@
                 }
 
                 const social = {
+                    Id: id,
                     Name: name,
                     Link: link,
+                    Order: order
                 };
 
                 socialList.push(social);
             }
             else if (type == "Reference")
             {
+                const id = $("#referenceId").val() || 0;
                 const company = $("#referenceCompany").val();
                 const name = $("#referenceName").val();
                 const title = $("#referenceTitle").val();
                 const info = tinymce.get("referenceInformation").getContent();
                 const mail = $("#referenceMail").val();
                 const phone = $("#referencePhone").val();
+                const order = $("#referenceOrder").val();
 
                 if (!name) {
                     showAlertModal("İsim zorunludur.","Uyarı");
@@ -1144,20 +1337,24 @@
                 }
 
                 const reference = {
+                    Id: id,
                     Company: company,
                     Name: name,
                     Title: title,
                     Info: info,
                     Mail: mail,
-                    Phone: phone
+                    Phone: phone,
+                    Order: order
                 };
 
                 referenceList.push(reference);
             }
             else if (type == "Language")
             {
+                const id = $("#languageId").val() || 0;
                 const name = $("#languageName").val();
                 const info = $("#languageInfo").val();
+                const order = $("#languageOrder").val();
 
                 if (!name) {
                     showAlertModal("Dil zorunludur.","Uyarı");
@@ -1165,14 +1362,17 @@
                 }
 
                 const language = {
+                    Id: id,
                     Name: name,
-                    Info: info
+                    Info: info,
+                    Order: order
                 };
 
                 languageList.push(language);
             }
             else if (type == "Certificate")
             {
+                const id = $("#certificateId").val() || 0;
                 const company = $("#certificateName").val();
                 const info = $("#certificateInformation").val();
                 const start = $("#certificateStartWhen").val();
@@ -1184,6 +1384,7 @@
                 }
 
                 const certificate = {
+                    Id: id,
                     Company: company,
                     Info: info,
                     StartWhen: start,
@@ -1194,10 +1395,12 @@
             }
             else if (type == "Project")
             {
+                const id = $("#projectId").val() || 0;
                 const name = $("#projectName").val();
                 const info = tinymce.get("projectInfo").getContent();
                 const start = $("#projectStart").val();
                 const end = $("#projectEnd").val();
+                const order = $("#projectOrder").val();
 
                 if (!name) {
                     showAlertModal("Proje Adı zorunludur.","Uyarı");
@@ -1205,10 +1408,12 @@
                 }
 
                 const project = {
+                    Id: id,
                     Name: name,
                     Info: info,
                     StartWhen: start,
-                    EndWhen: end
+                    EndWhen: end,
+                    Order: order
                 };
 
                 projectList.push(project);
@@ -1216,13 +1421,22 @@
             else{
 
             }
-             updateTable(type);
-             clearForm(type);
+
+            if(isEdit)
+            {
+                SaveInformation(type);
+            }
+            else
+            {
+                updateTable(type);
+                clearForm(type);
+            }
         }
 
         // Form alanlarını temizle
         function clearForm(type) {
             if(type === "Education"){
+                $("#educationId").val('');
                 $("#educationTitle").val('');
                 $("#educationName").val('');
                 $("#educationGradePoint").val('');
@@ -1232,6 +1446,7 @@
 
             }
             else if(type === "Work"){
+                $("#workId").val('');
                 $("#workCompany").val('');
                 $("#workPosition").val('');
                 $("#workStartWhen").val('');
@@ -1240,32 +1455,41 @@
 
             }
             else if(type === "Skill"){
+                $("#skillId").val('');
                 $("#skillName").val('');
+                $("#skillOrder").val('');
                 tinymce.get("skillInfo").setContent('');
 
             }
              else if (type == "Social")
             {
+                $("#socialId").val('');
                 $("#socialName").val('');
                 $("#socialLink").val('');
+                $("#socialOrder").val('');
             }
             else if (type == "Reference")
             {
+                $("#referenceId").val('');
                 $("#referenceCompany").val('');
                 $("#referenceName").val('');
                 $("#referenceTitle").val('');
                 $("#referencePhone").val('');
                 $("#referenceMail").val('');
+                $("#referenceOrder").val('');
                 tinymce.get("referenceInformation").setContent('');
 
             }
             else if (type == "Language")
             {
+                $("#languageId").val('');
                 $("#languageName").val('');
                 $("#languageInfo").val('');
+                $("#languageOrder").val('');
             }
             else if (type == "Certificate")
             {
+                $("#certificateId").val('');
                 $("#certificateName").val('');
                 $("#certificateInformation").val('');
                 $("#certificateStartWhen").val('');
@@ -1273,9 +1497,11 @@
             }
             else if (type == "Project")
             {
+                $("#projectId").val('');
                 $("#projectName").val('');
                 $("#projectStart").val('');
                 $("#projectEnd").val('');
+                $("#projectOrder").val('');
                 tinymce.get("projectInfo").setContent('');
 
             }
@@ -1283,12 +1509,25 @@
             {
 
             }
-
         }
 
         // Listesini tabloya yazdır
-        function updateTable(type) {
+        function updateTable(type , index = null) {
             if(type === "Education"){
+                if(index !== null){
+                      const loadedData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Educations));
+                      const idx = typeof index === "string" ? parseInt(index, 10) : index;
+                      const data = loadedData.find(a => a.Id === idx);
+                      if(data){
+                        document.getElementById('educationId').value = data.Id || '';
+                        document.getElementById('educationTitle').value = data.Title || '';
+                        document.getElementById('educationName').value = data.Name || '';
+                        document.getElementById('educationGradePoint').value = data.GradePoint || '';
+                        document.getElementById('educationStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
+                        document.getElementById('educationEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
+                        document.getElementById('educationInformation').value = data.Information || '';
+                      }
+                }
                 let html = '';
                 educationList.forEach((edu, index) => {
                 html += `<tr>
@@ -1304,6 +1543,20 @@
                 $("#educationTable tbody").html(html);
             }
             else if(type === "Work"){
+                  if(index !== null){
+                      const loadedData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.WorkExperiences));
+                      const idx = typeof index === "string" ? parseInt(index, 10) : index;
+                      const data = loadedData.find(a => a.Id === idx);
+                      if(data){
+                        document.getElementById('educationId').value = data.Id || '';
+                        document.getElementById('educationTitle').value = data.Title || '';
+                        document.getElementById('educationName').value = data.Name || '';
+                        document.getElementById('educationGradePoint').value = data.GradePoint || '';
+                        document.getElementById('educationStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
+                        document.getElementById('educationEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
+                        document.getElementById('educationInformation').value = data.Information || '';
+                      }
+                }
                 let html = '';
                 workList.forEach((work, index) => {
                 html += `<tr>
@@ -1318,10 +1571,25 @@
                 $("#workTable tbody").html(html);
             }
             else if(type === "Skill"){
+                  if(index !== null){
+                      const loadedData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Skills));
+                      const idx = typeof index === "string" ? parseInt(index, 10) : index;
+                      const data = loadedData.find(a => a.Id === idx);
+                      if(data){
+                        document.getElementById('educationId').value = data.Id || '';
+                        document.getElementById('educationTitle').value = data.Title || '';
+                        document.getElementById('educationName').value = data.Name || '';
+                        document.getElementById('educationGradePoint').value = data.GradePoint || '';
+                        document.getElementById('educationStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
+                        document.getElementById('educationEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
+                        document.getElementById('educationInformation').value = data.Information || '';
+                      }
+                }
                 let html = '';
                 skillList.forEach((skill, index) => {
                 html += `<tr>
                     <td>${skill.Title || ''}</td>
+                    <td>${skill.Order || ''}</td>
                     <td>${skill.Information || ''}</td>
                     <td><button class="btn btn-sm btn-danger" onclick="deleteInformation(event,${index},'Skill')">Sil</button></td>
                 </tr>`;
@@ -1330,11 +1598,26 @@
             }
             else if (type == "Social")
             {
+                  if(index !== null){
+                      const loadedData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Socials));
+                      const idx = typeof index === "string" ? parseInt(index, 10) : index;
+                      const data = loadedData.find(a => a.Id === idx);
+                      if(data){
+                        document.getElementById('educationId').value = data.Id || '';
+                        document.getElementById('educationTitle').value = data.Title || '';
+                        document.getElementById('educationName').value = data.Name || '';
+                        document.getElementById('educationGradePoint').value = data.GradePoint || '';
+                        document.getElementById('educationStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
+                        document.getElementById('educationEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
+                        document.getElementById('educationInformation').value = data.Information || '';
+                      }
+                }
                 let html = '';
                 socialList.forEach((social, index) => {
                 html += `<tr>
                     <td>${social.Name|| ''}</td>
                     <td>${social.Link || ''}</td>
+                     <td>${social.Order|| ''}</td>
                     <td><button class="btn btn-sm btn-danger" onclick="deleteInformation(event,${index},'Social')">Sil</button></td>
                 </tr>`;
                 });
@@ -1342,6 +1625,20 @@
             }
             else if (type == "Reference")
             {
+                  if(index !== null){
+                      const loadedData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.References));
+                      const idx = typeof index === "string" ? parseInt(index, 10) : index;
+                      const data = loadedData.find(a => a.Id === idx);
+                      if(data){
+                        document.getElementById('educationId').value = data.Id || '';
+                        document.getElementById('educationTitle').value = data.Title || '';
+                        document.getElementById('educationName').value = data.Name || '';
+                        document.getElementById('educationGradePoint').value = data.GradePoint || '';
+                        document.getElementById('educationStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
+                        document.getElementById('educationEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
+                        document.getElementById('educationInformation').value = data.Information || '';
+                      }
+                }
                 let html = '';
                 referenceList.forEach((reference, index) => {
                 html += `<tr>
@@ -1351,6 +1648,7 @@
                     <td>${reference.Info || ''}</td>
                     <td>${reference.Mail || ''}</td>
                     <td>${reference.Phone || ''}</td>
+                    <td>${reference.Order || ''}</td>
                     <td><button class="btn btn-sm btn-danger" onclick="deleteInformation(event,${index},'Reference')">Sil</button></td>
                 </tr>`;
                 });
@@ -1358,10 +1656,25 @@
             }
             else if (type == "Language")
             {
+                  if(index !== null){
+                      const loadedData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Languages));
+                      const idx = typeof index === "string" ? parseInt(index, 10) : index;
+                      const data = loadedData.find(a => a.Id === idx);
+                      if(data){
+                        document.getElementById('educationId').value = data.Id || '';
+                        document.getElementById('educationTitle').value = data.Title || '';
+                        document.getElementById('educationName').value = data.Name || '';
+                        document.getElementById('educationGradePoint').value = data.GradePoint || '';
+                        document.getElementById('educationStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
+                        document.getElementById('educationEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
+                        document.getElementById('educationInformation').value = data.Information || '';
+                      }
+                }
                 let html = '';
                 languageList.forEach((language, index) => {
                 html += `<tr>
                     <td>${language.Name || ''}</td>
+                    <td>${language.Order || ''}</td>
                     <td>${language.Info || ''}</td>
                     <td><button class="btn btn-sm btn-danger" onclick="deleteInformation(event,${index},'Language')">Sil</button></td>
                 </tr>`;
@@ -1370,6 +1683,20 @@
             }
             else if (type == "Certificate")
             {
+                  if(index !== null){
+                      const loadedData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Certificates));
+                      const idx = typeof index === "string" ? parseInt(index, 10) : index;
+                      const data = loadedData.find(a => a.Id === idx);
+                      if(data){
+                        document.getElementById('educationId').value = data.Id || '';
+                        document.getElementById('educationTitle').value = data.Title || '';
+                        document.getElementById('educationName').value = data.Name || '';
+                        document.getElementById('educationGradePoint').value = data.GradePoint || '';
+                        document.getElementById('educationStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
+                        document.getElementById('educationEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
+                        document.getElementById('educationInformation').value = data.Information || '';
+                      }
+                }
                 let html = '';
                 certificateList.forEach((certificate, index) => {
                 html += `<tr>
@@ -1384,13 +1711,28 @@
             }
             else if (type == "Project")
             {
+                  if(index !== null){
+                      const loadedData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Projects));
+                      const idx = typeof index === "string" ? parseInt(index, 10) : index;
+                      const data = loadedData.find(a => a.Id === idx);
+                      if(data){
+                        document.getElementById('educationId').value = data.Id || '';
+                        document.getElementById('educationTitle').value = data.Title || '';
+                        document.getElementById('educationName').value = data.Name || '';
+                        document.getElementById('educationGradePoint').value = data.GradePoint || '';
+                        document.getElementById('educationStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
+                        document.getElementById('educationEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
+                        document.getElementById('educationInformation').value = data.Information || '';
+                      }
+                }
                  let html = '';
                 projectList.forEach((project, index) => {
                 html += `<tr>
                     <td>${project.Name || ''}</td>
-                    <td>${project.Info || ''}</td>
                     <td>${project.StartWhen || ''}</td>
                     <td>${project.EndWhen || ''}</td>
+                    <td>${project.Order || ''}</td>
+                    <td>${project.Info || ''}</td>
                     <td><button class="btn btn-sm btn-danger" onclick="deleteInformation(event,${index},'Project')">Sil</button></td>
                 </tr>`;
                 });

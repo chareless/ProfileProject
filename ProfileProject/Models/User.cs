@@ -28,6 +28,15 @@ namespace ProfileProject.Models
         [Display(Name = "Telefon-2")]
         public string? MobilePhone2 { get; set; }
 
+        [Display(Name = "Ülke")]
+        public string? Country { get; set; }
+
+        [Display(Name = "Şehir")]
+        public string? City { get; set; }
+
+        [Display(Name = "İlçe")]
+        public string? District { get; set; }
+
         [Required(ErrorMessage = "Cinsiyet seçimi zorunludur.")]
         [Display(Name = "Cinsiyet")]
         public GenderType Gender { get; set; }

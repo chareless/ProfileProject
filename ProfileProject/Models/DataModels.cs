@@ -59,6 +59,7 @@ namespace ProfileProject.Models
 
         public class EducationDto
         {
+            public int Id { get; set; }
             public string Title { get; set; }
             public string Name { get; set; }
             public string? GradePoint { get; set; }
@@ -69,6 +70,7 @@ namespace ProfileProject.Models
 
         public class WorkDto
         {
+            public int Id { get; set; }
             public string Position { get; set; }
             public string Company { get; set; }
             public string? Information { get; set; }
@@ -78,34 +80,43 @@ namespace ProfileProject.Models
 
         public class SkillDto
         {
+            public int Id { get; set; }
             public string Title { get; set; }
             public string? Information { get; set; }
+            public int Order { get; set; }
         }
 
         public class SocialDto
         {
+            public int Id { get; set; }
             public string Name { get; set; }
             public string Link { get; set; }
+            public int Order { get; set; }
         }
 
         public class ReferenceDto
         {
+            public int Id { get; set; }
             public string Name { get; set; }
             public string? Title { get; set; }
             public string? Info { get; set; }
             public string? Company { get; set; }
             public string? Mail { get; set; }
             public string? Phone { get; set; }
+            public int Order { get; set; }
         }
 
         public class LanguageDto
         {
+            public int Id { get; set; }
             public string Name { get; set; }
             public string? Info { get; set; }
+            public int Order { get; set; }
         }
 
         public class CertificateDto
         {
+            public int Id { get; set; }
             public string Company { get; set; }
             public string Info { get; set; }
             public string StartWhen { get; set; }
@@ -114,10 +125,12 @@ namespace ProfileProject.Models
 
         public class ProjectDto
         {
+            public int Id { get; set; }
             public string Name { get; set; }
             public string? Info { get; set; }
             public string? StartWhen { get; set; }
             public string? EndWhen { get; set; }
+            public int Order { get; set; }
         }
     }
 }

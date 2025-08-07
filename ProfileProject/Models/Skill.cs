@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ProfileProject.Models
 {
@@ -16,6 +17,9 @@ namespace ProfileProject.Models
         [Display(Name = "Açıklama")]
         public string? Information { get; set; }
 
+        [Display(Name = "Sıralama")]
+        public int Order { get; set; } = 0;
+
         [Display(Name = "Silindi")]
         public bool IsDeleted { get; set; } = false;
 
@@ -30,6 +34,7 @@ namespace ProfileProject.Models
         public int UserId { get; set; }
 
         [ForeignKey("UserId")]
+        [JsonIgnore]
         public virtual User? User { get; set; }
 
         public Skill()

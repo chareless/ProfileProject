@@ -33,45 +33,33 @@
                         <h4 class="text-muted">@Model.Job</h4>
                     </div>
                 </div>
-                <div class="col-lg-9">
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <h6><strong>Adı Soyadı</strong></h6>
-                            <input asp-for="NameSurname" class="form-control" type="text" readonly />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <h6><strong>Meslek</strong></h6>
-                            <input asp-for="Job" class="form-control" type="text" readonly />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <h6><strong>Email</strong></h6>
-                            <input asp-for="Email" class="form-control" type="text" readonly />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <h6><strong>Doğum Tarihi</strong></h6>
-                            <input asp-for="Birthday" class="form-control" type="text" readonly />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <h6><strong>Telefon 1</strong></h6>
-                            <input asp-for="MobilePhone1" class="form-control" type="text" readonly />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <h6><strong>Telefon 2</strong></h6>
-                            <input asp-for="MobilePhone2" class="form-control" type="text" readonly />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <h6><strong>Ehliyet</strong></h6>
-                            <input asp-for="DrivingLicense" class="form-control" type="text" readonly />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <h6><strong>Askerlik Durumu</strong></h6>
-                            <input asp-for="Military" class="form-control" type="text" readonly />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <h6><strong>Evlilik Durumu</strong></h6>
-                            <input asp-for="Marriage" class="form-control" type="text" readonly />
-                        </div>
-                    </div>
+                <div class="col-lg-3">
+                    Adı Soyadı:  <input asp-for="NameSurname" class="form-control" type="text" readonly />
+                    <br />
+                    Meslek:  <input asp-for="Job" class="form-control" type="text" readonly />
+                    <br />
+                    Email:  <input asp-for="Email" class="form-control" type="text" readonly />
+                </div>
+                <div class="col-lg-2">
+                    Doğum Tarihi:  <input asp-for="Birthday" class="form-control" type="text" readonly />
+                    <br />
+                    Telefon 1:  <input asp-for="MobilePhone1" class="form-control" type="text" readonly />
+                    <br />
+                    Telefon 2:  <input asp-for="MobilePhone2" class="form-control" type="text" readonly />
+                </div>
+                <div class="col-lg-2">
+                    Ülke:  <input asp-for="Country" class="form-control" type="text" readonly />
+                    <br />
+                    Şehir:  <input asp-for="City" class="form-control" type="text" readonly />
+                    <br />
+                    İlçe:  <input asp-for="District" class="form-control" type="text" readonly />
+                </div>
+                <div class="col-lg-2">
+                    Ehliyet:  <input asp-for="DrivingLicense" class="form-control" type="text" readonly />
+                    <br />
+                    Askerlik Durumu:  <input asp-for="Military" class="form-control" type="text" readonly />
+                    <br />
+                    Evlilik Durumu:  <input asp-for="Marriage" class="form-control" type="text" readonly />
                 </div>
                 <div class="col-lg-12">
                     @if (!string.IsNullOrEmpty(Model.About))
