@@ -309,6 +309,7 @@ namespace ProfileProject.Controllers
         public IActionResult DeleteInformation(int id, string Type)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
+            var username = HttpContext.Session.GetString("Username");
             if (Type == "Education")
             {
                 if (userId == null)
@@ -617,7 +618,7 @@ namespace ProfileProject.Controllers
             {
 
             }
-            return RedirectToAction("Edit", "Profile", new { id = userId });
+            return RedirectToAction("Edit", "Profile", new { username = username });
         }
 
         [HttpPost]
@@ -625,6 +626,7 @@ namespace ProfileProject.Controllers
         public IActionResult SaveInformation(string data,string dataType)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
+            var username = HttpContext.Session.GetString("Username");
             if (userId == null)
             {
                 TempData["AlertMessage"] = JsonConvert.SerializeObject(new AlertMessage
@@ -729,6 +731,7 @@ namespace ProfileProject.Controllers
                     Id = e.Id,
                     Title = e.Title,
                     Information = e.Information,
+                    Order = e.Order,
                     UserId = userId.Value,
                     CreateWhen = DateTime.Now,
                     UpdateWhen = DateTime.Now,
@@ -768,6 +771,7 @@ namespace ProfileProject.Controllers
                     Id = e.Id,
                     Name = e.Name,
                     Link = e.Link,
+                    Order = e.Order,
                     UserId = userId.Value,
                     CreateWhen = DateTime.Now,
                     UpdateWhen = DateTime.Now,
@@ -806,6 +810,7 @@ namespace ProfileProject.Controllers
                 {
                     Id = e.Id,
                     Name = e.Name,
+                    Order = e.Order,
                     Information = e.Info,
                     UserId = userId.Value,
                     CreateWhen = DateTime.Now,
@@ -850,6 +855,7 @@ namespace ProfileProject.Controllers
                     Email = e.Mail,
                     MobilePhone = e.Phone,
                     Title = e.Title,
+                    Order = e.Order,
                     UserId = userId.Value,
                     CreateWhen = DateTime.Now,
                     UpdateWhen = DateTime.Now,
@@ -930,6 +936,7 @@ namespace ProfileProject.Controllers
                     Id = e.Id,
                     Name = e.Name,
                     Information = e.Info,
+                    Order = e.Order,
                     StartWhen = string.IsNullOrEmpty(e.StartWhen) ? null : DateOnly.Parse(e.StartWhen),
                     EndWhen = string.IsNullOrEmpty(e.EndWhen) ? null : DateOnly.Parse(e.EndWhen),
                     UserId = userId.Value,
@@ -973,7 +980,7 @@ namespace ProfileProject.Controllers
                 });
             }
 
-            return Json(new { redirectUrl = Url.Action("Edit", "Profile", new { id = userId }) });
+            return Json(new { redirectUrl = Url.Action("Edit", "Profile", new { username = username }) });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

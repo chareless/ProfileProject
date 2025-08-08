@@ -83,9 +83,8 @@
                         @for (int j = i; j < i + 6 && j < Model.Socials.Count; j++)
                         {
                             var link = Model.Socials[j];
-                            <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
-                                <div class="card shadow-sm h-100 text-center position-relative"
-                                     style="border: 2px solid #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; position: relative;">
+                            <div class="col-lg-2 col-md-6 col-sm-12 mb-3">
+                                <div class="card shadow-sm text-center position-relative" style="border: 2px solid #ccc; border-radius: 10px;">
 
                                     <!-- Silme butonu -->
                                     <form asp-action="DeleteInformation"
@@ -107,18 +106,18 @@
                                     <!-- Düzenleme Butonu -->
                                     <button type="button"
                                             class="btn btn-link p-0 border-0 edit-btn"
-                                            onclick="updateTable('Social','@link.Id')"
+                                            data-table="addSocial"
+                                            onclick="updateTable('Social','@link.Id');"
                                             title="Düzenle"
                                             style="position: absolute; top: 10px; right: 35px; color: #007bff;">
                                         <i class="fa fa-edit"></i>
                                     </button>
 
-                                    <!-- Sadece yazı tıklanabilir olacak şekilde -->
-                                    <span style="font-size: 20px; z-index: 1;">
-                                        <a href="@link.Link" target="_blank" style="text-decoration: none;">
-                                            @link.Name
-                                        </a>
-                                    </span>
+                                    <div class="card-body py-4">
+                                        <h5 class="card-title mb-0">
+                                            <span class="text-muted">@link.Name</span>
+                                        </h5>
+                                    </div>
 
                                 </div>
                             </div>
@@ -154,8 +153,9 @@
                                 <!-- Düzenleme Butonu -->
                                 <button type="button"
                                         class="btn btn-link p-0 border-0 edit-btn"
-                                        onclick="updateTable('Skill','@Model.Skills[i].Id')"
+                                        onclick="updateTable('Skill','@Model.Skills[i].Id');"
                                         title="Düzenle"
+                                        data-table="addSkill"
                                         style="position: absolute; top: 10px; right: 45px; color: #007bff;">
                                     <i class="fa fa-edit"></i>
                                 </button>
@@ -191,8 +191,9 @@
                                         <!-- Düzenleme Butonu -->
                                         <button type="button"
                                                 class="btn btn-link p-0 border-0 edit-btn"
-                                                onclick="updateTable('Skill','@Model.Skills[i + 1].Id')"
+                                                onclick="updateTable('Skill','@Model.Skills[i + 1].Id');"
                                                 title="Düzenle"
+                                                data-table="addSkill"
                                                 style="position: absolute;  right: 35px; color: #007bff;">
                                             <i class="fa fa-edit"></i>
                                         </button>
@@ -236,8 +237,9 @@
                         <!-- Düzenleme Butonu -->
                         <button type="button"
                                 class="btn btn-link p-0 border-0 edit-btn"
-                                onclick="updateTable('Work','@item.Id')"
+                                onclick="updateTable('Work','@item.Id');"
                                 title="Düzenle"
+                                data-table="addWork"
                                 style="position: absolute; top: 10px; right: 45px; color: #007bff;">
                             <i class="fa fa-edit"></i>
                         </button>
@@ -297,7 +299,8 @@
                         <!-- Düzenleme Butonu -->
                         <button type="button"
                                 class="btn btn-link p-0 border-0 edit-btn"
-                                onclick="updateTable('Education','@item.Id')"
+                                data-table="addEducation"
+                                onclick="updateTable('Education','@item.Id');"
                                 title="Düzenle"
                                 style="position: absolute; top: 10px; right: 45px; color: #007bff;">
                             <i class="fa fa-edit"></i>
@@ -376,8 +379,9 @@
                                     <!-- Düzenleme Butonu -->
                                     <button type="button"
                                             class="btn btn-link p-0 border-0 edit-btn"
-                                            onclick="updateTable('Reference','@reference.Id')"
+                                            onclick="updateTable('Reference','@reference.Id');"
                                             title="Düzenle"
+                                            data-table="addReference"
                                             style="position: absolute; top: 10px; right: 45px; color: #007bff;">
                                         <i class="fa fa-edit"></i>
                                     </button>
@@ -443,8 +447,9 @@
                                     <!-- Düzenleme Butonu -->
                                     <button type="button"
                                             class="btn btn-link p-0 border-0 edit-btn"
-                                            onclick="updateTable('Language','@lang.Id')"
+                                            onclick="updateTable('Language','@lang.Id');"
                                             title="Düzenle"
+                                            data-table="addLanguage"
                                             style="position: absolute; top: 10px; right: 45px; color: #007bff;">
                                         <i class="fa fa-edit"></i>
                                     </button>
@@ -495,8 +500,9 @@
                                     <!-- Düzenleme Butonu -->
                                     <button type="button"
                                             class="btn btn-link p-0 border-0 edit-btn"
-                                            onclick="updateTable('Certificate','@cert.Id')"
+                                            onclick="updateTable('Certificate','@cert.Id');"
                                             title="Düzenle"
+                                            data-table="addCertificate"
                                             style="position: absolute; top: 10px; right: 45px; color: #007bff;">
                                         <i class="fa fa-edit"></i>
                                     </button>
@@ -551,8 +557,9 @@
                                 <!-- Düzenleme Butonu -->
                                 <button type="button"
                                         class="btn btn-link p-0 border-0 edit-btn"
-                                        onclick="updateTable('Project','@project.Id')"
+                                        onclick="updateTable('Project','@project.Id');"
                                         title="Düzenle"
+                                        data-table="addProject"
                                         style="position: absolute; top: 10px; right: 45px; color: #007bff;">
                                     <i class="fa fa-edit"></i>
                                 </button>
@@ -715,8 +722,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                        <div class="col-lg-6" style="text-align: start; align-content:start; margin-top:20px;">
                             <button type="button" class="btn btn-primary" onclick="AddInformation('Work')">Ekle</button>
+                        </div>
+                        <div class="col-lg-6" style="text-align: end; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Work',1)">Düzenlemeyi Kaydet</button>
                         </div>
                     </div>
                     <br />
@@ -768,8 +778,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                        <div class="col-lg-6" style="text-align: start; align-content:start; margin-top:20px;">
                             <button type="button" class="btn btn-primary" onclick="AddInformation('Skill')">Ekle</button>
+                        </div>
+                        <div class="col-lg-6" style="text-align: end; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Skill',1)">Düzenlemeyi Kaydet</button>
                         </div>
                     </div>
                     <br />
@@ -817,8 +830,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                        <div class="col-lg-6" style="text-align: start; align-content:start; margin-top:20px;">
                             <button type="button" class="btn btn-primary" onclick="AddInformation('Social')">Ekle</button>
+                        </div>
+                        <div class="col-lg-6" style="text-align: end; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Social',1)">Düzenlemeyi Kaydet</button>
                         </div>
                     </div>
                     <br />
@@ -887,8 +903,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                        <div class="col-lg-6" style="text-align: start; align-content:start; margin-top:20px;">
                             <button type="button" class="btn btn-primary" onclick="AddInformation('Reference')">Ekle</button>
+                        </div>
+                        <div class="col-lg-6" style="text-align: end; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Reference',1)">Düzenlemeyi Kaydet</button>
                         </div>
                     </div>
                     <br />
@@ -940,8 +959,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                        <div class="col-lg-6" style="text-align: start; align-content:start; margin-top:20px;">
                             <button type="button" class="btn btn-primary" onclick="AddInformation('Language')">Ekle</button>
+                        </div>
+                        <div class="col-lg-6" style="text-align: end; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Language',1)">Düzenlemeyi Kaydet</button>
                         </div>
                     </div>
                     <br />
@@ -993,8 +1015,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                        <div class="col-lg-6" style="text-align: start; align-content:start; margin-top:20px;">
                             <button type="button" class="btn btn-primary" onclick="AddInformation('Certificate')">Ekle</button>
+                        </div>
+                        <div class="col-lg-6" style="text-align: end; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Certificate',1)">Düzenlemeyi Kaydet</button>
                         </div>
                     </div>
                     <br />
@@ -1054,8 +1079,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12" style="text-align: start; align-content:start; margin-top:20px;">
+                        <div class="col-lg-6" style="text-align: start; align-content:start; margin-top:20px;">
                             <button type="button" class="btn btn-primary" onclick="AddInformation('Project')">Ekle</button>
+                        </div>
+                        <div class="col-lg-6" style="text-align: end; align-content:start; margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="AddInformation('Project',1)">Düzenlemeyi Kaydet</button>
                         </div>
                     </div>
                     <br />
@@ -1119,6 +1147,17 @@
     </script>
 
 
+    <!-- scrollToDiv fonksiyonu: dışarıdan çağrılabilir -->
+    <script>
+        function scrollToDiv(divId) {
+            const element = document.getElementById(divId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    </script>
+
+    <!-- Bölüm göster/gizle + otomatik scroll -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const buttons = document.querySelectorAll("[data-table]");
@@ -1138,11 +1177,13 @@
                     const targetSection = document.getElementById(targetId);
                     if (targetSection) {
                         targetSection.style.display = "block";
+                        scrollToDiv(targetId); // scroll otomatik yapılır
                     }
                 });
             });
         });
     </script>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -1328,7 +1369,7 @@
                 const title = $("#referenceTitle").val();
                 const info = tinymce.get("referenceInformation").getContent();
                 const mail = $("#referenceMail").val();
-                const phone = $("#referencePhone").val();
+                const phone = $("#referencePhone").val();  
                 const order = $("#referenceOrder").val();
 
                 if (!name) {
@@ -1548,13 +1589,12 @@
                       const idx = typeof index === "string" ? parseInt(index, 10) : index;
                       const data = loadedData.find(a => a.Id === idx);
                       if(data){
-                        document.getElementById('educationId').value = data.Id || '';
-                        document.getElementById('educationTitle').value = data.Title || '';
-                        document.getElementById('educationName').value = data.Name || '';
-                        document.getElementById('educationGradePoint').value = data.GradePoint || '';
-                        document.getElementById('educationStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
-                        document.getElementById('educationEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
-                        document.getElementById('educationInformation').value = data.Information || '';
+                        document.getElementById('workId').value = data.Id || '';
+                        document.getElementById('workCompany').value = data.CompanyName || '';
+                        document.getElementById('workPosition').value = data.Title || '';
+                          tinymce.get("workInformation").setContent(data.Information || '');
+                        document.getElementById('workStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
+                        document.getElementById('workEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
                       }
                 }
                 let html = '';
@@ -1576,13 +1616,10 @@
                       const idx = typeof index === "string" ? parseInt(index, 10) : index;
                       const data = loadedData.find(a => a.Id === idx);
                       if(data){
-                        document.getElementById('educationId').value = data.Id || '';
-                        document.getElementById('educationTitle').value = data.Title || '';
-                        document.getElementById('educationName').value = data.Name || '';
-                        document.getElementById('educationGradePoint').value = data.GradePoint || '';
-                        document.getElementById('educationStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
-                        document.getElementById('educationEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
-                        document.getElementById('educationInformation').value = data.Information || '';
+                        document.getElementById('skillId').value = data.Id || '';
+                        document.getElementById('skillName').value = data.Title || '';
+                        document.getElementById('skillOrder').value = data.Order || '';
+                         tinymce.get("skillInfo").setContent(data.Information || '');
                       }
                 }
                 let html = '';
@@ -1603,13 +1640,10 @@
                       const idx = typeof index === "string" ? parseInt(index, 10) : index;
                       const data = loadedData.find(a => a.Id === idx);
                       if(data){
-                        document.getElementById('educationId').value = data.Id || '';
-                        document.getElementById('educationTitle').value = data.Title || '';
-                        document.getElementById('educationName').value = data.Name || '';
-                        document.getElementById('educationGradePoint').value = data.GradePoint || '';
-                        document.getElementById('educationStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
-                        document.getElementById('educationEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
-                        document.getElementById('educationInformation').value = data.Information || '';
+                        document.getElementById('socialId').value = data.Id || '';
+                        document.getElementById('socialName').value = data.Name || '';
+                        document.getElementById('socialLink').value = data.Link || '';
+                        document.getElementById('socialOrder').value = data.Order || '';
                       }
                 }
                 let html = '';
@@ -1630,13 +1664,14 @@
                       const idx = typeof index === "string" ? parseInt(index, 10) : index;
                       const data = loadedData.find(a => a.Id === idx);
                       if(data){
-                        document.getElementById('educationId').value = data.Id || '';
-                        document.getElementById('educationTitle').value = data.Title || '';
-                        document.getElementById('educationName').value = data.Name || '';
-                        document.getElementById('educationGradePoint').value = data.GradePoint || '';
-                        document.getElementById('educationStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
-                        document.getElementById('educationEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
-                        document.getElementById('educationInformation').value = data.Information || '';
+                        document.getElementById('referenceId').value = data.Id || '';
+                        document.getElementById('referenceCompany').value = data.CompanyName || '';
+                        document.getElementById('referenceName').value = data.Name || '';
+                        document.getElementById('referenceOrder').value = data.Order || '';
+                        document.getElementById('referenceTitle').value =  data.Title || '';
+                        document.getElementById('referenceMail').value = data.Email || '';
+                        document.getElementById('referencePhone').value = data.MobilePhone || '';
+                         tinymce.get("referenceInformation").setContent(data.Information || '');
                       }
                 }
                 let html = '';
@@ -1661,13 +1696,10 @@
                       const idx = typeof index === "string" ? parseInt(index, 10) : index;
                       const data = loadedData.find(a => a.Id === idx);
                       if(data){
-                        document.getElementById('educationId').value = data.Id || '';
-                        document.getElementById('educationTitle').value = data.Title || '';
-                        document.getElementById('educationName').value = data.Name || '';
-                        document.getElementById('educationGradePoint').value = data.GradePoint || '';
-                        document.getElementById('educationStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
-                        document.getElementById('educationEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
-                        document.getElementById('educationInformation').value = data.Information || '';
+                        document.getElementById('languageId').value = data.Id || '';
+                        document.getElementById('languageName').value = data.Name || '';
+                        document.getElementById('languageInfo').value = data.Information || '';
+                        document.getElementById('languageOrder').value = data.Order || '';
                       }
                 }
                 let html = '';
@@ -1688,13 +1720,11 @@
                       const idx = typeof index === "string" ? parseInt(index, 10) : index;
                       const data = loadedData.find(a => a.Id === idx);
                       if(data){
-                        document.getElementById('educationId').value = data.Id || '';
-                        document.getElementById('educationTitle').value = data.Title || '';
-                        document.getElementById('educationName').value = data.Name || '';
-                        document.getElementById('educationGradePoint').value = data.GradePoint || '';
-                        document.getElementById('educationStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
-                        document.getElementById('educationEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
-                        document.getElementById('educationInformation').value = data.Information || '';
+                        document.getElementById('certificateId').value = data.Id || '';
+                        document.getElementById('certificateName').value = data.CompanyName || '';
+                        document.getElementById('certificateInformation').value = data.Information || '';
+                        document.getElementById('certificateStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
+                        document.getElementById('certificateEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
                       }
                 }
                 let html = '';
@@ -1717,12 +1747,11 @@
                       const data = loadedData.find(a => a.Id === idx);
                       if(data){
                         document.getElementById('educationId').value = data.Id || '';
-                        document.getElementById('educationTitle').value = data.Title || '';
-                        document.getElementById('educationName').value = data.Name || '';
-                        document.getElementById('educationGradePoint').value = data.GradePoint || '';
-                        document.getElementById('educationStartWhen').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
-                        document.getElementById('educationEndWhen').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
-                        document.getElementById('educationInformation').value = data.Information || '';
+                        document.getElementById('projectName').value = data.Name || '';
+                        document.getElementById('projectOrder').value = data.Order || '';
+                        document.getElementById('projectStart').value = data.StartWhen ? data.StartWhen.substring(0,10) : '';
+                        document.getElementById('projectEnd').value = data.EndWhen ? data.EndWhen.substring(0,10) : '';
+                        tinymce.get("projectInfo").setContent(data.Information || '' );
                       }
                 }
                  let html = '';
